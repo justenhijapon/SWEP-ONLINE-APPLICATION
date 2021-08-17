@@ -18,8 +18,7 @@ Route::group(['as' => 'auth.'], function () {
 Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['check.user_status', 'check.user_route']], function () {
 
 
-	/** HOME **/	
-	Route::get('/home', 'HomeController@index')->name('home');
+
 
 
 	/** USER **/   
@@ -90,6 +89,8 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	Route::resource('committee_members', 'CommitteeMembersController');
 
     /** PLAN AND BUDGET **/
+    Route::get('/projects/reports','ProjectsController@reports')->name('projects.reports');
+    Route::get('/projects/report_generate','ProjectsController@report_generate')->name('projects.report_generate');
     Route::resource('projects','ProjectsController');
 
     /** OTHER ACTIVITIES **/
@@ -101,7 +102,8 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 });
 
-
+/** HOME **/
+Route::get('dashboard/home', 'HomeController@index')->name('dashboard.home')->middleware('check.user_status');
 
 /** Testing **/
 Route::get('/dashboard/test', function(){

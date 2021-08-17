@@ -76,15 +76,15 @@ class UserMenuRepository extends BaseRepository implements UserMenuInterface {
 
 
     public function getAll(){
-
-        $user_menus = $this->user_menu
-        ->leftJoin('su_menus','su_user_menus.menu_id', '=', 'su_menus.menu_id')
-        ->where('user_id', $this->auth->user()->user_id)
-        ->orderBy('su_menus.order','asc')
-        ->with('userSubMenu')
-        ->get();
-
-        return $user_menus;
+        return $user_menus = $this->user_menu->where('user_id','=', $this->auth->user()->user_id)->get();
+//        $user_menus = $this->user_menu
+//        ->leftJoin('su_menus','su_user_menus.menu_id', '=', 'su_menus.menu_id')
+//        ->where('user_id', $this->auth->user()->user_id)
+//        ->orderBy('su_menus.order','asc')
+//        ->with('userSubMenu')
+//        ->get();
+//
+//        return $user_menus;
         
     }
 

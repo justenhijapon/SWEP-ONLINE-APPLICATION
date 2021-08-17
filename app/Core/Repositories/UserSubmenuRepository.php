@@ -74,6 +74,10 @@ class UserSubmenuRepository extends BaseRepository implements UserSubmenuInterfa
 
     }
 
+    public function getAll(){
+	    $user_submenus = $this->user_submenu->with(['subMenu.menu','subMenu'])->where('user_id','=',$this->auth->user()->user_id)->get();
+	    return $user_submenus;
+    }
 
 
 

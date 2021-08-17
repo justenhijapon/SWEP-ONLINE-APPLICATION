@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>SRA Web Portal - GAD</title>
@@ -14,49 +14,49 @@
 
 
     <style type="text/css">
-      .pagination>.active>a, 
-      .pagination>.active>a:focus, 
-      .pagination>.active>a:hover, 
-      .pagination>.active>span, 
-      .pagination>.active>span:focus, 
-      .pagination>.active>span:hover{
-        background-color: {{ __static::pagination_color(Auth::user()->color) }} ;
-        border-color: {{ __static::pagination_color(Auth::user()->color) }} 
+        .pagination>.active>a,
+        .pagination>.active>a:focus,
+        .pagination>.active>a:hover,
+        .pagination>.active>span,
+        .pagination>.active>span:focus,
+        .pagination>.active>span:hover{
+            background-color: {{ __static::pagination_color(Auth::user()->color) }} ;
+            border-color: {{ __static::pagination_color(Auth::user()->color) }}
       }
     </style>
-  </head>
-  <body class="hold-transition  {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
+</head>
+<body class="hold-transition  {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
 
-  <body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
+<body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
 
-    <div id="loader"></div>
+<div id="loader"></div>
 
-    <div class="wrapper">
+<div class="wrapper">
 
-      @include('layouts.admin-topnav')
+    @include('layouts.admin-topnav')
 
-      @include('layouts.admin-sidenav') 
+    @include('layouts.admin-sidenav')
 
-      <div class="content-wrapper"> 
-         @yield('content')
-         <footer class="main-footer">
-          <div class="pull-right hidden-xs">
-            <b>Version</b> 1.2.0
-          </div>
-          <strong>Copyright &copy; 2019-2020 <a href="#">MIS-VISAYAS</a>.</strong> All rights
-          reserved.
+    <div class="content-wrapper">
+        @yield('content')
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.2.0
+            </div>
+            <strong>Copyright &copy; 2019-2020 <a href="#">MIS-VISAYAS</a>.</strong> All rights
+            reserved.
         </footer>
-      </div>
     </div>
+</div>
 
-    @include('layouts.js-plugins')
-    
-    @yield('modals')
+@include('layouts.js-plugins')
 
-    {!! __html::modal_loader() !!}
+@yield('modals')
 
-    @yield('scripts')
+{!! __html::modal_loader() !!}
 
-  </body>
+@yield('scripts')
+
+</body>
 
 </html>

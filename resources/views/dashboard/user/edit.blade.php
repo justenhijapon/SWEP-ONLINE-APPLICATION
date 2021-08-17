@@ -75,7 +75,7 @@
                   </center>
                     
                   @else
-                    <select multiple name="menu[{{$sub->menu_id}}][]" class="form-control select_multiple" size="6">                   
+                    <select multiple name="submenus[]" class="form-control select_multiple" size="6">
                           @foreach($sub->submenu as $key2 => $submenu)
                            <option value="{{$submenu->submenu_id}}".
                             @if ($this_user_has->contains($submenu->submenu_id))

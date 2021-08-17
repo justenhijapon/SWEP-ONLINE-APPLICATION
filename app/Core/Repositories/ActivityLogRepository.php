@@ -23,7 +23,8 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
         $modules = [
             'Seminars'=>'seminar',
             'Block Farm'=>'block_farm',
-            'Scholars'=>'scholar'
+            'Scholars'=>'scholar',
+            'Committee Members' => 'committee_members'
         ];
         return $modules;
     }   
@@ -69,7 +70,7 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
             }
         }
 
-        return $get->latest()->where('user_id',"=",$user)->get();
+        return $get->where('user_id',"=",$user);
     }
 
 

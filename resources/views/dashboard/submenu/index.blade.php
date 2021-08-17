@@ -14,7 +14,7 @@
 				            '3 name', 'name', 'text', 'Name: *', 'Name','', '', '', ''
 				        ) !!}
 
-				        
+
 
 				        {!! __form::textbox(
 				            '4 route', 'route', 'text', 'Route: *', $menu->route.'.example','', '', '', ''
@@ -27,7 +27,7 @@
 				        {!! __form::select_static(
 							'2 is_nav', 'is_nav', 'Is nav: *', '', [
 							'No' => '0',
-							'Yes' => '1',             
+							'Yes' => '1',
 							], '', '', '', ''
 			            ) !!}
 
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 	<hr>
 	<center>
@@ -94,7 +94,7 @@
 	    <div class="col-md-4">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>
-	
+
 	</div>
-	
+
 </div>

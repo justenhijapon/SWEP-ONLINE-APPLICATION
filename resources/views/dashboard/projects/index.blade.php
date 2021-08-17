@@ -158,7 +158,7 @@
 
 
 
-    {!! __html::blank_modal('show_project_modal','lg') !!}
+    {!! __html::blank_modal('show_project_modal',80) !!}
     {!! __html::blank_modal('edit_project_modal','') !!}
 
 @endsection
@@ -316,17 +316,18 @@
 
 
 
-        $("body").on("click",".show_scholars_btn",function(){
-            id = $(this).attr("data");
-            load_modal('#show_scholars_modal');
-            uri = "{{ route('dashboard.scholars.show','slug') }}";
+        $("body").on("click",".show_project_btn",function(){
+            btn = $(this);
+            var id = btn.attr('data');
+            load_modal2(btn);
+            uri = "{{ route('dashboard.projects.show','slug') }}";
             uri = uri.replace('slug',id);
             $.ajax({
                 url :  uri,
                 type: 'GET',
                 success: function(response){
 
-                    populate_modal("#show_scholars_modal",response);
+                    populate_modal2(btn,response);
                 },
                 errors: function(response){
                     console.log(response);

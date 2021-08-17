@@ -106,7 +106,7 @@ class UserController extends Controller{
 
 
     public function store(UserFormRequest $request){
-
+        return $request;
         $user = $this->user_service->store($request);
 
         return json_encode(array('result' => 1, 'slug' => $user->slug)) ;
