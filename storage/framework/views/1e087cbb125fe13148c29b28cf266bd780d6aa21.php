@@ -115,8 +115,12 @@
     })
 
     var link = window.location.href;
-    $("a[href='"+link+"']").closest('ul').css('display','block');
-    $("a[href='"+link+"']").closest('.treeview').addClass('menu-open');
+    var href  = $("a[href='"+link+"']");
+    if(href.hasClass('btn') == false){
+        href.closest('li').addClass('active');
+        href.closest('ul').css('display','block');
+        href.closest('.treeview').addClass('menu-open');
+    }
 </script>
 
 
