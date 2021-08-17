@@ -25,11 +25,23 @@ class Projects extends Model
         });
     }
 
+    public function creator(){
+        return $this->hasOne('App\Models\User', 'user_id', 'user_created');
+    }
+
+    public function updater(){
+        return $this->hasOne('App\Models\User', 'user_id', 'user_updated');
+    }
+
     public function seminars(){
         return $this->hasMany('App\Models\Seminar','project_code','project_code');
     }
 
     public function otherActivities(){
         return $this->hasMany('App\Models\OtherActivities','project_code','project_code');
+    }
+
+    public function getTableColumns(){
+        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
 }

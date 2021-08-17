@@ -134,9 +134,9 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
     public function findBySlug($slug){
 
-        $menu = $this->cache->remember('menu:findBySlug:' . $slug, 240, function() use ($slug){
-            return $this->menu->where('slug', $slug)->first();
-        }); 
+
+	    return $this->menu->where('slug', $slug)->first();
+
 
 
         // $menu = $this->menu->where('slug', $slug)->first();

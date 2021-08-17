@@ -9,6 +9,7 @@ use App\Core\Interfaces\UserSubmenuInterface;
 use App\Core\Interfaces\MenuInterface;
 use App\Core\Interfaces\SubmenuInterface;
 
+use App\Models\UserSubmenu;
 use Hash;
 
 class UserService extends BaseService{
@@ -67,12 +68,14 @@ class UserService extends BaseService{
 
         $user = $this->user_repo->store($request);
         $user_id = $user->user_id;
+        $user_submenu_to_db = [];
         if(!empty($request->menu)){
             foreach ($request->menu as $key => $menu_itself) {
                 $user_menu = $this->user_menu_repo->store($user_id, $key);
                 $user_menu_id = $user_menu->user_menu_id;
 
                 foreach ($menu_itself as $key2 => $submenu) {
+
                     $user_submenu = $this->user_submenu_repo->store($user_id,$submenu, $user_menu_id);
                 }
             }
@@ -127,17 +130,33 @@ class UserService extends BaseService{
         $request->merge(['menu' => $menu]);
 
         $user_id = $user->user_id;
-        if(!empty($request->menu)){
-            foreach ($request->menu as $key => $menu_itself) {
-                $user_menu = $this->user_menu_repo->store($user_id, $key);
-                $user_menu_id = $user_menu->user_menu_id;
-
-                foreach ($menu_itself as $key2 => $submenu) {
-                    $user_submenu = $this->user_submenu_repo->store($user_id,$submenu, $user_menu_id);
-                }
+        $user_submenu_to_db = [];
+        if(!empty($request->submenus)){
+            foreach ($request->submenus as $submenu){
+                $user_submenu = new UserSubmenu();
+                $user_submenu->user_id = $user_id;
+                $user_submenu->submenu_id =$submenu;
+                $user_submenu_to_db[] = $user_submenu->attributesToArray();
             }
         }
-
+        UserSubmenu::insert($user_submenu_to_db);
+        return $user->only(['slug']);
+//        if(!empty($request->menu)){
+//            foreach ($request->menu as $key => $menu_itself) {
+//                $user_menu = $this->user_menu_repo->store($user_id, $key);
+//                $user_menu_id = $user_menu->user_menu_id;
+//                foreach ($menu_itself as $key2 => $submenu) {
+//                    $user_sub = new UserSubmenu();
+//                    $user_sub->user_menu_id = $user_menu_id;
+//                    $user_sub->submenu_id = $submenu;
+//                    $user_sub->user_id = $user_id;
+//                    //return $user_submenu_to_repo = $user_sub->attributesToArray();
+//                    $user_sub = $this->user_submenu_repo->store($user_id,$submenu, $user_menu_id);
+//                }
+//            }
+//        }
+        //return $user_submenu_to_repo;
+        UserSubmenu::insert($user_submenu_to_db);
         return $user;
 
     }

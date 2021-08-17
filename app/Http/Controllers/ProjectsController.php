@@ -8,6 +8,7 @@ use App\Core\Repositories\ProjectsRepository;
 use App\Core\Services\ProjectsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Projects\ProjectFormRequest;
+use App\Models\Projects;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Html\Builder;
 use function foo\func;
@@ -82,5 +83,45 @@ class ProjectsController extends Controller
 
     public function update(ProjectFormRequest $request,$id){
         return $this->project_service->update($request,$id);
+    }
+
+    public function show($id){
+        $project = $this->project_repo->findBySlug($id);
+        return view('dashboard.projects.show')->with(['project' => $project]);
+    }
+
+    public function reports(){
+        $years_array = Projects::orderBy('year','asc')->groupBy('year')->pluck('year');
+        $columns = $this->columns();
+        return view('dashboard.projects.reports')->with(['years' => $years_array, 'columns'=>$columns]);
+    }
+
+    public function report_generate(Request $request){
+        $columns_chosen = $request->columns;
+        $columns_default = $this->columns();
+        return view('printables.projects.choose_year')->with([
+            'columns_chosen' => $columns_chosen,
+            'columns_default' => $columns_default,
+            'request' => $request,
+            'projects' => $this->project_repo->getRaw()->with(['seminars','otherActivities'])->where('year','=',$request->year)->get(),
+        ]);
+    }
+
+    public function columns(){
+        return [
+            "project_code" => 'Project Code',
+            "activity" => 'Activity',
+            "budget" => 'Budget Allocated',
+            "utilized_fund" => 'Utilized Fund',
+            "balance" => 'Balance',
+            //"year" => 'Year',
+            "cause" => 'Cause of Gender Issue',
+            "issue_mandate" => 'Gender Issue/GAD Mandate',
+            "performance_indicators" => 'Performance Indicators/Targets',
+            "responsible" => 'Responsible Unit/Office',
+            "relevant_org" => 'Relevant Oraganization MFO/PAP or PPA',
+            "result_statement" => 'GAD Result Statement/GAD Objective',
+            "source_budget" => 'Source of Budget',
+        ];
     }
 }

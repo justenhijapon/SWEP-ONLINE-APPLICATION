@@ -234,12 +234,20 @@ class __html{
 
     public static function timestamp($obj, $class){
 
+        if(!empty($obj->updater)){
+            $updated_by  = $obj->updater->firstname.' '.$obj->updater->lastname;
+            $updated_by_time = date("M. d, Y | h:i A",strtotime($obj->updated_at));
+        }else{
+            $updated_by  = 'N/A';
+            $updated_by_time = 'N/A';
+        }
+
     	return '<div class="col-md-'.$class.'">
 			<div class="stamps">
 				<small class="no-margin">
 					Encoded by: 
 					<b>
-						'.$obj->creator['firstname'].' '.$obj->creator['lastname'].'
+						'.$obj->creator->firstname.' '.$obj->creator->lastname.'
 					</b> 
 				</small>
 				<br>
@@ -257,14 +265,14 @@ class __html{
 				<small class="no-margin">
 					Last updated by: 
 					<b>
-						'.$obj->updater['firstname'].' '.$obj->updater['lastname'].'
+						'.$updated_by.'
 					</b> 
 				</small>
 				<br>
 				<small class="no-margin">
 					Timestamp: 
 					<b>
-						'.date("M. d, Y | h:i A",strtotime($obj->updated_at)).'
+						'.$updated_by_time.'
 					</b> 
 				</small>
 			</div>

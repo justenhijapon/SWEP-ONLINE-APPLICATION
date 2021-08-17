@@ -49,4 +49,8 @@ class ProjectsRepository extends BaseRepository
             return $project->only(['slug']);
         }
     }
+
+    public function getRaw(){
+        return $this->projects;
+    }
 }

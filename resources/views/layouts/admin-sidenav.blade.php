@@ -5,7 +5,7 @@
         <img src="{!! __html::check_img(Auth::user()->image) !!}" class="img-circle" alt="User Image">
       </div>
       <div class="pull-left info">
-        
+
         @if(Auth::check())
           <p>{{ Auth::user()->firstname }}</p>
         @endif
@@ -14,62 +14,47 @@
       </div>
     </div>
     <ul class="sidebar-menu" data-widget="tree">
-      
 
       @if(Auth::check())
+        @if(count($global_menu_tree) > 0)
+          <li class="header">NAVIGATION</li>
 
-      {{-- User --}}
-        @if(!$global_user_menus->isEmpty())
-            <li class="header">NAVIGATION</li>
+            <li>
+                <a href="{{route('dashboard.home')}}">
+                    <i class="fa fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+          @foreach($global_menu_tree as $user_menu)
+            @if($user_menu['menu_obj']->is_dropdown == 0)
+              <li>
+                <a href="">
+                  <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                  <span>{{$user_menu['menu_obj']->name}}</span>
+                </a>
+              </li>
+            @else
+            <li class="treeview" style="height: auto;">
+                <a href="#">
+                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                    <span>{{$user_menu['menu_obj']->name}}</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    @foreach($user_menu['submenus'] as $submenu)
+                        <li><a href="{{route($submenu['submenu_obj']->route)}}"><i class="fa fa-circle-o"></i>{{$submenu['submenu_obj']->nav_name}}</a></li>
+                    @endforeach
+                </ul>
+            </li>
 
-            @foreach($global_user_menus as $user_menu)
-              @if(!empty($user_menu->menu->is_menu))
-                @if($user_menu->menu->is_menu == true)
-                 @if($user_menu->menu->is_dropdown == false)
-                  <li class="{!! Route::currentRouteNamed($user_menu->menu->route) ? 'active' : '' !!}">
-                    <a href="{{ route($user_menu->menu->route) }}">
-                      <i class="fa {{ $user_menu->menu->icon }}"></i> <span>{{ $user_menu->menu->name }}</span>
-                    </a>
-                  </li>
-                  @else
-                    <li class="treeview {!! Route::currentRouteNamed($user_menu->menu->route) ? 'active' : '' !!}">
-                      <a href="#">
-                        <i class="fa {{ $user_menu->menu->icon }}"></i> <span>{{ $user_menu->menu->name }}</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-
-                        <ul class="treeview-menu">
-
-                          @foreach($user_menu->userSubMenu as $user_nav)
-                            @if(!empty($user_nav->subMenu))
-                              @if($user_nav->subMenu->is_nav == true)
-
-                                <li class="{!! Route::currentRouteNamed($user_nav->subMenu->route) ? 'active' : '' !!}">
-                                  <a href="{{ route($user_nav->subMenu->route) }}"><i class="fa fa-caret-right"></i> {{ $user_nav->subMenu->nav_name }}</a>
-                                </li>
-
-                              @endif
-                            @endif
-                          @endforeach
-
-                        </ul>
-
-                    </li>         
-                  @endif
-                @else
-              @endif
-              @endif
-            @endforeach
-           
-
-          @endif
-
-
-            
+            @endif
+          @endforeach
         @endif
+      @endif
 
     </ul>
   </section>
 </aside>
+

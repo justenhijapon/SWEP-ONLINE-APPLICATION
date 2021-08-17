@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Core\Repositories\ActivityLogRepository;
 use Illuminate\Http\Request;
 use App\Core\Services\ProfileService;
 use App\Http\Requests\Profile\ProfileUpdateAccountUsernameRequest;
 use App\Http\Requests\Profile\ProfileUpdateAccountPasswordRequest;
 use App\Http\Requests\Profile\ProfileUpdateAccountColorRequest;
+use DataTables;
 
 
 class ProfileController extends Controller{
@@ -15,13 +17,13 @@ class ProfileController extends Controller{
 
 
 	protected $profile_service; 
+    protected $activity_logs_repo;
 
 
-
-    public function __construct(ProfileService $profile_service){
+    public function __construct(ProfileService $profile_service, ActivityLogRepository $activity_logs_repo){
 
         $this->profile_service = $profile_service;
-
+        $this->activity_logs_repo = $activity_logs_repo;
     }
 
 
@@ -38,25 +40,13 @@ class ProfileController extends Controller{
                     $data->end_date = date("Y-m-d",strtotime(substr($data->date_range, -10)));
                 }
             }
-
-            return datatables()->of($this->profile_service->fetchTable($data))
-            ->editColumn('module', function($data){
-                switch ($data->module) {
-                    case 'seminar':
-                        return "Seminars";
-                        break;
-                    case 'block_farm':
-                        return "Block Farm";
-                        break;
-                    case 'scholar':
-                        return "Scholars";
-                        break;
-                    case 'bf_member':
-                        return "Block Farm Member";
-                        break;
-                    default:
-                        return $data->module;
-                        break;
+            $modules_array = $this->activity_logs_repo->modules();
+            return DataTables::eloquent($this->profile_service->fetchTable($data))
+            ->editColumn('module', function($data) use ($modules_array){
+                if(array_search($data->module,$modules_array)){
+                    return array_search($data->module,$modules_array);
+                }else{
+                    return '<code>N/A</code>';
                 }
             })
             ->editColumn('event',function($data){
@@ -79,12 +69,12 @@ class ProfileController extends Controller{
             ->editColumn('created_at', function($data){
                 return date("M. d, 'y | h:i A", strtotime($data->created_at));
             })
-            ->editColumn('created_at_raw', function($data){
+            ->addColumn('created_at_raw', function($data){
                 return $data->created_at;
             })
             ->escapeColumns([])
             ->setRowId('id')
-            ->make();
+            ->toJson();
         }
         $modules = $this->profile_service->modules();
         $events = $this->profile_service->events();
