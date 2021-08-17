@@ -221,19 +221,22 @@
             ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "columnDefs":[
-
+                {
+                    "targets" : [0,1],
+                    "class":"w-8p",
+                },
                 {
                     "targets" : 4,
                     "orderable" : false,
                 },
                 {
                     "targets" : [3,4,5],
-                    "class" : 'text-right',
+                    "class" : 'w-10p text-right',
                 },
                 {
                     "targets" : 6,
                     "orderable" : false,
-                    "class" : 'action'
+                    "class" : 'action-8p'
                 },
 
             ],
@@ -388,6 +391,10 @@
             confirm("{{ route('dashboard.scholars.destroy', 'slug') }}", id);
         })
 
+        $("body").on("click",".delete_project_btn", function(){
+            id = $(this).attr('data');
+            confirm("{{ route('dashboard.projects.destroy', 'slug') }}", id);
+        })
 
     </script>
 @endsection

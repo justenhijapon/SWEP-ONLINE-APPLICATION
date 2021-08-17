@@ -225,7 +225,7 @@
       },
       {
         "targets" : 2,
-        "class" : 'sex-th'
+        "class" : 'w-6p'
       },
       {
         "targets" : 3,

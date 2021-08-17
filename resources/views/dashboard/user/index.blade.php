@@ -292,9 +292,19 @@
       ],
       "columnDefs":[
         {
+          "targets" : 0,
+          "orderable" : false,
+          "class" : 'w-10p'
+        },
+        {
+          "targets" : [2,3],
+          "orderable" : false,
+          "class" : 'w-6p'
+        },
+        {
           "targets" : 4,
           "orderable" : false,
-          "class" : 'action'
+          "class" : 'action-10p'
         },
       ],
       "responsive": false,

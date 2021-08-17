@@ -225,7 +225,7 @@
                 {
                     "targets" : 6,
                     "orderable" : false,
-                    "class" : 'action-60'
+                    "class" : 'action-8p'
                 },
             ],
             "responsive": false,

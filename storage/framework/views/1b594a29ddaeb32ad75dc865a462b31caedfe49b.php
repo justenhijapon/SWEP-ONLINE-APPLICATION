@@ -448,7 +448,7 @@ function dt_draw(){
           {
             "targets" : 7,
             "orderable" : false,
-            "class" : 'action'
+            "class" : 'action-10p'
           },
           {
             "targets": 6, 

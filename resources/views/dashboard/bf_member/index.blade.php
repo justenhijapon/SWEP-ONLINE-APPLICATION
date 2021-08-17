@@ -841,9 +841,14 @@ bf_member_tbl = $("#bf_member_table").DataTable({
       "visible" : true
     },
     {
+      "targets" : 6,
+      "orderable" : false,
+      "class" : 'w-6p'
+    },
+    {
       "targets" : 7,
       "orderable" : false,
-      "class" : 'action'
+      "class" : 'action-8p'
     },
     {
       "targets": 4, 

@@ -107,6 +107,10 @@ class ProjectsController extends Controller
         ]);
     }
 
+    public function destroy($id){
+        return $id;
+    }
+
     public function columns(){
         return [
             "project_code" => 'Project Code',

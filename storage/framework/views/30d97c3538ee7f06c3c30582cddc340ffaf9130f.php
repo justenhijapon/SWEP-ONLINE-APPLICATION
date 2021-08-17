@@ -473,7 +473,7 @@
         {
           "targets" : 5,
           "orderable" : false,
-          "class" : 'action'
+          "class" : 'action-8p'
         },
         {
           "targets": 3, 

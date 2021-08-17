@@ -81,7 +81,7 @@
                   </center>
                     
                   <?php else: ?>
-                    <select multiple name="menu[<?php echo e($sub->menu_id); ?>][]" class="form-control select_multiple" size="6">                   
+                    <select multiple name="submenus[]" class="form-control select_multiple" size="6">
                           <?php $__currentLoopData = $sub->submenu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key2 => $submenu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                            <option value="<?php echo e($submenu->submenu_id); ?>".
                             <?php if($this_user_has->contains($submenu->submenu_id)): ?>

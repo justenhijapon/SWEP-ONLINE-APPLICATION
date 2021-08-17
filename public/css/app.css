@@ -33,7 +33,35 @@ input[data-transform=uppercase] {
 
 
 .action{
-    width: 40px !important;
+    width: 40px;
+}
+
+.action-8p{
+    width: 8%;
+}
+
+.w-6p{
+    width: 6%;
+}
+
+.w-8p{
+    width: 8%;
+}
+
+.w-10p{
+    width: 10%;
+}
+
+.w-12p{
+    width: 12%;
+}
+
+.action-10p{
+    width: 10%;
+}
+
+.action-12p{
+    width: 12%;
 }
 
 .action-60{

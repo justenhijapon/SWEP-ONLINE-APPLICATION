@@ -433,9 +433,14 @@
         "class" : "scholars_name"
       },
       {
+        "targets" : 4,
+        "orderable" : false,
+        "class" : 'w-8p'
+      },
+      {
         "targets" : 5,
         "orderable" : false,
-        "class" : 'sex-th'
+        "class" : 'w-6p'
       },
       {
         "targets" : 6,
