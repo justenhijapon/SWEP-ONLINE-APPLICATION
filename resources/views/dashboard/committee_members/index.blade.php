@@ -263,12 +263,12 @@
       },
       {
         "targets" : 2,
-        "class" : 'sex-th'
+        "class" : 'w-6p',
       },
       {
         "targets" : 3,
         "orderable" : false,
-        "class" : 'action'
+        "class" : 'action-10p'
       },
   
     ],
