@@ -1240,8 +1240,9 @@ $('#add_bf_member_modal .block_farm_search').typeahead({
 
 //STORE BLOCK FARM MEMBER FORM
 $("#add_bf_member_form").submit(function(e) {
+  form = $(this);
+  loading_btn(form);
   e.preventDefault();
-  /*  console.log(family_tbl.rows().data());*/
   form_data = $(this).serializeArray();
   family_data = family_tbl.rows().data();
   family_data_array = {};
@@ -1269,7 +1270,7 @@ $("#add_bf_member_form").submit(function(e) {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function(response){
-      succeed("#add_bf_member_form","save",true);
+      succeed(form,true,false);
       family_tbl.clear().draw();
       $("#add_bf_member_modal .clear_btn").click();
       notify("Blockfarm member has beed added successfully.","success");
@@ -1277,7 +1278,7 @@ $("#add_bf_member_form").submit(function(e) {
       active = response.slug;
     },
     error: function(response){
-      errored("#add_bf_member_form","save",response);
+      errored(form,response);
       if (typeof response.responseJSON.errors.chosen_bf !== 'undefined') {
         notify("You need to select block farm.",'warning');
         $("#add_bf_member_form .block_farm").addClass('has-error');
@@ -1292,6 +1293,8 @@ $("#add_bf_member_form").submit(function(e) {
 //UDPATE BLOCK FARM MEMBER
 $("body").on("submit", "#edit_bf_member_form", function(e){
   e.preventDefault();
+  form = $(this);
+  loading_btn(form);
   form_data = $(this).serializeArray();
   family_data = family_tbl_edit.rows().data();
   family_data_array = {};
@@ -1321,14 +1324,13 @@ $("body").on("submit", "#edit_bf_member_form", function(e){
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function(response){ 
-      succeed("#edit_bf_member_form","save",true);
-      $("#edit_bf_member_modal").modal('hide');
+      succeed(form,true,true);
       notify("Blockfarm member has beed added successfully.","success");
       bf_member_tbl.draw(false);
       active = response.slug;
     },
     error: function(response){
-      errored("#edit_bf_member_form","save",response);
+      errored(form,response);
       if (typeof response.responseJSON.errors.chosen_bf !== 'undefined') {
         notify("You need to select block farm.",'warning');
         $("#edit_bf_member_form .block_farm").addClass('has-error');

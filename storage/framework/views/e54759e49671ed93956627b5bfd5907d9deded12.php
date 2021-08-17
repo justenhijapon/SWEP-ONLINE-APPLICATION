@@ -365,22 +365,21 @@ function filter_dt(){
 
     $("#add_menu_form").submit(function(e) {
       e.preventDefault();
-      wait_button("#add_menu_form");
+      form = $(this);
+      loading_btn(form)
       $.ajax({
         url : "<?php echo e(route('dashboard.menu.store')); ?>",
         data: $(this).serialize(),
         type: 'POST',
         dataType: 'json',
         success: function(response){
-          console.log(response);
-          succeed("#add_menu_form",'save',true);
+          succeed(form,true,false);
           notify("Menu has been added successfully","success");
           active = response.slug;
           dt_draw();
         },
         error: function(response){
-          console.log(response);
-          errored("#add_menu_form", 'save',response);
+          errored(form,response);
         }
       })
     });
@@ -406,7 +405,8 @@ function filter_dt(){
 
             $("#add_submenu_form").submit(function(e){
               e.preventDefault();
-              wait_button("#add_submenu_form");
+              form = $(this);
+              loading_btn(form);
               $.ajaxSetup({
                 headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -419,7 +419,7 @@ function filter_dt(){
                 data: $(this).serialize()+"&menu="+id,
                 dataType : 'json',
                 success: function(response){
-                  succeed("#add_submenu_form", "save", true);
+                  succeed(form, true, false);
                   notify("Submenu successfully saved.", "success");
                   if(response.is_nav == 1){
                     nav = '<center><span class="bg-green badge"><i class="fa fa-check"></i></span></center>';
@@ -454,8 +454,7 @@ function filter_dt(){
 
                 },
                 error: function(response){
-                  console.log(response);
-                  errored("#add_submenu_form","save",response);
+                  errored(form,response);
                 }
               })
             })

@@ -58,21 +58,14 @@
               Utilization
             </p>
           </div>
-          <?php echo __form::textbox(
-            '6 project_code', 'project_code', 'text', 'Project Code*', 'Project Code', $seminar->project_code, '', '', 'list="project_list"'); ?>
+          <?php
+            $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
+          ?>
+          <?php echo __form::select_object_project_code(
+            '6 project_code', 'project_code', 'Project Code', '', $project_code, $seminar->project_code ,''
+          ); ?>
 
 
-          <datalist id="project_list">
-            <?php
-              $projects = \App\Models\Projects::get(['project_code']);
-
-            ?>
-            <?php if($projects->count()>0): ?>
-              <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <option><?php echo e($project->project_code); ?></option>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <?php endif; ?>
-          </datalist>
 
           <?php echo __form::textbox(
             '6 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', $seminar->utilized_fund, '', '', '','autonum'
@@ -155,14 +148,15 @@
     'e_doc_file', 'fa', route('dashboard.seminar.view_attendance_sheet', $seminar->slug)
   ); ?>
 
+    autonum_settings = {
+    currencySymbol : ' ₱',
+    decimalCharacter : '.',
+    digitGroupSeparator : ',',
+  };
 
-          autonum_settings = {
-            currencySymbol : ' ₱',
-            decimalCharacter : '.',
-            digitGroupSeparator : ',',
-          };
+  $("#edit_seminar_form .autonum").each(function(){
+    new AutoNumeric(this, autonum_settings);
+  })
 
-          $(".autonum").each(function(){
-            new AutoNumeric(this, autonum_settings);
-          })
+  $('#edit_seminar_form .select2').select2();
 </script>

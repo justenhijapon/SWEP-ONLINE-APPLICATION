@@ -110,7 +110,13 @@
         })
 
         $('.select2').select2();
+
+
     })
+
+    var link = window.location.href;
+    $("a[href='"+link+"']").closest('ul').css('display','block');
+    $("a[href='"+link+"']").closest('.treeview').addClass('menu-open');
 </script>
 
 
