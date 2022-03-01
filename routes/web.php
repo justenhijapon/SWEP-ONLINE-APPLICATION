@@ -96,8 +96,13 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
     /** OTHER ACTIVITIES **/
     Route::resource('other_activities','OtherActivitiesController');
 
+    Route::resource('other_activities_participants','OtherActivitiesParticipantsController');
+
     /** OFFICE ACTIVITIES **/
 	Route::resource('office_activities', 'OfficeActivitiesController');
+
+    /** Recipients **/
+    Route::resource('recipients', 'RecipientsController');
 
 
 });

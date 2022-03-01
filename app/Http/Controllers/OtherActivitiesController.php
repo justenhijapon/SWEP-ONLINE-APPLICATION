@@ -29,7 +29,7 @@ class OtherActivitiesController extends Controller
                     $button = '<div class="btn-group">';
 
                     if($data->has_participants == 1){
-                        $button = $button.'<button type="button" class="btn btn-default btn-sm show_other_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_other_modal" title="Participants" data-placement="left">
+                        $button = $button.'<button type="button" class="btn btn-default btn-sm participants_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#participants_modal" title="Participants" data-placement="left">
                                     <i class="fa fa-users"></i>
                                 </button>';
                     }

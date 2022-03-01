@@ -242,19 +242,27 @@ class __html{
             $updated_by_time = 'N/A';
         }
 
+        if(!empty($obj->creator)){
+            $created_by  = $obj->creator->firstname.' '.$obj->creator->lastname;
+            $created_by_time = date("M. d, Y | h:i A",strtotime($obj->updated_at));
+        }else{
+            $created_by  = 'N/A';
+            $created_by_time = 'N/A';
+        }
+
     	return '<div class="col-md-'.$class.'">
 			<div class="stamps">
 				<small class="no-margin">
 					Encoded by: 
 					<b>
-						'.$obj->creator->firstname.' '.$obj->creator->lastname.'
+						'.$created_by.'
 					</b> 
 				</small>
 				<br>
 				<small class="no-margin">
 					Timestamp: 
 					<b>
-						'.date("M. d, Y | h:i A",strtotime($obj->created_at)).'
+						'.date("M. d, Y | h:i A",strtotime($created_by_time)).'
 					</b> 
 				</small>
 			</div>
@@ -278,7 +286,10 @@ class __html{
 			</div>
 		</div>';
     }
-
+    public static function token_header(){
+        $token = '"csrf-token"';
+        return "'X-CSRF-TOKEN': $('meta[name=".$token."]').attr('content'),";
+    }
 
 
 

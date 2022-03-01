@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 
+use App\Core\Helpers\GlobalHelpers;
 use App\Core\Services\CommitteeMembersService;
 //use App\Core\Services\MillDistrictService;
 //use App\Http\Requests\CommitteeMembers\CommitteeMembersFormRequest;
+use App\Http\Requests\OfficeActivities\OfficeActivitiesFormRequest;
+use App\Models\OfficeActivities;
+use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Builder;
 //use Illuminate\Http\Request;
 
@@ -33,48 +38,43 @@ class OfficeActivitiesController extends Controller{
         $request = request();
 
 
-        if(request()->ajax()){   
-            if(!empty($request->draw)){
+        if(request()->ajax()){
+            if(request()->ajax()){
                 $data = request();
-            
-                return datatables()->of($this->committee_members->fetchTable($data))
-                ->addColumn('action', function($data){
-                    $button = '<div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm show_committe_member_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_committee_member_modal" title="View more" data-placement="left">
-                                        <i class="fa fa-file-text"></i>
-                                    </button>
-                                    <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_committee_member_btn" data-toggle="modal" data-target="#edit_committee_member_modal" title="Edit" data-placement="top">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                    <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_committee_member_btn" data-toggle="tooltip" title="Delete" data-placement="top">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>';
-                    return $button;
-                })->editColumn('fullname',function($data){
-                    $fullname = ucfirst($data->lname).", " .ucfirst($data->fname)." ";
+                $office_activities = OfficeActivities::query();
+                return DataTables::of($office_activities)
+                    ->addColumn('action',function($data){
+                        $button = '<div class="btn-group">';
+                        $destroy_route = "'".route("dashboard.office_activities.destroy","slug")."'";
+                        $slug = "'".$data->slug."'";
 
-                    if($data->mname != ""){
-                        $fullname = $fullname.ucfirst(substr($data->mname,0, 1)).".";
-                    }
-                    return $fullname;
-           
-                      ;
-                })->editColumn('sex',function($data){
-                    if($data->sex == "MALE"){
-                        return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> '.$data->sex.'</span>';
-                    }elseif($data->sex == "FEMALE"){
-                        return '<span class="label bg-maroon col-md-12"><i class="fa fa-female"></i> '.$data->sex.'</span>';
-                    }else{
-                        return $data->sex;
-                    }
-                    
-                })
+                        if($data->has_participants == 1){
+                            $button = $button.'<button type="button" class="btn btn-default btn-sm participants_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#participants_modal" title="Participants" data-placement="left">
+                                    <i class="fa fa-users"></i>
+                                </button>';
+                        }
 
-                
-                ->escapeColumns([])
-                ->setRowId('slug')
-                ->make(true);
+                        $button = $button.'<button type="button" class="btn btn-default btn-sm show_other_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_scholars_modal" title="View more" data-placement="left">
+                                    <i class="fa fa-file-text"></i>
+                                </button>
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_office_act_btn" data-toggle="modal" data-target="#edit_other_modal" title="Edit" data-placement="top">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger" onclick="delete_data('.$slug.','.$destroy_route.')" data-toggle="tooltip" title="Delete" data-placement="top">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>';
+                        return $button;
+                    })
+                    ->editColumn('date',function($data){
+                        return date('M. d, Y',strtotime($data->date));
+                    })
+                    ->editColumn('utilized_fund',function($data){
+                        return number_format($data->utilized_fund,2);
+                    })
+                    ->escapeColumns([])
+                    ->setRowId('slug')
+                    ->toJson();
             }
 
 
@@ -102,9 +102,7 @@ class OfficeActivitiesController extends Controller{
 
 
         return view('dashboard.office_activities.index', compact('html'))->with([
-
-
-            'search' => $search
+                        'search' => $search
         ]);
 
 
@@ -113,9 +111,22 @@ class OfficeActivitiesController extends Controller{
 
     }
 
-    public function store(CommitteeMembersFormRequest $request){
-        $committee_members = $this->committee_members->store($request);
-        return $committee_members;
+    public function store(OfficeActivitiesFormRequest $request){
+        $oa = new OfficeActivities;
+        $oa->slug = Str::random(16);
+        $oa->activity = $request->activity;
+        $oa->date = $request->date;
+        $oa->project_code = $request->project_code;
+        $oa->utilized_fund = GlobalHelpers::sanitize_autonum($request->utilized_fund);
+        $oa->venue = $request->venue;
+        $oa->details = $request->details;
+        $oa->has_participants = $request->has_participants;
+
+        if($oa->save()){
+            return $oa->only('slug');
+        }
+
+        abort(503,'Error saving data.');
     }
 
 
@@ -124,7 +135,13 @@ class OfficeActivitiesController extends Controller{
 
     }
 
-
+    private function findBySlug($slug){
+        $oa = OfficeActivities::query()->where('slug','=',$slug)->first();
+        if(empty($oa)){
+            abort(503,'Activity not found');
+        }
+        return $oa;
+    }
 
     public function show($slug){
         $committee_member = $this->committee_members->show($slug);
@@ -134,32 +151,38 @@ class OfficeActivitiesController extends Controller{
     }
 
     public function edit($slug){
-        $committee_member = $this->committee_members->show($slug);
-        return view('dashboard.committee_members.edit')->with([
-            'committee_member' => $committee_member
+        $oa = $this->findBySlug($slug);
+        return view('dashboard.office_activities.edit')->with([
+            'oa' => $oa,
         ]);
     }
 
-    
+    public function update(OfficeActivitiesFormRequest $request, $slug){
 
+        $oa = $this->findBySlug($slug);
+        $oa->activity = $request->activity;
+        $oa->date = $request->date;
+        $oa->project_code = $request->project_code;
+        $oa->utilized_fund = GlobalHelpers::sanitize_autonum($request->utilized_fund);
+        $oa->venue = $request->venue;
+        $oa->details = $request->details;
+        $oa->has_participants = $request->has_participants;
 
-    public function update(CommitteeMembersFormRequest $request, $slug){
-        $committee_member = $this->committee_members->update($request, $slug);
-        return $committee_member;
+        if($oa->update()){
+            return $oa->only('slug');
+        }
 
-
+        abort(503,'Error saving data.');
     }
-
     
-
 
     public function destroy($slug){
-        $committee_member = $this->committee_members->destroy($slug);
-        return $committee_member;
+        $oa = $this->findBySlug($slug);
+        if($oa->delete()){
+            return 1;
+        }
+        abort( 503,'Error deleting data.');
     }
-
-
-
 
 
 }

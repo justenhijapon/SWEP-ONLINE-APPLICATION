@@ -52,22 +52,14 @@
        '3 no_children', 'no_children', 'number', 'No. of Children', 'No. of Children', $participant->no_children, $errors->has('no_children'), $errors->first('no_children'), ''
        ); ?> 
 
-
        <?php echo __form::select_static(
         '3 sex', 'sex', 'Sex *', $participant->sex, ['MALE' => 'MALE', 'FEMALE' => 'FEMALE'], $errors->has('sex'), $errors->first('sex'), '', ''
         ); ?>
 
         
-
-
       <?php echo __form::textbox(
        '4 contact_no', 'contact_no', 'text', 'Contact No.', 'Contact No.', $participant->contact_no, $errors->has('contact_no'), $errors->first('contact_no'), ''
        ); ?>
-
-
-
-      
-
 
 
     </div>
@@ -78,3 +70,4 @@
     <button type="submit" class="btn <?php echo __static::bg_color(Auth::user()->color); ?> "> <i class="fa fa-save"></i> Save</button>
   </div>
 </form>
+ 

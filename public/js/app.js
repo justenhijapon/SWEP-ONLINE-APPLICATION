@@ -245,7 +245,6 @@ function loading_btn(target_form){
     icon.removeClass();
     icon.addClass('fa fa-spinner fa-spin');
     button.attr("disabled","disabled");
-    Pace.restart();
 }
 
 function remove_loading_btn(target_form){
@@ -265,7 +264,7 @@ function succeed(target_form, reset,modal){
     }
 
     if(modal == true){
-        $(form).parents('.modal').modal('hide');
+        $(target_form).parents('.modal').modal('hide');
     }
     unmark_required(target_form);
     remove_loading_btn(target_form);
@@ -393,5 +392,49 @@ function makeid(length) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
    }
    return result;
+}
+
+function delete_data(slug,url){
+    var btn = $("button[data='"+slug+"']");
+    btn.parents('#'+slug).addClass('warning');
+    url = url.replace('slug',slug);
+    Swal.fire({
+        title: 'Please confirm to delete permanently this data.',
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: '<i class="fa fa-trash"></i> DELETE',
+        confirmButtonColor: '#d73925',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url : url,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+                success: function (res) {
+                    if(res == 1){
+                        btn.parents('#'+slug).addClass('danger');
+                        btn.parents('#'+slug).addClass('animate__animated animate__zoomOutLeft');
+                        notify('Data deleted successfully','success');
+                        setTimeout(function () {
+                            btn.parents('#'+slug).parent('tbody').parent('table').DataTable().draw(false);
+                        },500);
+                    }else{
+                        btn.parents('#'+slug).removeClass('warning');
+                        notify('Error deleting data.','danger');
+                    }
+
+                },
+                error: function (res) {
+                    notify(res.responseJSON.message,'danger');
+                    btn.parents('#'+slug).removeClass('warning');
+                }
+            });
+            // Swal.fire('Saved!', '', 'success')
+        }else{
+            btn.parents('#'+slug).removeClass('warning');
+        }
+    })
 }
 

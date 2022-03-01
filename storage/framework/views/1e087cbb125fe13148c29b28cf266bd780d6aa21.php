@@ -97,6 +97,9 @@
 
 <script type="text/javascript" src="<?php echo e(asset('template/plugins/cropperjs/dist/cropper.js')); ?>"></script>
 
+
+<script type="text/javascript" src="<?php echo e(asset('template/plugins/swal2/dist/sweetalert2.all.min.js')); ?>"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         autonum_settings = {

@@ -13,7 +13,8 @@ class OtherActivities extends Model
     public $timestamps = true;
 
     protected $attributes = [
-        'has_participants' => 0
+        'has_participants' => 0,
+        'utilized_funds' => 0.00,
     ];
 
     public static function boot(){

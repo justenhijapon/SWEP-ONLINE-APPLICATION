@@ -150,9 +150,80 @@
 
     {!! __html::blank_modal('show_other_modal','lg') !!}
     {!! __html::blank_modal('edit_other_modal','lg') !!}
+    {!! __html::blank_modal('participants_modal',80) !!}
+    {!! __html::blank_modal('edit_oap_modal','') !!}
+    <div id="add_participant_modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <form id="add_participant_form" data="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add Participant</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel">
+                            <div class="box-header with-border">
+                                <h4 class="box-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#search_employee" aria-expanded="false" class="collapsed">
+                                        <i class="fa fa-search"></i>  Search employee <i class=" fa  fa-angle-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="search_employee" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-lg-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Keyword:</label>
+                                                <input type="email" class="form-control" id="search_employee_input" placeholder="Enter name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {!! __form::textbox(
+                              '4 firstname', 'firstname', 'text', 'First Name *', 'First Name', '', '', '', ''
+                            ) !!}
 
+                            {!! __form::textbox(
+                              '4 middlename', 'middlename', 'text', 'Middle Name', 'Middle Name', '', '', '', ''
+                            ) !!}
 
+                            {!! __form::textbox(
+                              '4 lastname', 'lastname', 'text', 'Last Name *', 'Last Name', '', '', '', ''
+                            ) !!}
+                        </div>
+                        <div class="row">
+                            {!! __form::select_static(
+                                '4 sex', 'sex', 'Sex: *', '' , [
+                                    'MALE' => 'MALE',
+                                    'FEMALE' => 'FEMALE',
+                                ] , '', '', '', ''
+                              ) !!}
 
+                            {!! __form::textbox(
+                              '4 age', 'age', 'number', 'Age *', 'Age', '', '', '', ''
+                            ) !!}
+
+                            {!! __form::select_static(
+                                '4 group', 'group', 'Group: *', '' , [
+                                    'SC' => 'SC',
+                                    'PWD' => 'PWD',
+                                    'IP' => 'IP',
+                                ] , '', '', '', ''
+                              ) !!}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
 
@@ -225,7 +296,7 @@
                 {
                     "targets" : 6,
                     "orderable" : false,
-                    "class" : 'action-8p'
+                    "class" : 'action-10p'
                 },
             ],
             "responsive": false,
@@ -374,6 +445,74 @@
             id = $(this).attr('data');
             confirm("{{ route('dashboard.other_activities.destroy', 'slug') }}", id);
         })
+
+        $("body").on('click','.participants_btn', function () {
+            btn = $(this);
+            load_modal2(btn);
+            $.ajax({
+                url : '{{route("dashboard.other_activities_participants.index")}}',
+                data : {'other_activity':btn.attr('data')},
+                type: 'GET',
+                headers: {
+                    {!! __html::token_header() !!}
+                },
+                success: function (res) {
+                    populate_modal2(btn,res);
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            })
+        })
+
+        $("#add_participant_form").submit(function (e) {
+            e.preventDefault();
+            let form = $(this);
+            loading_btn(form);
+            $.ajax({
+                url : '{{route("dashboard.other_activities_participants.store")}}',
+                data : form.serialize()+'&other_activity='+form.attr('data'),
+                type: 'POST',
+                headers: {
+                    {!! __html::token_header() !!}
+                },
+                success: function (res) {
+                    succeed(form,true,false);
+                    oa_participants_tbl.draw(false);
+                    oa_participants_active = res.slug;
+                    $("#add_participant_form input[name='firstname']").focus();
+                },
+                error: function (res) {
+                    errored(form,res);
+                    console.log(res);
+                }
+            })
+        })
+
+        $('#search_employee_input').typeahead({
+            ajax : "{{ route('dashboard.committee_members.index') }}",
+            onSelect:function (result) {
+                $.ajax({
+                    url : '{{route("dashboard.committee_members.index")}}?find_employee='+result.value,
+                    type: 'GET',
+                    success :function(response){
+                        $("#add_member_form input[name='lname']").val(response.lastname);
+                        $("#add_member_form input[name='fname']").val(response.firstname);
+                        $("#add_member_form input[name='mname']").val(response.middlename);
+                        $("#add_member_form select[name='sex']").val(response.sex);
+                        $("#add_member_form input[name='slug_afd']").val(response.slug);
+
+                        $('#search_employee_input').parent('div').addClass('has-success');
+                        if(response.sex == null){
+                            $("#add_member_form select[name='sex']").focus();
+                        }else{
+                            $("#add_member_form select[name='based_on']").focus();
+                        }
+                    }
+                });
+            },
+            items : 15
+        });
 
 
     </script>

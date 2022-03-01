@@ -97,6 +97,9 @@
 {{--  Cropper --}}
 <script type="text/javascript" src="{{asset('template/plugins/cropperjs/dist/cropper.js')}}"></script>
 
+{{-- SWAL2 --}}
+<script type="text/javascript" src="{{asset('template/plugins/swal2/dist/sweetalert2.all.min.js')}}"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         autonum_settings = {
