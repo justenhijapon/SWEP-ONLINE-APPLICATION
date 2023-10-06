@@ -32,6 +32,13 @@
       0 => 'Codedge\\Fpdf\\FpdfServiceProvider',
     ),
   ),
+  'fideloper/proxy' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
+    ),
+  ),
   'kyslik/column-sortable' => 
   array (
     'providers' => 

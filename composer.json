@@ -11,6 +11,7 @@
         "barryvdh/laravel-dompdf": "^1.0.0",
         "codedge/laravel-fpdf": "^1.9",
         "doctrine/dbal": "^2.12.1",
+        "fideloper/proxy": "^4.4",
         "howtomakeaturn/pdfinfo": "1.*",
         "jacobbennett/pjax": "~1.0",
         "kyslik/column-sortable": "6.*",
