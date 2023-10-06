@@ -7,4 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'JacobBennett\\Pjax' => array($vendorDir . '/jacobbennett/pjax/src'),
+    'Howtomakeaturn\\PDFInfo' => array($vendorDir . '/howtomakeaturn/pdfinfo/src'),
+    'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
 );
