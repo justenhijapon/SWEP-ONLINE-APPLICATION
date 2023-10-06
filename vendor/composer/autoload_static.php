@@ -23,11 +23,11 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '3bd81c9b8fcc150b69d8b63b4d2ccf23' => __DIR__ . '/..' . '/spatie/flare-client-php/src/helpers.php',
+        'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         '4a1f389d6ce373bda9e57857d3b61c84' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/helpers.php',
         '265b4faa2b3a9766332744949e83bf97' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/helpers.php',
         'c7a3c339e7e14b60e06a2d7fcce9476b' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Events/functions.php',
@@ -115,6 +115,7 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         'R' => 
         array (
             'Rats\\Zkteco\\' => 12,
+            'Ramsey\\Uuid\\Doctrine\\' => 21,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
         ),
@@ -420,6 +421,10 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         'Rats\\Zkteco\\' => 
         array (
             0 => __DIR__ . '/..' . '/rats/zkteco/src',
+        ),
+        'Ramsey\\Uuid\\Doctrine\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -5991,6 +5996,12 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         'Ramsey\\Uuid\\DegradedUuid' => __DIR__ . '/..' . '/ramsey/uuid/src/DegradedUuid.php',
         'Ramsey\\Uuid\\DeprecatedUuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/DeprecatedUuidInterface.php',
         'Ramsey\\Uuid\\DeprecatedUuidMethodsTrait' => __DIR__ . '/..' . '/ramsey/uuid/src/DeprecatedUuidMethodsTrait.php',
+        'Ramsey\\Uuid\\Doctrine\\UuidBinaryOrderedTimeType' => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src/UuidBinaryOrderedTimeType.php',
+        'Ramsey\\Uuid\\Doctrine\\UuidBinaryType' => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src/UuidBinaryType.php',
+        'Ramsey\\Uuid\\Doctrine\\UuidGenerator' => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src/UuidGenerator.php',
+        'Ramsey\\Uuid\\Doctrine\\UuidOrderedTimeGenerator' => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src/UuidOrderedTimeGenerator.php',
+        'Ramsey\\Uuid\\Doctrine\\UuidType' => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src/UuidType.php',
+        'Ramsey\\Uuid\\Doctrine\\UuidV7Generator' => __DIR__ . '/..' . '/ramsey/uuid-doctrine/src/UuidV7Generator.php',
         'Ramsey\\Uuid\\Exception\\BuilderNotFoundException' => __DIR__ . '/..' . '/ramsey/uuid/src/Exception/BuilderNotFoundException.php',
         'Ramsey\\Uuid\\Exception\\DateTimeException' => __DIR__ . '/..' . '/ramsey/uuid/src/Exception/DateTimeException.php',
         'Ramsey\\Uuid\\Exception\\DceSecurityException' => __DIR__ . '/..' . '/ramsey/uuid/src/Exception/DceSecurityException.php',
