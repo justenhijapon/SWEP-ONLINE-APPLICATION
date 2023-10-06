@@ -148,7 +148,7 @@ is called.
         ->withSomeOfArgs(arg1, arg2, arg3, ...);
 
 The given expected arguments order doesn't matter.
-Check if expected values are inclued or not, but type should be matched:
+Check if expected values are included or not, but type should be matched:
 
 .. code-block:: php
 
@@ -262,9 +262,23 @@ method which accepts one or more closure:
 
 Closures can be queued by passing them as extra parameters as for ``andReturn()``.
 
+Occasionally, it can be useful to echo back one of the arguments that a method
+is called with. In this case we can use the ``andReturnArg()`` method; the
+argument to be returned is specified by its index in the arguments list:
+
+.. code-block:: php
+
+    $mock = \Mockery::mock('MyClass');
+    $mock->shouldReceive('name_of_method')
+        ->andReturnArg(1);
+
+This returns the second argument (index #1) from the list of arguments when the
+method is called.
+
 .. note::
 
-    We cannot currently mix ``andReturnUsing()`` with ``andReturn()``.
+    We cannot currently mix ``andReturnUsing()`` or ``andReturnArg`` with
+    ``andReturn()``.
 
 If we are mocking fluid interfaces, the following method will be helpful:
 
@@ -285,7 +299,7 @@ We can tell the method of mock objects to throw exceptions:
 
     $mock = \Mockery::mock('MyClass');
     $mock->shouldReceive('name_of_method')
-        ->andThrow(Exception);
+        ->andThrow(new Exception);
 
 It will throw the given ``Exception`` object when called.
 
@@ -433,6 +447,34 @@ We can also set a range of call counts, using ``between()``:
 This is actually identical to using ``atLeast()->times($min)->atMost()->times($max)``
 but is provided as a shorthand. It may be followed by a ``times()`` call with no
 parameter to preserve the APIs natural language readability.
+
+Multiple Calls with Different Expectations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If a method is expected to get called multiple times with different arguments
+and/or return values we can simply repeat the expectations. The same of course
+also works if we expect multiple calls to different methods.
+
+.. code-block:: php
+
+    $mock = \Mockery::mock('MyClass');
+    // Expectations for the 1st call
+    $mock->shouldReceive('name_of_method');
+        ->once()
+        ->with('arg1')
+        ->andReturn($value1)
+
+        // 2nd call to same method
+        ->shouldReceive('name_of_method')
+        ->once()
+        ->with('arg2')
+        ->andReturn($value2)
+
+        // final call to another method
+        ->shouldReceive('other_method')
+        ->once()
+        ->with('other')
+        ->andReturn($value_other);
 
 Expectation Declaration Utilities
 ---------------------------------

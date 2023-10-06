@@ -2,7 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Column sorting for Laravel 5.5-7](#column-sorting-for-laravel-55-7)
+- [Column sorting for Laravel 5.5-10](#column-sorting-for-laravel-55-8)
 - [Setup](#setup)
   - [Composer](#composer)
     - [Laravel's >=5.5 auto discovery](#laravels-55-auto-discovery)
@@ -16,7 +16,7 @@
   - [Full Example](#full-example)
     - [Routes](#routes)
     - [Controller's `index()` method](#controllers-index-method)
-    - [View (_pagination included_)](#view-_pagination-included_)
+    - [View (_pagination included_)](#view-pagination-included)
 - [HasOne / BelongsTo Relation sorting](#hasone--belongsto-relation-sorting)
   - [Define hasOne relation](#define-hasone-relation)
   - [Define belongsTo relation](#define-belongsto-relation)
@@ -29,13 +29,14 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Column sorting for Laravel 5.5-7
+# Column sorting for Laravel 5.5-8
+
 [![Latest Version](https://img.shields.io/github/release/Kyslik/column-sortable.svg?style=flat-square)](https://github.com/Kyslik/column-sortable/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/Kyslik/column-sortable.svg?style=flat-square)](https://packagist.org/packages/Kyslik/column-sortable)
-[![Build Status](https://travis-ci.org/Kyslik/column-sortable.svg?branch=L5.5-7)](https://travis-ci.org/Kyslik/column-sortable)
+![run-tests](https://github.com/Kyslik/column-sortable/workflows/run-tests/badge.svg)
 
-Package for handling column sorting in Laravel 5.[5-7]. For earlier versions of Laravel checkout branch [L5.1-3](https://github.com/Kyslik/column-sortable/tree/L5.1-3)
+Package for handling column sorting in Laravel 5.[5-8]. For earlier versions of Laravel checkout branch [L5.1-3](https://github.com/Kyslik/column-sortable/tree/L5.1-3)
 
 # Setup
 
@@ -46,18 +47,20 @@ Pull this package in through Composer (development/latest version `dev-master`)
 ```json
 {
     "require": {
-        "kyslik/column-sortable": "5.7.*"
+        "kyslik/column-sortable": "^6.0"
     }
 }
 ```
 
-    composer update
-
->**Note**: Major and minor versions should match with Laravel's version, for example if you are using Laravel 5.4, column-sortable version should be `5.4.*`.
+```sh
+composer update
+```
 
 ### Laravel's >=5.5 auto discovery
 
 Simply install the package and let Laravel do its magic.
+
+>**Note (pre Laravel 6.0)**: : major and minor versions should match with Laravel's version, for example if you are using Laravel 5.4, column-sortable version should be `5.4.*`.
 
 ### Manual installation (pre 5.5)
 
@@ -79,7 +82,9 @@ Add the service provider to array of providers in `config/app.php`
 
 Publish the package configuration file to your application.
 
-    php artisan vendor:publish --provider="Kyslik\ColumnSortable\ColumnSortableServiceProvider" --tag="config"
+```sh
+php artisan vendor:publish --provider="Kyslik\ColumnSortable\ColumnSortableServiceProvider" --tag="config"
+```
 
 See configuration file [(`config/columnsortable.php`)](https://github.com/Kyslik/column-sortable/blob/master/src/config/columnsortable.php) yourself and make adjustments as you wish.
 
@@ -118,7 +123,7 @@ There is a blade extension for you to use **@sortablelink()**
 @sortablelink('column', 'Title', ['parameter' => 'smile'],  ['rel' => 'nofollow'])
 ```
 
-**Column** (1st) parameter is column in database, **Title** (2nd) parameter is displayed inside anchor tags, `array()` parameter (3rd) is default (GET) query strings parameter and `array()` parameter (4th) is for additional anchor-tag attributes.  
+**Column** (1st) parameter is column in database, **Title** (2nd) parameter is displayed inside anchor tags, `array()` parameter (3rd) is default (GET) query strings parameter and `array()` parameter (4th) is for additional anchor-tag attributes. You can use a custom URL as 'href' attribute in the 4th parameter, and the query string will be appended to it.
 
 You can omit 2nd, 3rd and 4th parameter.
 
@@ -128,7 +133,7 @@ Possible examples and usages of blade extension:
 @sortablelink('name')
 @sortablelink('name', 'Username')
 @sortablelink('address', trans('fields.address'), ['filter' => 'active, visible'])
-@sortablelink('address', trans('fields.address'), ['filter' => 'active, visible'], ['class' => 'btn btn-block', 'rel' => 'nofollow'])
+@sortablelink('address', trans('fields.address'), ['filter' => 'active, visible'], ['class' => 'btn btn-block', 'rel' => 'nofollow', 'href' => route('my.custom.route')])
 ```
 
 If you do not fill **Title** (2nd parameter) column name is used instead.
@@ -202,7 +207,7 @@ public function index(User $user)
 
 You can set default sorting parameters which will be applied when URL is empty.
 
->**For example**: page is loaded for first time, default direction is [configurable](https://github.com/Kyslik/column-sortable/blob/master/src/config/columnsortable.php#L77) (asc)
+>**For example**: page is loaded for first time, default direction is [configurable](https://github.com/Kyslik/column-sortable/blob/master/src/config/columnsortable.php#L103) (asc)
 
 ```php
 $users = $user->sortable('name')->paginate(10);
@@ -353,7 +358,7 @@ See [#44](https://github.com/Kyslik/column-sortable/issues/44) for more informat
 
 ## Using `withCount()`
 
-Aliasing is useful when you want to sort results with [`withCount()`](https://laravel.com/docs/5.6/eloquent-relationships#counting-related-models), see [issue #49](https://github.com/Kyslik/column-sortable/issues/49) for more information.
+Aliasing is useful when you want to sort results with [`withCount()`](https://laravel.com/docs/5.8/eloquent-relationships#counting-related-models), see [issue #49](https://github.com/Kyslik/column-sortable/issues/49) for more information.
 
 # Exception to catch
 

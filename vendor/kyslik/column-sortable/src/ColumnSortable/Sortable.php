@@ -5,6 +5,9 @@ namespace Kyslik\ColumnSortable;
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use Kyslik\ColumnSortable\Exceptions\ColumnSortableException;
 
@@ -15,13 +18,13 @@ trait Sortable
 {
 
     /**
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param array|null                         $defaultParameters
+     * @param Builder $query
+     * @param array|string|null $defaultParameters
      *
-     * @return \Illuminate\Database\Query\Builder
-     * @throws \Kyslik\ColumnSortable\Exceptions\ColumnSortableException
+     * @return Builder
+     * @throws ColumnSortableException
      */
-    public function scopeSortable($query, $defaultParameters = null)
+    public function scopeSortable(Builder $query, $defaultParameters = null): Builder
     {
         if (request()->allFilled(['sort', 'direction'])) { // allFilled() is macro
             return $this->queryOrderBuilder($query, request()->only(['sort', 'direction']));
@@ -49,10 +52,10 @@ trait Sortable
      *
      * @return array|null
      */
-    private function getDefaultSortable()
+    private function getDefaultSortable(): ?array
     {
         if (config('columnsortable.default_first_column', false)) {
-            $sortBy = array_first($this->sortable);
+            $sortBy = Arr::first($this->sortable);
             if ( ! is_null($sortBy)) {
                 return [$sortBy => config('columnsortable.default_direction', 'asc')];
             }
@@ -63,14 +66,14 @@ trait Sortable
 
 
     /**
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param Builder $query
      * @param array                              $sortParameters
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      *
      * @throws ColumnSortableException
      */
-    private function queryOrderBuilder($query, array $sortParameters)
+    private function queryOrderBuilder(Builder $query, array $sortParameters): Builder
     {
         $model = $this;
 
@@ -97,8 +100,8 @@ trait Sortable
             $model = $relation->getRelated();
         }
 
-        if (method_exists($model, camel_case($column).'Sortable')) {
-            return call_user_func_array([$model, camel_case($column).'Sortable'], [$query, $direction]);
+        if (method_exists($model, Str::camel($column).'Sortable')) {
+            return call_user_func_array([$model, Str::camel($column).'Sortable'], [$query, $direction]);
         }
 
         if (isset($model->sortableAs) && in_array($column, $model->sortableAs)) {
@@ -117,14 +120,14 @@ trait Sortable
      *
      * @return array
      */
-    private function parseParameters(array $parameters)
+    private function parseParameters(array $parameters): array
     {
-        $column = array_get($parameters, 'sort');
+        $column = Arr::get($parameters, 'sort');
         if (empty($column)) {
             return [null, null];
         }
 
-        $direction = array_get($parameters, 'direction', []);
+        $direction = Arr::get($parameters, 'direction', []);
         if ( ! in_array(strtolower($direction), ['asc', 'desc'])) {
             $direction = config('columnsortable.default_direction', 'asc');
         }
@@ -134,14 +137,14 @@ trait Sortable
 
 
     /**
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param                                    $relation
+     * @param Builder $query
+     * @param BelongsTo|\Illuminate\Database\Eloquent\Relations\HasOne $relation
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      *
      * @throws \Exception
      */
-    private function queryJoinBuilder($query, $relation)
+    private function queryJoinBuilder(Builder $query, $relation): Builder
     {
         $relatedTable = $relation->getRelated()->getTable();
         $parentTable  = $relation->getParent()->getTable();
@@ -157,7 +160,7 @@ trait Sortable
             $parentPrimaryKey  = $relation->getQualifiedParentKeyName();
         } elseif ($relation instanceof BelongsTo) {
             $relatedPrimaryKey = $relation->getQualifiedOwnerKeyName();
-            $parentPrimaryKey  = $relation->getQualifiedForeignKey();
+            $parentPrimaryKey  = $relation->getQualifiedForeignKeyName();
         } else {
             throw new \Exception();
         }
@@ -172,7 +175,7 @@ trait Sortable
      *
      * @return bool
      */
-    private function columnExists($model, $column)
+    private function columnExists($model, $column): bool
     {
         return (isset($model->sortable)) ? in_array($column, $model->sortable) :
             Schema::connection($model->getConnectionName())->hasColumn($model->getTable(), $column);
@@ -184,7 +187,7 @@ trait Sortable
      *
      * @return array
      */
-    private function formatToParameters($array)
+    private function formatToParameters($array): array
     {
         if (empty($array)) {
             return [];
