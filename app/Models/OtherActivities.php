@@ -14,7 +14,7 @@ class OtherActivities extends Model
 
     protected $attributes = [
         'has_participants' => 0,
-        'utilized_funds' => 0.00,
+        'utilized_fund' => 0.00,
     ];
 
     public static function boot(){
