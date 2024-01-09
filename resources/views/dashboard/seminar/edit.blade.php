@@ -19,8 +19,8 @@
     <div class="row">
       <div class="col-md-7">
         <div class="row">
-          {!! __form::textbox(
-            '7 title', 'title', 'text', 'Title *', 'Title', old('title') ? old('title') : $seminar->title, $errors->has('title'), $errors->first('title'), ''
+          {!! __form::select_static(
+            '7 title', 'title', 'Title: *', $seminar->title , \App\Core\Helpers\Arrays::blockFarms() , '', '', '', ''
           ) !!}
 
            {!! __form::select_static(
