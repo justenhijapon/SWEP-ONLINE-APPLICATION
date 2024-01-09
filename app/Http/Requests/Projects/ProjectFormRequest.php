@@ -25,7 +25,7 @@ class ProjectFormRequest extends FormRequest
             'project_code' => 'required|string|max:45|unique:projects,project_code,'.$this->route('project').',slug',
             'budget' => 'required|string|max:45',
             'year' => 'required|string|max:60',
-            'activity' => 'required|string|max:45',
+            'activity' => 'required|string|max:255',
         ];
 
 

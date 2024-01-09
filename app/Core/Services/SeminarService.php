@@ -58,7 +58,7 @@ class SeminarService extends BaseService{
             }
         }
 
-        $this->event->fire('seminar.store');
+//        $this->event->fire('seminar.store');
 
         return json_encode(array('result' => 1, 'slug'=> $seminar->slug));
 
