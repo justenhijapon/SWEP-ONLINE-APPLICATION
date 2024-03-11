@@ -24,8 +24,8 @@ class SeminarFormRequest extends FormRequest{
             'sponsor' => 'nullable|string|max:255',
             'venue' => 'required|string|max:255',
             'mill_district' => 'required|string|max:255',
-            'date_covered_from' => 'required|date_format:"m/d/Y"',
-            'date_covered_to' => 'required|date_format:"m/d/Y"',
+            'date_covered_from' => 'required|date_format:"Y-m-d"',
+            'date_covered_to' => 'required|date_format:"Y-m-d"',
 //            'project_code' => 'required|string|max:45|exists:projects,project_code',
 //            'utilized_fund' => 'required|string|max:45',
 

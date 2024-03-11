@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Core\Helpers\Helpers;
 use App\Core\Services\SeminarService;
 use App\Core\Services\SeminarParticipantService;
 use App\Http\Requests\Seminar\SeminarFormRequest;
@@ -10,9 +11,11 @@ use App\Http\Requests\Seminar\SeminarFilterRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantCreateFormRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantEditFormRequest;
 use App\Core\Services\MillDistrictService;
+use App\Models\Seminar;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Datatables;
-
+use Illuminate\Support\Str;
 
 
 class SeminarController extends Controller{
@@ -28,55 +31,15 @@ class SeminarController extends Controller{
         $this->mill_district = $mill_district;
     }
     
-    public function index(){
-            
-        //return $this->seminar->test();
-
-        if(request()->ajax())
-        {   
-            
-            return datatables()->of($this->seminar->fetchTable())
+    public function index(Request $request){
+        if($request->ajax())
+        {
+            $seminar = Seminar::query();
+            return datatables()->of($seminar)
             ->addColumn('action', function($data){
-
-                $user = auth()->user();
-                $have_access_to = [];
-                foreach ($user->userSubmenu as $userSubmenu) {
-                    if(!empty($userSubmenu->subMenu)){
-                        $have_access_to[$userSubmenu->subMenu->route]="";
-                    } 
-                }
-
-                $button = '<div class="btn-group">';
-
-                if(isset($have_access_to["dashboard.seminar.show"])){
-                    $button = $button.
-                            '<button type="button" class="btn btn-default btn-sm view_seminar_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#view_seminar_modal" title="View more" data-placement="left">
-                                    <i class="fa fa-file-text"></i>
-                            </button>';
-                }
-
-                if(isset($have_access_to["dashboard.seminar.participant"])){
-                    $button = $button.
-                            '<button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm participant_btn" data-toggle="modal" data-target="#participant_modal" title="Participants" data-placement="top">
-                                   <i class="fa fa-users"></i>
-                            </button>';
-                }
-
-                if(isset($have_access_to["dashboard.seminar.edit"])){
-                    $button = $button.
-                            '<button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_seminar_btn" data-toggle="modal" data-target="#edit_seminar_modal" title="Edit" data-placement="top">
-                                    <i class="fa fa-edit"></i>
-                            </button>';
-                }
-
-                if(isset($have_access_to["dashboard.seminar.destroy"])){
-                    $button = $button.
-                            '<button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_seminar_btn" data-toggle="tooltip" title="Delete" data-placement="top">
-                                    <i class="fa fa-trash"></i>
-                            </button>';
-                }
-                $button =  $button.'</div>';
-                return $button;
+                return view('dashboard.seminar.dtActions')->with([
+                    'data' => $data,
+                ]);
             })
             ->editColumn('date_covered', function($data){
                if($data->date_covered_from == $data->date_covered_to ){
@@ -111,7 +74,35 @@ class SeminarController extends Controller{
    
 
     public function store(SeminarFormRequest $request){
-        return $this->seminar->store($request);
+
+
+        $seminar = new Seminar();
+        $seminar->slug = Str::random(16);
+        $seminar->title = $request->title;
+        $seminar->sponsor = $request->sponsor;
+        $seminar->venue = $request->venue;
+        $seminar->mill_district = $request->mill_district;
+        $seminar->date_covered_from = Carbon::parse($request->date_covered_from)->format('Y-m-d');
+        $seminar->date_covered_to = Carbon::parse($request->date_covered_to)->format('Y-m-d');
+
+        if(!empty($request->file('doc_file'))){
+            $filename = $request->title .'-'. Str::random(8).'.'.$request->file('doc_file')->getClientOriginalExtension();
+            if(!is_null($request->file('doc_file'))){
+                $request->file('doc_file')->storeAs('', $filename);
+            }
+            $seminar->attendance_sheet_filename = $filename;
+        }
+
+
+        $seminar->project_code = $request->project_code;
+        $seminar->utilized_fund = $request->utilized_fund;
+        $seminar->created_at = Carbon::now();
+        $seminar->updated_at = Carbon::now();
+        $seminar->ip_created = $request->ip();
+        $seminar->ip_updated = $request->ip();
+        if($seminar->save()){
+            return $seminar->only('slug');
+        }
     }
     
 
@@ -129,7 +120,10 @@ class SeminarController extends Controller{
 
     public function edit($slug){
         
-        $seminar = $this->seminar->edit($slug);
+        $seminar = Seminar::query()
+            ->where('slug', $slug)
+            ->first();
+        $seminar ?? abort(404,'Seminar not found.');
         return view('dashboard.seminar.edit')->with([
             'seminar'=>$seminar,
             'mill_districts_list' => $this->mill_district->mills()
@@ -153,9 +147,31 @@ class SeminarController extends Controller{
 
 
     public function update(SeminarFormRequest $request, $slug){
-        
-        $validated = $request->validated();
-        return $this->seminar->update($request, $slug);
+
+
+        $seminar = Seminar::query()
+            ->where('slug', $slug)
+            ->first();
+        $seminar ?? abort(404,'Seminar not found.');
+        $seminar->title = $request->title;
+        $seminar->sponsor = $request->sponsor;
+        $seminar->venue = $request->venue;
+        $seminar->mill_district = $request->mill_district;
+        $seminar->date_covered_from = Carbon::parse($request->date_covered_from)->format('Y-m-d');
+        $seminar->date_covered_to = Carbon::parse($request->date_covered_to)->format('Y-m-d');
+        if(!empty($request->file('doc_file'))){
+            $filename = $request->title .'-'. Str::random(8).'.'.$request->file('doc_file')->getClientOriginalExtension();
+            if(!is_null($request->file('doc_file'))){
+                $request->file('doc_file')->storeAs('', $filename);
+            }
+            $seminar->attendance_sheet_filename = $filename;
+        }
+
+        $seminar->project_code = $request->project_code;
+        $seminar->utilized_fund = Helpers::sanitizeAutonum($request->utilized_fund);
+        if($seminar->update()){
+            return $seminar->only('slug');
+        }
 
     }
 
@@ -164,8 +180,13 @@ class SeminarController extends Controller{
 
     public function destroy($slug){
 
-        return $this->seminar->destroy($slug);
-
+        $seminar = Seminar::query()
+            ->where('slug', $slug)
+            ->first();
+        $seminar ?? abort(404,'Seminar not found.');
+        if($seminar->delete()){
+            return 1;
+        }
     }
 
 

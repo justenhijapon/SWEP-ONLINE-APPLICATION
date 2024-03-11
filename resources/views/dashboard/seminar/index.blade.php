@@ -75,68 +75,78 @@
               <div class="col-md-12">
                  
                     <div class="box-body">
-                      <div class="col-md-12">
-                              
-                        @csrf    
+                      <div class="row">
+                        <div class="col-md-7">
+                          <div class="row">
 
-                        <div class="row">
-                          <div class="col-md-7">
-                            <div class="row">
+                            {!! \App\Core\Helpers\__form2::select('title',[
+                                'label' => 'Title:*',
+                                'cols' => 7,
+                                'options' => \App\Core\Helpers\Arrays::blockFarms()->toArray(),
+                            ]) !!}
+                            {!! \App\Core\Helpers\__form2::select('mill_district',[
+                                'label' => 'Mill District:',
+                                'cols' => 5,
+                                'options' => \App\Core\Helpers\Arrays::millDistricts(),
+                            ]) !!}
 
-                              {!! __form::select_static(
-                                '7 title', 'title', 'Title: *', '' , \App\Core\Helpers\Arrays::blockFarms() , '', '', '', ''
-                              ) !!}
 
-                              {!! __form::select_static(
-                                '5 mill_district', 'mill_district', 'Mill District: *', '' , $mill_districts_list , '', '', '', ''
-                              ) !!}
+                          </div>
+                          <div class="row">
+                            {!! \App\Core\Helpers\__form2::textbox('sponsor',[
+                                'label' => 'Sponsor:',
+                                'cols' => 6,
+                            ]) !!}
 
-                            </div>
-                            <div class="row">
-                              {!! __form::textbox(
-                                '6 sponsor', 'sponsor', 'text', 'Sponsor', 'Sponsor', old('sponsor'), $errors->has('sponsor'), $errors->first('sponsor'), ''
-                              ) !!}
+                            {!! \App\Core\Helpers\__form2::textbox('venue',[
+                                'label' => 'Venue:',
+                                'cols' => 6,
+                            ]) !!}
 
-                              {!! __form::textbox(
-                                '6 venue', 'venue', 'text', 'Venue *', 'Venue', old('venue'), $errors->has('venue'), $errors->first('venue'), ''
-                              ) !!}
-                            </div>
-                            <div class="row">
-                              {!! __form::datepicker(
-                                '6 date_from', 'date_covered_from',  'Date From *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
-                              ) !!}
+                          </div>
+                          <div class="row">
+                            {!! \App\Core\Helpers\__form2::textbox('date_covered_from',[
+                                'label' => 'Date from:',
+                                'cols' => 6,
+                                'type' => 'date',
+                            ]) !!}
 
-                              {!! __form::datepicker(
-                                '6 date_to', 'date_covered_to',  'Date To *', old('date_covered_to') ? old('date_covered_to') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_to'), $errors->first('date_covered_to')
-                              ) !!}
-                            </div>
-                            <div class="row">
-                              <div class="col-md-12">
-                                <p class="page-header-sm text-info">
-                                  Utilization
-                                </p>
-                              </div>
-                            </div>
-                            <div class="row">
-                              @php
-                                $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
-                              @endphp
-                              {!! __form::select_object_project_code(
-                                '6 project_code', 'project_code', 'Project Code', '', $project_code, '' ,''
-                              ) !!}
+                            {!! \App\Core\Helpers\__form2::textbox('date_covered_to',[
+                                'label' => 'Date to:',
+                                'cols' => 6,
+                                'type' => 'date',
+                            ]) !!}
 
-                              {!! __form::textbox(
-                                '6 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', '','autonum'
-                              ) !!}
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <p class="page-header-sm text-info">
+                                Utilization
+                              </p>
                             </div>
                           </div>
-                          <div class="col-md-5">
-                            {!! __form::file(
-                             '12', 'doc_file','doc_file', 'Attendance Sheet', $errors->has('doc_file'), $errors->first('doc_file'), ''
-                            ) !!}   
-                          </div>
+                          <div class="row">
+                            {!! \App\Core\Helpers\__form2::select('project_code',[
+                                'label' => 'Project Code:',
+                                'cols' => 6,
+                                'options' => \App\Core\Helpers\Arrays::projectCodes(),
+                                'id' => 'project_code',
+                            ]) !!}
+                            {!! \App\Core\Helpers\__form2::textbox('utilized_fund',[
+                                'label' => 'Utilized fund:',
+                                'cols' => 6,
+                                'class' => 'autonum',
+                            ]) !!}
 
+
+                          </div>
                         </div>
+                        <div class="col-md-5">
+                          {!! __form::file(
+                           '12', 'doc_file','doc_file', 'Attendance Sheet', $errors->has('doc_file'), $errors->first('doc_file'), ''
+                          ) !!}
+                        </div>
+
                       </div>
 
                       
@@ -450,7 +460,7 @@ function dt_draw(){
         "drawCallback": function(settings){
           $('[data-toggle="tooltip"]').tooltip();
           $('[data-toggle="modal"]').tooltip();
-          if(active != ''){
+          if(active !== ''){
              $("#seminars_table #"+active).addClass('success');
           }
         }
@@ -482,6 +492,9 @@ function dt_draw(){
           dataType: 'json',
           processData: false,
           contentType: false,
+          headers: {
+            {!! __html::token_header() !!}
+          },
           success: function(response){
 
             console.log(response);
@@ -499,6 +512,8 @@ function dt_draw(){
           }
         })
       })
+
+
       
       //Edit seminar button
       $("body").on("click", ".edit_seminar_btn", function(){
@@ -536,61 +551,7 @@ function dt_draw(){
                 rows_add('#edit_seminar_form #table_body');
               })
 
-              //Submit Edit Seminar Form
-              $("#edit_seminar_form").submit(function(e){
-                default_update_seminar_btn = $("#edit_seminar_form .update_seminar_btn").html();
-                update_seminar_btn = $("#edit_seminar_form .update_seminar_btn");
-                update_seminar_btn.html("<i class='fa fa-spinner fa-spin'> </i> Please wait");
-                update_seminar_btn.attr("disabled","disabled");
 
-                e.preventDefault();
-                uri = "{{ route('dashboard.seminar.update', 'slug') }}";
-                uri = uri.replace('slug',id);
-                formData = new FormData(this);
-                Pace.restart();
-                $.ajax({
-                  url: uri,
-                  data: formData,
-                  type: 'POST',
-                  dataType: 'json',
-                  processData: false,
-                  contentType: false, 
-                  headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  },
-                  success: function(response){
-                    //console.log(response)
-                    if(response.result == 1){
-                      notify("Changes were successfully saved.", "success");
-                      seminars_table.draw(false);
-                      active = response.slug;
-                      $("#edit_seminar_modal").modal('hide');
-                      update_seminar_btn.html(default_update_seminar_btn);
-                      update_seminar_btn.removeAttr("disabled");
-                    
-                    }
-                  },
-                  error: function(response){
-                    //console.log(response);
-                    parsed = JSON.parse(response.responseText);
-                    $("#edit_seminar_form .has-error").each(function(){
-                      $(this).removeClass("has-error");
-                      $(this).children("span").remove();
-                    });
-
-                    $.each(parsed.errors, function(i, item){
-                      i = i.replace('.','-');
-                      i = i.replace('.','-');
-                      parent = $("#edit_seminar_form ."+i);
-                      parent.addClass("has-error");
-                      parent.append('<span class="help-block">'+item+'</span>');
-                    });
-
-                    update_seminar_btn.html(default_update_seminar_btn);
-                    update_seminar_btn.removeAttr("disabled");
-                  }
-                })
-              })
 
             })
           },error: function(response){
