@@ -46,7 +46,7 @@
             "ajax" : '{{\Illuminate\Support\Facades\Request::getUri()}}',
             "columns": [
                 { "data": "pap_code" },
-                { "data": "pap_desc" },
+                { "data": "pap_title" },
                 { "data": "mooe" },
                 { "data": "co" },
                 { "data": "action" },
