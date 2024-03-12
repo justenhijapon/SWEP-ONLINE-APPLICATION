@@ -19,15 +19,19 @@
                 $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
             @endphp
             {!! __form::select_object_project_code(
-              '4 project_code', 'project_code', 'Project Code', '', $project_code, $other_activity->project_code ,''
+              '3 project_code', 'project_code', 'Project Code', '', $project_code, $other_activity->project_code ,''
             ) !!}
 
             {!! __form::textbox(
-              '4 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', $other_activity->utilized_fund, '', '', '','autonum'
+              '3 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', $other_activity->utilized_fund, '', '', '','autonum'
             ) !!}
 
             {!! __form::textbox(
-              '4 venue', 'venue', 'text', 'Venue *', 'Venue', $other_activity->venue, '', '', ''
+              '3 item', 'item', 'text', 'Item *', 'Item', $other_activity->item, '', '', '',''
+            ) !!}
+
+            {!! __form::textbox(
+              '3 venue', 'venue', 'text', 'Venue *', 'Venue', $other_activity->venue, '', '', ''
             ) !!}
         </div>
         <div class="row">

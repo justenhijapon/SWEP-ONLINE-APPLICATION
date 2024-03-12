@@ -27,6 +27,10 @@
                       <th>SEMINAR ID</th>
                       <th>Title</th>
                       <th>Mill District</th>
+                      <th>Block Farm</th>
+                      <th>Project Code</th>
+                      <th>Item</th>
+                      <th>Utilized Fund</th>
                       <th>Sponsor</th>
                       <th>Venue</th>
                       <th>Date Covered</th>
@@ -126,12 +130,13 @@
                             </div>
                           </div>
                           <div class="row">
-                            {!! \App\Core\Helpers\__form2::select('project_code',[
-                                'label' => 'Project Code:',
+                            {!! \App\Core\Helpers\__form2::select('block_farm',[
+                                'label' => 'Block Farm:',
                                 'cols' => 6,
-                                'options' => \App\Core\Helpers\Arrays::projectCodes(),
-                                'id' => 'project_code',
+                                'options' => \App\Core\Helpers\Arrays::blockFarmsName(),
+                                'id' => 'block_farm',
                             ]) !!}
+
                             {!! \App\Core\Helpers\__form2::textbox('utilized_fund',[
                                 'label' => 'Utilized fund:',
                                 'cols' => 6,
@@ -140,6 +145,21 @@
 
 
                           </div>
+
+                          <div class="row">
+                            {!! \App\Core\Helpers\__form2::select('project_code',[
+                                'label' => 'Project Code:',
+                                'cols' => 6,
+                                'options' => \App\Core\Helpers\Arrays::projectCodes(),
+                                'id' => 'project_code',
+                            ]) !!}
+                            {!! \App\Core\Helpers\__form2::textbox('item',[
+                                'label' => 'Item:',
+                                'cols' => 6,
+                            ]) !!}
+
+                          </div>
+
                         </div>
                         <div class="col-md-5">
                           {!! __form::file(
@@ -424,11 +444,16 @@ function dt_draw(){
             { "data": "seminar_id" },
             { "data": "title" },
             { "data": "mill_district" },
+            { "data": "block_farm" },
+            { "data": "project_code" },
+            { "data": "item" },
+            { "data": "utilized_fund" },
             { "data": "sponsor" },
             { "data": "venue" },
             { "data": "date_covered" },
             { "data": "action" }
         ],
+
         buttons: [
             {!! __js::dt_buttons() !!}
         ],
@@ -438,12 +463,12 @@ function dt_draw(){
             "visible" : false
           },
           {
-            "targets" : 7,
+            "targets" : 10,
             "orderable" : false,
             "class" : 'action-10p'
           },
           {
-            "targets": 6, 
+            "targets": 10,
            // "render" : $.fn.dataTable.render.moment( 'MMMM D, YYYY' )
           }
         ],
@@ -560,11 +585,7 @@ function dt_draw(){
         })
       })
       
-       //Delete seminar button
-      $("body").on("click", ".delete_seminar_btn", function(){
-        id = $(this).attr('data');
-        confirm("{{ route('dashboard.seminar.destroy', 'slug') }}", id);
-      })
+
 
       //Show seminar button
       $("body").on("click", ".view_seminar_btn", function(){

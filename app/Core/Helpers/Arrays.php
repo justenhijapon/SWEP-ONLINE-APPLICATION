@@ -19,6 +19,16 @@ class Arrays
         })->sort();
     }
 
+    public static function blockFarmsName(){
+        $bfs = BlockFarm::query()->get();
+
+        return $bfs->mapWithKeys(function ($data){
+            return [
+                $data->block_farm_name => $data->block_farm_name,
+            ];
+        })->toArray();
+    }
+
     public static function millDistricts(){
         $mds = MillDistrict::query()->get();
         return $mds->mapWithKeys(function ($data){

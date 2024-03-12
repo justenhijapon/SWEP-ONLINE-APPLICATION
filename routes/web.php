@@ -104,6 +104,11 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
     /** Recipients **/
     Route::resource('recipients', 'RecipientsController');
 
+    /** Attributions **/
+    Route::resource('attributions', 'AttributionsController');
+
+
+
 
 });
 

@@ -68,6 +68,24 @@
             </p>
           </div>
         </div>
+
+        <div class="row">
+          {!! \App\Core\Helpers\__form2::select('block_farm',[
+              'label' => 'Block Farm:',
+              'cols' => 6,
+              'options' => \App\Core\Helpers\Arrays::blockFarmsName(),
+              'id' => 'block_farm',
+          ],$seminar ?? null) !!}
+
+          {!! \App\Core\Helpers\__form2::textbox('utilized_fund',[
+              'label' => 'Utilized fund:',
+              'cols' => 6,
+              'class' => 'autonum',
+          ],$seminar ?? null) !!}
+
+
+        </div>
+
         <div class="row">
           {!! \App\Core\Helpers\__form2::select('project_code',[
               'label' => 'Project Code:',
@@ -75,12 +93,10 @@
               'options' => \App\Core\Helpers\Arrays::projectCodes(),
               'id' => 'project_code',
           ],$seminar ?? null) !!}
-          {!! \App\Core\Helpers\__form2::textbox('utilized_fund',[
-              'label' => 'Utilized fund:',
+          {!! \App\Core\Helpers\__form2::textbox('item',[
+              'label' => 'Item:',
               'cols' => 6,
-              'class' => 'autonum',
           ],$seminar ?? null) !!}
-
 
         </div>
       </div>

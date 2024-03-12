@@ -95,7 +95,9 @@ class SeminarController extends Controller{
 
 
         $seminar->project_code = $request->project_code;
-        $seminar->utilized_fund = $request->utilized_fund;
+        $seminar->block_farm = $request->block_farm;
+        $seminar->item = $request->item;
+        $seminar->utilized_fund = Helpers::sanitizeAutonum($request->utilized_fund);
         $seminar->created_at = Carbon::now();
         $seminar->updated_at = Carbon::now();
         $seminar->ip_created = $request->ip();
@@ -168,6 +170,8 @@ class SeminarController extends Controller{
         }
 
         $seminar->project_code = $request->project_code;
+        $seminar->block_farm = $request->block_farm;
+        $seminar->item = $request->item;
         $seminar->utilized_fund = Helpers::sanitizeAutonum($request->utilized_fund);
         if($seminar->update()){
             return $seminar->only('slug');

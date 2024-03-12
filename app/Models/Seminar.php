@@ -46,10 +46,13 @@ public static function boot()
         'title' => '',
         'sponsor' => '',
         'venue' => '',
+        'block_farm' => '',
         'mill_district' => '',
         'date_covered_from' => null,
         'date_covered_to' => null,
         'attendance_sheet_filename' => '',
+        'project_code' => '',
+        'item' => '',
         'created_at' => null,
         'updated_at' => null,
         'ip_created' => '',
@@ -94,6 +97,9 @@ public static function boot()
         return $this->hasOne("App\Models\MillDistrict","slug","mill_district");
     }
 
+    public function blockFarm(){
+        return $this->hasOne("App\Models\BlockFarm","slug","block_farm");
+    }
 
 
 

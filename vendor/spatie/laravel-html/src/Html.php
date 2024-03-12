@@ -2,6 +2,7 @@
 
 namespace Spatie\Html;
 
+use BackedEnum;
 use DateTimeImmutable;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ use Spatie\Html\Elements\P;
 use Spatie\Html\Elements\Select;
 use Spatie\Html\Elements\Span;
 use Spatie\Html\Elements\Textarea;
+use UnitEnum;
 
 class Html
 {
@@ -129,7 +131,7 @@ class Html
     }
 
     /**
-     * @param \Spatie\Html\HtmlElement|string|null $contents
+     * @param \Spatie\Html\HtmlElement|string|iterable|int|float|null $contents
      *
      * @return \Spatie\Html\Elements\Div
      */
@@ -147,6 +149,17 @@ class Html
     public function email($name = null, $value = null)
     {
         return $this->input('email', $name, $value);
+    }
+
+    /**
+     * @param string|null $name
+     * @param string|null $value
+     *
+     * @return \Spatie\Html\Elements\Input
+     */
+    public function search($name = null, $value = null)
+    {
+        return $this->input('search', $name, $value);
     }
 
     /**
@@ -591,7 +604,9 @@ class Html
         // has a model assigned and there aren't old input items,
         // try to retrieve a value from the model.
         if (is_null($value) && $this->model && empty($this->request->old())) {
-            $value = data_get($this->model, $name) ?? '';
+            $value = ($value = data_get($this->model, $name)) instanceof UnitEnum
+                ? $this->getEnumValue($value)
+                : $value;
         }
 
         return $this->request->old($name, $value);
@@ -646,5 +661,18 @@ class Html
         } catch (\Exception $e) {
             return $value;
         }
+    }
+
+    /**
+     * Get the value from the given enum.
+     *
+     * @param  \UnitEnum|\BackedEnum  $value
+     * @return string|int
+     */
+    protected function getEnumValue($value)
+    {
+        return $value instanceof BackedEnum
+                ? $value->value
+                : $value->name;
     }
 }

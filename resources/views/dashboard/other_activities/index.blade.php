@@ -58,6 +58,7 @@
                                 <th>Date</th>
                                 <th>Venue</th>
                                 <th>Project Code</th>
+                                <th>Item</th>
                                 <th>Utilized Fund</th>
                                 <th>Details</th>
                                 <th class="">Action</th>
@@ -117,15 +118,19 @@
                                 $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
                             @endphp
                             {!! __form::select_object_project_code(
-                              '4 project_code', 'project_code', 'Project Code', '', $project_code, '' ,''
+                              '3 project_code', 'project_code', 'Project Code', '', $project_code, '' ,''
                             ) !!}
 
                             {!! __form::textbox(
-                              '4 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', '','autonum'
+                              '3 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', '','autonum'
                             ) !!}
 
                             {!! __form::textbox(
-                              '4 venue', 'venue', 'text', 'Venue *', 'Venue', '', '', '', ''
+                              '3 item', 'item', 'text', 'Item *', 'Item', '', '', '', '',''
+                            ) !!}
+
+                            {!! __form::textbox(
+                              '3 venue', 'venue', 'text', 'Venue *', 'Venue', '', '', '', ''
                             ) !!}
                         </div>
                         <div class="row">
@@ -152,6 +157,7 @@
     {!! __html::blank_modal('edit_other_modal','lg') !!}
     {!! __html::blank_modal('participants_modal',80) !!}
     {!! __html::blank_modal('edit_oap_modal','') !!}
+
     <div id="add_participant_modal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <form id="add_participant_form" data="">
@@ -280,6 +286,7 @@
                 { "data": "date" },
                 { "data": "venue" },
                 { "data": "project_code" },
+                { "data": "item" },
                 { "data": "utilized_fund" },
                 { "data": "details" },
                 { "data": "action" }
@@ -294,7 +301,7 @@
                     "class" : "scholars_name"
                 },
                 {
-                    "targets" : 6,
+                    "targets" : 7,
                     "orderable" : false,
                     "class" : 'action-10p'
                 },
@@ -388,29 +395,25 @@
             })
         });
 
-        $("body").on("click",".edit_other_btn", function(){
 
-            id = $(this).attr('data');
-            load_modal('#edit_other_modal');
-
-            uri = " {{ route('dashboard.other_activities.edit', 'slug') }} ";
+        $("body").on("click", ".edit_other_btn", function(){
+            let btn = $(this);
+            let id = $(this).attr('data');
+            let uri = "{{ route('dashboard.other_activities.edit', 'slug') }}";
             uri = uri.replace('slug',id);
-
+            Pace.restart();
+            load_modal2(btn)
             $.ajax({
-                url : uri,
-                type: 'GET',
+                url : uri ,
+                type : 'GET',
                 success: function(response){
-                    console.log(response)
-                    populate_modal("#edit_other_modal",response);
-
-                },
-                error: function(response){
-                    notify('Error occurred','danger');
-                    console.log(response);
+                    populate_modal2(btn,response);
+                },error: function(response){
+                    populate_modal2_error(response);
+                    notify("Error: "+JSON.stringify(response), 'danger');
                 }
             })
-
-        });
+        })
 
         $("body").on("submit","#edit_other_form", function(e){
             e.preventDefault();
@@ -440,9 +443,9 @@
         })
 
 
-
+        //Delete other_activities button
         $("body").on("click",".delete_other_btn", function(){
-            id = $(this).attr('data');
+            let id = $(this).attr('data');
             confirm("{{ route('dashboard.other_activities.destroy', 'slug') }}", id);
         })
 

@@ -2,6 +2,49 @@
 
 All notable changes to `laravel-html` will be documented in this file.
 
+## 3.4.0 - 2024-01-05
+
+### What's Changed
+
+* Fix docblock to solve phpstan errors when passing an array to html()->div() by @SanderMuller in https://github.com/spatie/laravel-html/pull/210
+* Documentation on how to extend the package by @azamtav in https://github.com/spatie/laravel-html/pull/204
+
+### New Contributors
+
+* @SanderMuller made their first contribution in https://github.com/spatie/laravel-html/pull/210
+* @azamtav made their first contribution in https://github.com/spatie/laravel-html/pull/204
+
+**Full Changelog**: https://github.com/spatie/laravel-html/compare/3.3.0...3.4.0
+
+## 3.3.0 - 2023-10-24
+
+### What's Changed
+
+- Add documentation for new FormElement::route() method by @miken32 in https://github.com/spatie/laravel-html/pull/190
+- Update `.gitattributes` by @totoprayogo1916 in https://github.com/spatie/laravel-html/pull/194
+- Correction to docs re: readonly vs isReadonly by @sgilberg in https://github.com/spatie/laravel-html/pull/195
+- Get value from model with casts php native enum by @bskl in https://github.com/spatie/laravel-html/pull/203
+
+### New Contributors
+
+- @totoprayogo1916 made their first contribution in https://github.com/spatie/laravel-html/pull/194
+- @sgilberg made their first contribution in https://github.com/spatie/laravel-html/pull/195
+- @bskl made their first contribution in https://github.com/spatie/laravel-html/pull/203
+
+**Full Changelog**: https://github.com/spatie/laravel-html/compare/3.2.2...3.3.0
+
+## 3.2.2 - 2023-07-20
+
+### What's Changed
+
+- Allow setting a form action to a route by @miken32 in https://github.com/spatie/laravel-html/pull/189
+
+### New Contributors
+
+- @miken32 made their first contribution in https://github.com/spatie/laravel-html/pull/189
+
+**Full Changelog**: https://github.com/spatie/laravel-html/compare/3.2.1...3.2.2
+
 ## 3.2.1 - 2023-01-24
 
 ### What's Changed
