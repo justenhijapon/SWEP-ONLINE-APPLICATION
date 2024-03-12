@@ -15,7 +15,7 @@
             <button class="pull-right btn btn-sm btn-primary" data-toggle="modal" data-target="#add_item_modal"><i class="fa fa-plus"></i> Add Item</button>
         </div>
         <div class="box-body">
-            <table id="pap_items_table" class="table table-bordered table-condensed table-striped">
+            <table id="pap_items_table" class="table table-bordered table-condensed table-striped" style="width: 100%">
                 <thead>
                 <tr>
                     <th>Item No.</th>

@@ -14,7 +14,7 @@
                 <h3 class="box-title">PAP Codes</h3>
             </div>
             <div class="box-body">
-                <table id="pap_table" class="table table-striped table-condensed table-bordered">
+                <table id="pap_table" class="table table-striped table-condensed table-bordered" style="width: 100%">
                     <thead>
                     <tr>
                         <th>PAP Code</th>
