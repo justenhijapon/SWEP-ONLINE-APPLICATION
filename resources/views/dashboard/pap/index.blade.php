@@ -56,14 +56,19 @@
             ],
             "columnDefs":[
                 {
-                    "targets" : 4,
-                    "orderable" : false,
-                    "searchable": false,
-                    "class" : 'action4'
+                    targets : 4,
+                    orderable : false,
+                    searchable: false,
+                    class : 'action4'
                 },
                 {
-                    "targets" : [2,3],
-                    "class" : 'text-right',
+                    targets : [2,3],
+                    class : 'text-right w-10p',
+                    render: $.fn.dataTable.render.number(',', '.', 3, ''),
+                },
+                {
+                    targets : 0,
+                    class : 'w-8p',
                 },
 
             ],

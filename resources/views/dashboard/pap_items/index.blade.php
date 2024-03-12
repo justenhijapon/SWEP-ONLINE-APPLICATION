@@ -3,7 +3,7 @@
 @section('content')
 
 <section class="content-header">
-    <h1>{{$pap->pap_code }} | {{$pap->pap_desc}}</h1>
+    <h1>{{$pap->pap_code }} | <span style="font-size: 16px">{{$pap->pap_title}}</span></h1>
 </section>
 @endsection
 @section('content2')
@@ -124,6 +124,19 @@
                 "searchable": false,
                 "class" : 'action4'
             },
+            {
+                targets: [2,5],
+                class: 'text-right w-10p',
+                render: $.fn.dataTable.render.number(',','.',3,''),
+            },
+            {
+                targets: [0,4],
+                class: 'w-6p',
+            },
+            {
+                targets: 3,
+                class: 'text-center w-10p',
+            }
 
         ],
         "responsive": true,

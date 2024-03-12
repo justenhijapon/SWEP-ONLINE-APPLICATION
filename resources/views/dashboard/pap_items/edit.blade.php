@@ -22,7 +22,7 @@ $rand = \Illuminate\Support\Str::random();
         {!! \App\Core\Helpers\__form2::textbox('unit_cost',[
             'label' => 'Unit Cost',
             'cols' => 3,
-            'class' => 'autonum',
+            'class' => 'autonum_'.$rand,
         ],$pap_item ?? null) !!}
         {!! \App\Core\Helpers\__form2::textbox('qty',[
             'label' => 'Qty.',
@@ -35,7 +35,7 @@ $rand = \Illuminate\Support\Str::random();
         {!! \App\Core\Helpers\__form2::textbox('total_budget',[
             'label' => 'Total',
             'cols' => 3,
-            'class' => 'autonum',
+            'class' => 'autonum_'.$rand,
         ],$pap_item ?? null) !!}
     </div>
     <div class="row">
@@ -53,6 +53,10 @@ $rand = \Illuminate\Support\Str::random();
 
 @section('scripts')
     <script type="text/javascript">
+        $(".autonum_{{$rand}}").each(function(){
+            $(this).attr('autocomplete','off');
+            new AutoNumeric(this, autonum_settings);
+        });
         $("#edit_pap_item_form_{{$rand}}").submit(function (e) {
             e.preventDefault();
             let form = $(this);

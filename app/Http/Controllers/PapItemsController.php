@@ -39,7 +39,7 @@ class PapItemsController extends Controller
         $papItem->pap_code = $pap;
         $papItem->item_no = $request->item_no;
         $papItem->item = $request->item;
-        $papItem->unit_cost = Helpers::sanitizeAutonum($request->unit_cost);
+        $papItem->unit_cost = $request->unit_cost;
         $papItem->qty = $request->qty;
         $papItem->uom = $request->uom;
         $papItem->total_budget = Helpers::sanitizeAutonum($request->total_budget);

@@ -12,7 +12,7 @@ class PapItemsFormRequest extends FormRequest
     
     public function rules(){
         return [
-           'item_no' => 'required|string',
+           'item_no' => 'integer|string',
             'item' => 'required|string',
             'unit_cost' => 'required|string',
             'qty' => 'required|string',
