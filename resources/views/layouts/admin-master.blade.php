@@ -25,7 +25,7 @@
       }
     </style>
 </head>
-<body class="hold-transition  {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
+
 
 <body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
 
@@ -37,24 +37,29 @@
 
     @include('layouts.admin-sidenav')
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" >
         @yield('content')
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 1.2.0
-            </div>
-            <strong>Copyright &copy; 2019-2020 <a href="#">MIS-VISAYAS</a>.</strong> All rights
-            reserved.
-        </footer>
+        @yield('content2')
     </div>
-</div>
 
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.1.0
+        </div>
+        <strong>Copyright &copy; 2018-2019 <a href="#">SRA</a>.</strong> All rights
+        reserved.
+    </footer>
+
+</div>
 @include('layouts.js-plugins')
 
 @yield('modals')
 
 {!! __html::modal_loader() !!}
 
+<script type="text/javascript">
+    let modal_loader = $("#modal_loader").parent('div').html();
+</script>
 @yield('scripts')
 
 </body>

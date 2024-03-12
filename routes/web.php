@@ -103,12 +103,19 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
     /** Recipients **/
     Route::resource('recipients', 'RecipientsController');
+    /** PAP **/
+    Route::resource('pap', 'PapController');
+    /** PAp Items **/
 
     /** Attributions **/
     Route::resource('attributions', 'AttributionsController');
 
 
 
+
+    Route::get('pap_items/{pap}/pap',\App\Http\Controllers\PapItemsController::class.'@index')->name('pap_items.index');
+    Route::post('pap_items/{pap}/store',\App\Http\Controllers\PapItemsController::class.'@store')->name('pap_items.store');
+    Route::resource('pap_items', 'PapItemsController')->except(['index','store']);
 
 });
 

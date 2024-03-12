@@ -4,6 +4,7 @@ namespace App\Core\Helpers;
 
 use App\Models\BlockFarm;
 use App\Models\MillDistrict;
+use App\Models\PPU\Options;
 use App\Models\Projects;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
@@ -45,5 +46,28 @@ class Arrays
                 $data->project_code => $data->project_code.' - '. $data->activity,
             ];
         })->toArray();
+    }
+
+    public static function unitsOfMeasurement(){
+        $arr = [];
+        $ops = Options::query()->where('for','=','unitsOfMeasurement')->get();
+        if(!empty($ops)){
+            foreach ($ops as $op){
+                $arr[$op->value] = $op->display;
+            }
+        }
+        ksort($arr);
+        return $arr;
+    }
+    public static function modesOfProcurement(){
+        $arr = [];
+        $ops = Options::query()->where('for','=','modesOfProcurement')->get();
+        if(!empty($ops)){
+            foreach ($ops as $op){
+                $arr[$op->value] = $op->display;
+            }
+        }
+        ksort($arr);
+        return $arr;
     }
 }
