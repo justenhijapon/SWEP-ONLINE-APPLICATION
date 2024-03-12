@@ -58,7 +58,7 @@
 {!! __html::modal_loader() !!}
 
 <script type="text/javascript">
-    const modal_loader = $("#modal_loader").parent('div').html();
+    let modal_loader = $("#modal_loader").parent('div').html();
 </script>
 @yield('scripts')
 
