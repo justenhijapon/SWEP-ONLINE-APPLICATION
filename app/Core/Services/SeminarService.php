@@ -46,9 +46,7 @@ class SeminarService extends BaseService{
 
         $filename = $this->filterReservedChar($filename);
 
-        if(!is_null($request->file('doc_file'))){
-            $request->file('doc_file')->storeAs('', $filename);
-        }
+
        
         $seminar = $this->seminar_repo->store($request, $filename);
             

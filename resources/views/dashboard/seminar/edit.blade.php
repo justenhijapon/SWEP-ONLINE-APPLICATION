@@ -1,5 +1,7 @@
-
-<form id="edit_seminar_form" autocomplete="off">
+@php
+    $rand = \Illuminate\Support\Str::random();
+@endphp
+<form id="edit_seminar_form_{{$rand}}" autocomplete="off">
   @csrf 
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -19,33 +21,45 @@
     <div class="row">
       <div class="col-md-7">
         <div class="row">
-          {!! __form::select_static(
-            '7 title', 'title', 'Title: *', $seminar->title , \App\Core\Helpers\Arrays::blockFarms() , '', '', '', ''
-          ) !!}
 
-           {!! __form::select_static(
-            '5 mill_district', 'mill_district', 'Mill District: *', $seminar->mill_district , $mill_districts_list , '', '', '', ''
-          ) !!}
+          {!! \App\Core\Helpers\__form2::select('title',[
+              'label' => 'Title:*',
+              'cols' => 7,
+              'options' => \App\Core\Helpers\Arrays::blockFarms()->toArray(),
+          ],$seminar ?? null) !!}
+          {!! \App\Core\Helpers\__form2::select('mill_district',[
+              'label' => 'Mill District:',
+              'cols' => 5,
+              'options' => \App\Core\Helpers\Arrays::millDistricts(),
+          ],$seminar ?? null) !!}
 
 
         </div>
         <div class="row">
-          {!! __form::textbox(
-            '6 sponsor', 'sponsor', 'text', 'Sponsor', 'Sponsor', old('sponsor') ? old('sponsor') : $seminar->sponsor, $errors->has('sponsor'), $errors->first('sponsor'), ''
-          ) !!}
+          {!! \App\Core\Helpers\__form2::textbox('sponsor',[
+              'label' => 'Sponsor:',
+              'cols' => 6,
+          ],$seminar ?? null) !!}
 
-          {!! __form::textbox(
-            '6 venue', 'venue', 'text', 'Venue *', 'Venue', old('venue') ? old('venue') : $seminar->venue, $errors->has('venue'), $errors->first('venue'), ''
-          ) !!}
+          {!! \App\Core\Helpers\__form2::textbox('venue',[
+              'label' => 'Venue:',
+              'cols' => 6,
+          ],$seminar ?? null) !!}
+
         </div>
         <div class="row">
-          {!! __form::datepicker(
-            '6 date_covered_from', 'date_covered_from',  'Date From *', old('date_covered_from') ? old('date_covered_from') : __dataType::date_parse($seminar->date_covered_from), $errors->has('date_covered_from'), $errors->first('date_covered_from')
-            ) !!}
+          {!! \App\Core\Helpers\__form2::textbox('date_covered_from',[
+              'label' => 'Date from:',
+              'cols' => 6,
+              'type' => 'date',
+          ],$seminar ?? null) !!}
 
-          {!! __form::datepicker(
-            '6 date_covered_to', 'date_covered_to',  'Date To *', old('date_covered_to') ? old('date_covered_to') : __dataType::date_parse($seminar->date_covered_to), $errors->has('date_covered_to'), $errors->first('date_covered_to')
-            ) !!} 
+          {!! \App\Core\Helpers\__form2::textbox('date_covered_to',[
+              'label' => 'Date to:',
+              'cols' => 6,
+              'type' => 'date',
+          ],$seminar ?? null) !!}
+
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -53,19 +67,23 @@
               Utilization
             </p>
           </div>
-          @php
-            $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
-          @endphp
-          {!! __form::select_object_project_code(
-            '6 project_code', 'project_code', 'Project Code', '', $project_code, $seminar->project_code ,''
-          ) !!}
-
-
-          {!! __form::textbox(
-            '6 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', $seminar->utilized_fund, '', '', '','autonum'
-          ) !!}
         </div>
-      </div> 
+        <div class="row">
+          {!! \App\Core\Helpers\__form2::select('project_code',[
+              'label' => 'Project Code:',
+              'cols' => 6,
+              'options' => \App\Core\Helpers\Arrays::projectCodes(),
+              'id' => 'project_code',
+          ],$seminar ?? null) !!}
+          {!! \App\Core\Helpers\__form2::textbox('utilized_fund',[
+              'label' => 'Utilized fund:',
+              'cols' => 6,
+              'class' => 'autonum',
+          ],$seminar ?? null) !!}
+
+
+        </div>
+      </div>
       <div class="col-md-5">
         {!! __form::file(
           '12', 'doc_file', 'e_doc_file', 'Upload File *', $errors->has('doc_file'), $errors->first('doc_file'), ''
@@ -143,9 +161,38 @@
     digitGroupSeparator : ',',
   };
 
-  $("#edit_seminar_form .autonum").each(function(){
+  $("#edit_seminar_form_{{$rand}} .autonum").each(function(){
     new AutoNumeric(this, autonum_settings);
   })
 
-  $('#edit_seminar_form .select2').select2();
+  $('#edit_seminar_form_{{$rand}} .select2').select2();
+
+  $("#edit_seminar_form_{{$rand}}").submit(function(e){
+    let form = $(this);
+    e.preventDefault();
+    let uri = "{{ route('dashboard.seminar.update', 'slug') }}";
+    uri = uri.replace('slug',id);
+    let formData = new FormData(this);
+    $.ajax({
+      url: uri,
+      data: formData,
+      type: 'POST',
+      dataType: 'json',
+      processData: false,
+      contentType: false,
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(res){
+        succeed(form,true,true);
+
+        active = res.slug;
+        seminars_table.draw(false);
+        notify('Data successfully updated.','success');
+      },
+      error: function(res){
+        errored(form,res);
+      }
+    })
+  })
 </script>

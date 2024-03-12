@@ -102,15 +102,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        autonum_settings = {
-            currencySymbol : ' ₱',
-            decimalCharacter : '.',
-            digitGroupSeparator : ',',
-        };
 
-        $(".autonum").each(function(){
-            new AutoNumeric(this, autonum_settings);
-        })
 
         $('.select2').select2();
 
@@ -124,6 +116,7 @@
         href.closest('ul').css('display','block');
         href.closest('.treeview').addClass('menu-open');
     }
+
 </script>
 
 {{-- BS MODAL --}}
