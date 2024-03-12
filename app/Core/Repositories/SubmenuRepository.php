@@ -7,6 +7,7 @@ use App\Core\Interfaces\SubmenuInterface;
 
 
 use App\Models\Submenu;
+use Illuminate\Support\Str;
 
 
 class SubmenuRepository extends BaseRepository implements SubmenuInterface {
@@ -79,8 +80,7 @@ class SubmenuRepository extends BaseRepository implements SubmenuInterface {
         $submenu = $this->submenu->select('submenu_id')->orderBy('submenu_id', 'desc')->first();
 
         if($submenu != null){
-            $num = str_replace('SM', '', $submenu->submenu_id) + 1;
-            $id = 'SM' . $num;
+            $id = Str::random(10);
         }
         
         return $id;

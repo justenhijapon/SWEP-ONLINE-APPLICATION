@@ -116,6 +116,7 @@
         href.closest('ul').css('display','block');
         href.closest('.treeview').addClass('menu-open');
     }
+
 </script>
 
 {{-- BS MODAL --}}
