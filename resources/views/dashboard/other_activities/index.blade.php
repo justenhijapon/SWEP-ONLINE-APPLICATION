@@ -92,7 +92,7 @@
 
 
 
-    <!-- Add Seminar Modal -->
+    <!-- Add Other_activities Modal -->
     <div class="modal fade" id="add_activity_modal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

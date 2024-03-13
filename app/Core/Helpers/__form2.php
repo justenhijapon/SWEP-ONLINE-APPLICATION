@@ -4,7 +4,7 @@
 namespace App\Core\Helpers;
 
 
-use App\Swep\Helpers\__sanitize;
+use App\Core\Helpers\__sanitize;
 use Illuminate\Support\Carbon;
 
 class __form2
