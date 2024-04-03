@@ -433,8 +433,8 @@ class LaravelDebugbar extends DebugBar
                     $mailCollector->addSymfonyMessage($event->sent->getSymfonySentMessage());
                 });
 
-                if ($config->get('debugbar.options.mail.full_log')) {
-                    $mailCollector->showMessageDetail();
+                if ($config->get('debugbar.options.mail.show_body') || $config->get('debugbar.options.mail.full_log')) {
+                    $mailCollector->showMessageBody();
                 }
 
                 if ($this->hasCollector('time') && $config->get('debugbar.options.mail.timeline')) {
@@ -577,10 +577,15 @@ class LaravelDebugbar extends DebugBar
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
+        $exception = new \ErrorException($message, 0, $level, $file, $line);
         if (error_reporting() & $level) {
-            throw new \ErrorException($message, 0, $level, $file, $line);
-        } else {
-            $this->addMessage($message, 'deprecation');
+            throw $exception;
+        }
+
+        $this->addThrowable($exception);
+        if ($this->hasCollector('messages')) {
+            $file = $file ? ' on ' . $this['messages']->normalizeFilePath($file) . ":{$line}" : '';
+            $this['messages']->addMessage($message . $file, 'deprecation');
         }
     }
 

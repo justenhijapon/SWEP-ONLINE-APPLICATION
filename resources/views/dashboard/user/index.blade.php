@@ -145,66 +145,6 @@
                 ) !!}
 
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <h4>User Menu
-                    <span class="pull-right ">
-                      <small class="text-info">You can use CTRL & SHIFT keys for multiple selection. CTRL+A to select all.</small>
-                    </span>
-                  </h4>
-                  <hr style="margin: 0 0 10px 0">
-                </div>
-
-                @foreach ($menus as $key => $sub)
-                  <div class="col-md-4">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <i class="fa {{ $sub->icon }}"></i>
-                        {{ $sub->name }}
-                        <div class="pull-right">
-                          <button class="btn btn-xs btn-default clear_btn" type="button">Clear</button>
-                        </div>
-                      </div>
-                      <div class="panel-body" style="min-height: 180px">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            @if($sub->submenu->isEmpty())
-                              <center>
-                                <label>No submenu found for this Menu</label>
-                              </center>
-
-                            @else
-                              <select multiple name="submenus[]" class="form-control select_multiple" size="6">
-                                @foreach($sub->submenu as $key2 => $submenu)
-                                  <option value="{{$submenu->submenu_id}}">
-                                    {{ str_replace($sub->name,'', $submenu->name) }}
-                                  </option>
-                                @endforeach
-
-                              </select>
-                              <span class="help-block">No module selected</span>
-                            @endif
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                @endforeach
-              </div>
-              {{-- USER MENU DYNAMIC TABLE GRID --}}
-              <div class="col-md-12" style="padding-top:50px;">
-                <div class="box box-solid">
-
-
-                  <div class="box-body no-padding">
-
-
-
-                  </div>
-
-                </div>
-              </div>
-
             </div>
 
 

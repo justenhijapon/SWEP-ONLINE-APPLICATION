@@ -100,31 +100,6 @@ class User extends Authenticatable{
         return $this->hasOne("App\Models\User","user_id","user_updated");
     }
 
-    //SEMINAR
-    public function seminar_created(){
-        return $this->hasMany("App\Models\Seminar", 'user_created', 'user_id');
-    }
-    public function seminar_updated(){
-        return $this->hasMany("App\Models\Seminar", 'user_updated', 'user_id');
-    }
-
-    //BLOCKFARM
-    public function block_farm_created(){
-        return $this->hasMany("App\Models\BlockFarm", 'user_created', 'user_id');
-    }
-
-    public function block_farm_updated(){
-        return $this->hasMany("App\Models\BlockFarm", 'user_updated', 'user_id');
-    }
-
-    //BLOCKFARM
-    public function scholar_created(){
-        return $this->hasMany("App\Models\Scholars", 'user_created', 'user_id');
-    }
-
-    public function scholar_updated(){
-        return $this->hasMany("App\Models\Scholars", 'user_updated', 'user_id');
-    }
 
 
 }

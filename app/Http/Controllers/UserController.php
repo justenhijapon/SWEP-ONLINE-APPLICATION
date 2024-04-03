@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Helpers\Arrays;
+use App\Core\Helpers\Helpers;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Core\Services\UserService;
 use App\Http\Requests\User\UserFormRequest;
 use App\Http\Requests\User\UserFilterRequest;
 use App\Http\Requests\User\UserResetPasswordRequest;
 use App\Http\Requests\User\UserSyncEmployeeRequest;
+use Illuminate\Support\Str;
+use Hash;
 
 
 class UserController extends Controller{
@@ -35,35 +41,9 @@ class UserController extends Controller{
             $data = request();
             return datatables()->of($this->user_service->fetchTable($data))
             ->addColumn('action', function($data){
-                if($data->is_active == 0){
-                    $a = "Activate";
-                    $stat = "inactive";
-                }else{
-                    $a = "Deactivate";
-                    $stat = "active";
-                }
-                $button = '<div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm view_user_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#view_user_modal" title="View more" data-placement="left">
-                                    <i class="fa fa-file-text"></i>
-                                </button>
-                               
-                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_user_btn" data-toggle="modal" data-target="#edit_user_modal" title="Edit" data-placement="top">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_user_btn" data-toggle="tooltip" title="Delete" data-placement="top">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                                <div class="btn-group">
-                                  <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                  <span class="caret"></span></button>
-                                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                    <li><a href="#" data="'.$data->slug.'" name="'.strtoupper($data->firstname).' '.strtoupper($data->lastname).'" class="ac_dc" status="'.$stat.'" >'.$a.'</a>
-                                    </li>
-                                    <li><a href="#" class="reset_password_btn" data="'.$data->slug.'" data-toggle="modal" data-target="#reset_password_modal" >Change Username/Password</a></li>
-                                  </ul>
-                                </div>
-                                </div>';
-                return $button;
+                return view('dashboard.user.dtAction')->with([
+                    'data' => $data,
+                ]);
             })
             ->addColumn('fullname', function($data){
                 return $data->firstname .' '. $data->lastname;
@@ -102,15 +82,28 @@ class UserController extends Controller{
         return view('dashboard.user.create');
     }
 
-    
-
 
     public function store(UserFormRequest $request){
-        return $request;
-        $user = $this->user_service->store($request);
+        $user = new User();
+        $user->slug = Str::random(16);
+        $user->user_id = Str::random(11);
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->remember_token = Str::random(60);
+        $user->color = Str::of('sidebar-mini skin-yellow');
+        $user->lastname = $request->lastname;
+        $user->middlename = $request->middlename;
+        $user->firstname = $request->firstname;
+        $user->position = $request->position;
+        $user->created_at = Carbon::now();
+        $user->updated_at = Carbon::now();
+        $user->ip_created = request()->ip();
+        $user->ip_updated = request()->ip();
 
-        return json_encode(array('result' => 1, 'slug' => $user->slug)) ;
-        
+        if($user->save()){
+            return $user->only('slug');
+        }
     }
 
     
@@ -141,13 +134,20 @@ class UserController extends Controller{
         
     }
 
-    
+
 
 
     public function destroy($slug){
 
-        return $this->user_service->destroy($slug);
-        
+        $user = User::query()
+            ->where('slug', $slug)
+            ->first();
+            $user ?? abort(404,'User not found.');
+        if($user->delete()){
+            $user->userMenu()->delete();
+            $user->userSubmenu()->delete();
+            return 1;
+        }
     }
 
 

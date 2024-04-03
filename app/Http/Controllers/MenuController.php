@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Core\Services\MenuService;
 use App\Http\Requests\Menu\MenuFormRequest;
 use App\Http\Requests\Menu\MenuFilterRequest;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 
 
@@ -31,20 +32,12 @@ class MenuController extends Controller{
         {      
             $data = request();
             return datatables()->of($this->menu->fetchTable($data))
-            ->addColumn('action', function($data){
-                $button = '<div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm list_submenus_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#list_submenus" title="Submenus" data-placement="left">
-                                    <i class="fa fa-list"></i>
-                                </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_menu_btn" data-toggle="modal" data-target="#edit_menu_modal" title="Edit" data-placement="top">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_menu_btn" data-toggle="tooltip" title="Delete" data-placement="top">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </div>';
-                return $button;
-            })->editColumn('is_menu',function($data){
+            ->addColumn('action', function($data) {
+                return view('dashboard.menu.dtAction')->with([
+                    'data' => $data,
+                ]);
+            })
+            ->editColumn('is_menu',function($data){
                 if($data->is_menu == 1){
                     return '<center><span class="bg-green badge"><i class="fa fa-check"></i></span></center>';
                 }elseif($data->is_menu == 0){
@@ -132,13 +125,19 @@ class MenuController extends Controller{
 
     }
 
-    
+
 
 
     public function destroy($slug){
-        
-        return $this->menu->destroy($slug);
 
+        $menu = Menu::query()
+            ->where('slug', $slug)
+            ->first();
+            $menu ?? abort(404,'Menu not found.');
+        if($menu->delete()){
+            $menu->submenu()->delete();
+            return 1;
+        }
     }
 
 

@@ -129,9 +129,6 @@ class MenuRepository extends BaseRepository implements MenuInterface {
     }
 
 
-
-
-
     public function findBySlug($slug){
 
 

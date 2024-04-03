@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SRA Web Portal - GAD</title>
+    <title>SRA Web Portal - Shipping Permit</title>
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -11,13 +11,13 @@
     @include('layouts.css-plugins')
 
   </head>
-  <body class="hold-transition skin-purple layout-top-nav">
+  <body class="hold-transition skin-yellow layout-top-nav">
     <div class="wrapper">
       <header class="main-header">
         <nav class="navbar navbar-static-top">
           <div class="container">
             <div class="navbar-header">
-              <a href="#" class="navbar-brand"><b>SRA WEB PORTAL - GAD</b></a>
+              <a href="#" class="navbar-brand"><b>SRA WEB PORTAL - Shipping Permit</b></a>
             </div>
             <div class="navbar-custom-menu">
               <ul class="nav navbar-nav">

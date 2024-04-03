@@ -49,17 +49,15 @@ class SidenavComposer{
             if($user_submenu_db->subMenu->menu->is_menu != 0){
                 if($user_submenu_db->subMenu->is_nav == 1){
                     $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug][$user_submenu_db->subMenu->name] = [];
-
                     $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug]['menu_obj'] = $user_submenu_db->subMenu->menu;
                     $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug]['submenus'][$user_submenu_db->subMenu->name]['submenu_obj'] = $user_submenu_db->subMenu;
                 }
             }
-        }
+       }
 
         ksort($menu_tree);
-
+//        dd($menu_tree);
         $view->with(['global_user_menus' => $user_menus, 'global_menu_tree' => $menu_tree ,'user_submenus' => $user_submenus_db]);
-
     }
 
 
