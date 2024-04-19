@@ -112,9 +112,9 @@ class ProfileService extends BaseService{
         return $this->profile_repo->total_updated();
     }
 
-    public function modules(){
-        return $this->activity_log_repo->modules();
-    }
+//    public function modules(){
+//        return $this->activity_log_repo->modules();
+//    }
 
     public function events(){
         return $this->activity_log_repo->events();

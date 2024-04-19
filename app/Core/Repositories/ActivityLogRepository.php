@@ -19,15 +19,15 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
         parent::__construct();
     }
 
-    public function modules(){
-        $modules = [
-            'Seminars'=>'seminar',
-            'Block Farm'=>'block_farm',
-            'Scholars'=>'scholar',
-            'Committee Members' => 'committee_members'
-        ];
-        return $modules;
-    }   
+//    public function modules(){
+//        $modules = [
+//            'Seminars'=>'seminar',
+//            'Block Farm'=>'block_farm',
+//            'Scholars'=>'scholar',
+//            'Committee Members' => 'committee_members'
+//        ];
+//        return $modules;
+//    }
 
     public function events(){
         $events = [
@@ -43,16 +43,16 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
         $user = $this->auth->user()->user_id;
         $get = $this->activity_log;
 
-        $modules = $this->modules();
+//        $modules = $this->modules();
         $events = $this->events();
 
-        foreach ($modules as $key => $module) {
-            if(!empty($data->mod)){
-                if ($module == $data->mod) {
-                    $get = $get->where("module","=",$module);
-                }
-            }
-        }
+//        foreach ($modules as $key => $module) {
+//            if(!empty($data->mod)){
+//                if ($module == $data->mod) {
+//                    $get = $get->where("module","=",$module);
+//                }
+//            }
+//        }
 
         foreach ($events as $key => $event) {
             if(!empty($data->event)){

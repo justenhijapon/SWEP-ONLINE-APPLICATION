@@ -1,4 +1,7 @@
 <div class="btn-group">
+{{--    <button type="button" data="{{$data->slug}}" class="btn btn-default btn-sm print_shipping_permits_btn" onclick="window.location='{{route('printables.index',$data->slug)}}'" title="test" data-placement="top">--}}
+{{--        <i class="fa fa-print"></i>--}}
+{{--    </button>--}}
     <button type="button" data="{{$data->slug}}" class="btn btn-default btn-sm edit_shipping_permits_btn" data-toggle="modal" data-target="#edit_shipping_permits_modal" title="Edit" data-placement="top">
         <i class="fa fa-edit"></i>
     </button>
@@ -6,7 +9,7 @@
         <i class="fa fa-trash"></i>
     </button>
     <div class="btn-group">
-        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span></button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
             <?php if($data->sp_status == 'PENDING'): ?>

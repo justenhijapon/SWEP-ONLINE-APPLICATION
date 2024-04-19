@@ -33,7 +33,7 @@ return new class extends Migration
             $table->integer('sp_volume')->nullable(true);
             $table->string('sp_uom')->nullable(true);
             $table->string('sp_or_no')->nullable(true);
-            $table->integer('sp_amount')->nullable(true);
+            $table->decimal('sp_amount')->nullable(true);
             $table->string('sp_status')->nullable(true);
             $table->string('sp_markings')->nullable(true);
             $table->string('sp_shipper')->nullable(true);

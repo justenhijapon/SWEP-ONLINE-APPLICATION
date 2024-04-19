@@ -168,7 +168,6 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class
 
 
-
     ],
 
     /*

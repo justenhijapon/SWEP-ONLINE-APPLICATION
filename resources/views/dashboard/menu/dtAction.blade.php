@@ -8,4 +8,4 @@
     <button type="button" data="{{$data->slug}}" class="btn btn-sm btn-danger "onclick="delete_data('{{$data->slug}}','{{route('dashboard.menu.destroy',$data->slug)}}')" data-toggle="tooltip" title="Delete" data-placement="top">
         <i class="fa fa-trash"></i>
     </button>
-</div>'
+</div>

@@ -32,4 +32,8 @@ class Origin extends Model
     protected $dates = ['created_at', 'updated_at'];
 
     public $timestamps = false;
+
+    public function originMill(){
+        return $this->belongsTo(ShippingPermit::class,'sp_mill' ,'slug');
+    }
 }

@@ -28,3 +28,8 @@
 
 	<button type="button" class="btn btn-primary submit_reorder_btn"> <i class="fa fa-save"></i> Save</button>
 </div>
+
+<script>
+	$(".sortable").sortable();
+</script>
+

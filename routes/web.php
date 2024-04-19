@@ -12,6 +12,9 @@ Route::group(['as' => 'auth.'], function () {
 });
 
 
+Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['check.user_status']], function () {
+    Route::get('ajax/{for}',\App\Http\Controllers\AjaxController::class.'@get')->name('ajax');
+});
 
 
 /** Dashboard **/
@@ -56,6 +59,13 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
     /** Shipping Permit **/
     Route::resource('shipping_permits', 'ShippingPermitController');
     Route::post('/shipping_permits/{slug}/{type}/change_status', 'ShippingPermitController@changeStatus')->name('shipping_permits.change_status');
+    Route::get('/shipping_permit_reports', 'ShippingPermitController@reports')->name('shipping_permits.reports');
+    Route::get('/shipping_permit_report_generate', 'ShippingPermitController@report_generate')->name('shipping_permits.report_generate');
+
+    /** Official Reciepts **/
+    Route::resource('official_reciepts', 'OfficialRecieptsController');
+    Route::get('/official_reciepts_reports', 'OfficialRecieptsController@reports')->name('official_reciepts.reports');
+    Route::get('/official_reciepts_report_generate', 'OfficialRecieptsController@report_generate')->name('official_reciepts.report_generate');
 
 
 
@@ -74,6 +84,11 @@ Route::get('/dashboard/test', function(){
 
 });
 
+//Route::get('/printables/index', [\App\Http\Controllers\printController::class, 'index']);
+Route::get('/printables/index/{slug}', 'printController@index')->name('printables.index');
+Route::get('/printables/print/{id}', 'printController@print')->name('printables.print');
 
+
+Route::get('users/export/', [\App\Http\Controllers\ShippingPermitController::class, 'export']);
 
 

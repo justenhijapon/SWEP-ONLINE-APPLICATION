@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Models\ShippingPermit;
+use PDF;
+use Illuminate\Http\Request;
+use Rmunate\Utilities\SpellNumber;
+use App\Core\Helpers\TranslateTextHelper;
+
+class printController extends Controller
+{
+    public function index($slug){
+        $testprint = ShippingPermit::query()
+            ->with([
+                "portOfOrigin",
+                "portOfDestination",
+            ])
+            ->where('slug', $slug)
+            ->first();
+        $word = SpellNumber::integer($testprint->sp_volume)->toLetters();
+        $translated =  TranslateTextHelper::translate($word);
+        return view('printables.testprint')->with([
+            "test" => $testprint,
+            'translated' => $translated,
+        ]);
+    }
+
+
+
+
+}

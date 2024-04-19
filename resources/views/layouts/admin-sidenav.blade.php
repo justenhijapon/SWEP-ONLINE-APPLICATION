@@ -25,32 +25,121 @@
                     <span>Home</span>
                 </a>
             </li>
-          @foreach($global_menu_tree as $user_menu)
-            @if($user_menu['menu_obj']->is_dropdown == 0)
-              <li>
-                <a href="">
-                  <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
-                  <span>{{$user_menu['menu_obj']->name}}</span>
-                </a>
-              </li>
-            @else
-            <li class="treeview" style="height: auto;">
-                <a href="#">
-                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
-                    <span>{{$user_menu['menu_obj']->name}}</span>
-                    <span class="pull-right-container">
+
+
+                @php
+                    $superuserHeaderDisplayed = false;
+                    $userHeaderDisplayed = false;
+                    $adminHeaderDisplayed = false;
+                @endphp
+
+                @foreach($global_menu_tree as $user_menu)
+                    @if($user_menu['menu_obj']->category == 'SU')
+                        @if(!$superuserHeaderDisplayed)
+                            <li class="header">ADMIN</li>
+                            @php
+                                $superuserHeaderDisplayed = true;
+                            @endphp
+                        @endif
+                        @if($user_menu['menu_obj']->is_dropdown == 0)
+                            <li>
+                                <a href="">
+                                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                                    <span>{{$user_menu['menu_obj']->name}}</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="treeview" style="height: auto;">
+                                <a href="#">
+                                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                                    <span>{{$user_menu['menu_obj']->name}}</span>
+                                    <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
-                </a>
-                <ul class="treeview-menu" style="display: none;">
-                    @foreach($user_menu['submenus'] as $submenu)
-                        <li><a href="{{route($submenu['submenu_obj']->route)}}"><i class="fa fa-circle-o"></i>{{$submenu['submenu_obj']->nav_name}}</a></li>
-                    @endforeach
-                </ul>
-            </li>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    @foreach($user_menu['submenus'] as $submenu)
+                                        <li><a href="{{route($submenu['submenu_obj']->route)}}"><i class="fa fa-circle-o"></i>{{$submenu['submenu_obj']->nav_name}}</a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+                    @endif
+                @endforeach
 
-            @endif
-          @endforeach
+                @foreach($global_menu_tree as $user_menu)
+                    @if($user_menu['menu_obj']->category == 'U')
+                        @if(!$userHeaderDisplayed)
+                            <li class="header">USER</li>
+                            @php
+                                $userHeaderDisplayed = true;
+                            @endphp
+                        @endif
+                        @if($user_menu['menu_obj']->is_dropdown == 0)
+                            <li>
+                                <a href="">
+                                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                                    <span>{{$user_menu['menu_obj']->name}}</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="treeview" style="height: auto;">
+                                <a href="#">
+                                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                                    <span>{{$user_menu['menu_obj']->name}}</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    @foreach($user_menu['submenus'] as $submenu)
+                                        <li><a href="{{route($submenu['submenu_obj']->route)}}"><i class="fa fa-circle-o"></i>{{$submenu['submenu_obj']->nav_name}}</a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+                    @endif
+                @endforeach
+
+
+
+                @foreach($global_menu_tree as $user_menu)
+                    @if($user_menu['menu_obj']->category == 'ADMIN')
+                        @if(!$adminHeaderDisplayed)
+                            <li class="header">DATA INPUT</li>
+                            @php
+                                $adminHeaderDisplayed = true;
+                            @endphp
+                        @endif
+                        @if($user_menu['menu_obj']->is_dropdown == 0)
+                            <li>
+                                <a href="">
+                                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                                    <span>{{$user_menu['menu_obj']->name}}</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="treeview" style="height: auto;">
+                                <a href="#">
+                                    <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
+                                    <span>{{$user_menu['menu_obj']->name}}</span>
+                                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    @foreach($user_menu['submenus'] as $submenu)
+                                        <li><a href="{{route($submenu['submenu_obj']->route)}}"><i class="fa fa-circle-o"></i>{{$submenu['submenu_obj']->nav_name}}</a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+                    @endif
+                @endforeach
+
+
+
+
         @endif
       @endif
 

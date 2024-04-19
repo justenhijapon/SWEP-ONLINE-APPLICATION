@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '19c62361839c7f366aefb4553d10670435c4a691',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'c4bfd6544528e4ba7c776d9460cd188aae6bf205',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -235,6 +235,33 @@
             'reference' => 'fbd48bce38f73f8a4ec8583362e732e4095e5862',
             'type' => 'library',
             'install_path' => __DIR__ . '/../graham-campbell/result-type',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/guzzle' => array(
+            'pretty_version' => '7.8.1',
+            'version' => '7.8.1.0',
+            'reference' => '41042bc7ab002487b876a0683fc8dce04ddce104',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/guzzle',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/promises' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => 'bbff78d96034045e58e13dedd6ad91b5d1253223',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/promises',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/psr7' => array(
+            'pretty_version' => '2.6.2',
+            'version' => '2.6.2.0',
+            'reference' => '45b30f99ac27b5ca93cb4831afe16285f57b8221',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -500,9 +527,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '19c62361839c7f366aefb4553d10670435c4a691',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'c4bfd6544528e4ba7c776d9460cd188aae6bf205',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -928,6 +955,12 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'psr/http-client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
         'psr/http-factory' => array(
             'pretty_version' => '1.0.2',
             'version' => '1.0.2.0',
@@ -937,6 +970,12 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'psr/http-factory-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
         'psr/http-message' => array(
             'pretty_version' => '2.0',
             'version' => '2.0.0.0',
@@ -945,6 +984,12 @@
             'install_path' => __DIR__ . '/../psr/http-message',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'psr/http-message-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
         ),
         'psr/log' => array(
             'pretty_version' => '3.0.0',
@@ -983,6 +1028,15 @@
             'reference' => '9185c66c2165bbf4d71de78a69dccf4974f9538d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psy/psysh',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'ralouphie/getallheaders' => array(
+            'pretty_version' => '3.0.3',
+            'version' => '3.0.3.0',
+            'reference' => '120b605dfeb996808c31b6477290a714d356e822',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ralouphie/getallheaders',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -1027,6 +1081,15 @@
             'replaced' => array(
                 0 => '4.7.5',
             ),
+        ),
+        'rmunate/spell-number' => array(
+            'pretty_version' => 'v1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => 'c225b10c03a82570c0be2ad0a1e916c2637aadcf',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../rmunate/spell-number',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'sabberworm/php-css-parser' => array(
             'pretty_version' => 'v8.5.1',
@@ -1268,6 +1331,15 @@
             'reference' => 'ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53',
             'type' => 'library',
             'install_path' => __DIR__ . '/../spatie/laravel-package-tools',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'stichoza/google-translate-php' => array(
+            'pretty_version' => 'v5.1.3',
+            'version' => '5.1.3.0',
+            'reference' => '0d3de083a4b286868c4456cc76448a439a5aae07',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../stichoza/google-translate-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

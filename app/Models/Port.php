@@ -34,6 +34,7 @@ class Port extends Model
 
     public $timestamps = false;
 
+    /** Relationships */
     public function portoforigin(){
         return $this->hasMany(Port::class,'port_name','sp_port_of_origin');
     }

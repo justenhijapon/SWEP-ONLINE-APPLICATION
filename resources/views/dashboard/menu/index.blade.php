@@ -96,16 +96,35 @@
 @section('modals')
 
 {!! __html::blank_modal('show_menu_modal','lg') !!}
-{!! __html::blank_modal('edit_menu_modal','sm') !!}
+
 {!! __html::blank_modal('list_submenus','lg') !!}
 
+<!-- Edit modal -->
+<div class="modal fade" id="edit_menu_modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div id="edit_menu_modal_loader">
+        <center>
+          <img style="width: 70px; margin: 40px 0;" src="{!! __static::loader(Auth::user()->color) !!}">
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="change_menu_modal">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
+      <div id="change_menu_modal_loader">
+        <center>
+          <img style="width: 70px; margin: 40px 0;" src="{!! __static::loader(Auth::user()->color) !!}">
+        </center>
+      </div>
     </div>
   </div>
 </div>
+
 <div id="add_menu_modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -126,8 +145,13 @@
               '12 route', 'route', 'text', 'Route: *', 'Route','', '', '', ''
             ) !!}
 
-            {!! __form::textbox(
-              '12 category', 'category', 'text', 'Category: *', 'Category','', '', '', ''
+
+            {!! __form::select_static(
+              '12 category', 'category', 'Category: *', '', [
+                'SUPER USER' => 'SU',
+                'ADMIN' => 'ADMIN',
+                'USER' => 'U',
+              ], '', '', '', ''
             ) !!}
 
             {!! __form::textbox_icon(
@@ -157,10 +181,6 @@
     </div>
   </div>
 </div>
-
-
-
-
 
 @endsection 
 
@@ -242,6 +262,9 @@ function filter_dt(){
 <script type="text/javascript">
   
   active = '';
+  edit_loader = $("#edit_menu_modal .modal-content").html();
+  menu_loader = $("#change_menu_modal .modal-content").html();
+
 
   $('#block_farm_tbl')
     .on('preXhr.dt', function ( e, settings, data ) {
@@ -318,19 +341,41 @@ function filter_dt(){
       filter_dt();
     })
 
-    $(".change_menu_btn").click(function(){
-      load_modal('#change_menu_modal');
-      $.ajax({
-        url : "{{ route('dashboard.menu.get_menus') }}",
-        type : "GET",
-        success: function(response){
-          populate_modal("#change_menu_modal",response);
-        },
-        error: function(response){
-          console.log(response);
-        }
-      })
-    });
+    {{--$(".change_menu_btn").click(function(){--}}
+    {{--  load_modal('#change_menu_modal');--}}
+    {{--  $.ajax({--}}
+    {{--    url : "{{ route('dashboard.menu.get_menus') }}",--}}
+    {{--    type : "GET",--}}
+    {{--    success: function(response){--}}
+    {{--      populate_modal("#change_menu_modal",response);--}}
+    {{--    },--}}
+    {{--    error: function(response){--}}
+    {{--      console.log(response);--}}
+    {{--    }--}}
+    {{--  })--}}
+    {{--});--}}
+
+  //Change Menu order button
+  $("body").on("click", ".change_menu_btn", function(){
+    $("#change_menu_modal .modal-content").html(menu_loader);
+    id = $(this).attr('data');
+    uri = "{{ route('dashboard.menu.get_menus', 'slug') }}";
+    uri = uri.replace('slug',id);
+    Pace.restart();
+    $.ajax({
+      url : uri ,
+      type : 'GET',
+      success: function(response){
+
+        $("#change_menu_modal_loader").fadeOut(function(){
+          $("#change_menu_modal .modal-content").html(response);
+
+        })
+      },error: function(response){
+        notify("Error: "+JSON.stringify(response), 'danger');
+      }
+    })
+  })
 
     $("body").on("click",".submit_reorder_btn",function(){
       array = new Array;
@@ -459,49 +504,72 @@ function filter_dt(){
       })
     });
 
-    $("body").on("click",".edit_menu_btn", function(){
-      id = $(this).attr("data");
-      load_modal("#edit_menu_modal");
-      uri = "{{ route('dashboard.menu.edit','slug') }}";
-      uri = uri.replace('slug',id);
-      $.ajax({
-        url : uri,
-        type: 'GET',
-        success: function(response){
-          populate_modal("#edit_menu_modal",response);
-          setTimeout(function(){
-            $(".with-icon").keyup();
-          },500);
-        },
-        error: function(response){
 
-        }
-      })
-    });
+    {{--$("body").on("click",".edit_menu_btn", function(){--}}
+    {{--  id = $(this).attr("data");--}}
+    {{--  load_modal("#edit_menu_modal");--}}
+    {{--  uri = "{{ route('dashboard.menu.edit','slug') }}";--}}
+    {{--  uri = uri.replace('slug',id);--}}
+    {{--  $.ajax({--}}
+    {{--    url : uri,--}}
+    {{--    type: 'GET',--}}
+    {{--    success: function(response){--}}
+    {{--      populate_modal("#edit_menu_modal",response);--}}
+    {{--      setTimeout(function(){--}}
+    {{--        $(".with-icon").keyup();--}}
+    {{--      },500);--}}
+    {{--    },--}}
+    {{--    error: function(response){--}}
 
-    $("body").on("submit","#edit_menu_form", function(e){
-      e.preventDefault();
-      id = $(this).attr("data");
-      wait_button("#edit_menu_form");
-      uri = "{{ route('dashboard.menu.update','slug') }}";
-      uri = uri.replace("slug",id);
+    {{--    }--}}
+    {{--  })--}}
+    {{--});--}}
 
-      $.ajax({
-        url : uri,
-        data: $(this).serialize(),
-        type: 'PUT',
-        success: function(response){
-          succeed("#edit_menu_form","save",false);
-          active = response.slug;
-          menu_tbl.draw(false);
-          $("#edit_menu_modal").modal("hide");
-        },
-        error: function(response){
-          console.log(response);
-          errored("#edit_menu_form","save",response);
-        }
-      })
-    });
+  //Edit Menu button
+  $("body").on("click", ".edit_menu_btn", function(){
+    $("#edit_menu_modal .modal-content").html(edit_loader);
+    id = $(this).attr('data');
+    uri = "{{ route('dashboard.menu.edit', 'slug') }}";
+    uri = uri.replace('slug',id);
+    Pace.restart();
+    $.ajax({
+      url : uri ,
+      type : 'GET',
+      success: function(response){
+
+        $("#edit_menu_modal_loader").fadeOut(function(){
+          $("#edit_menu_modal .modal-content").html(response);
+
+        })
+      },error: function(response){
+        notify("Error: "+JSON.stringify(response), 'danger');
+      }
+    })
+  })
+
+    {{--$("body").on("submit","#edit_menu_form", function(e){--}}
+    {{--  e.preventDefault();--}}
+    {{--  id = $(this).attr("data");--}}
+    {{--  wait_button("#edit_menu_form");--}}
+    {{--  uri = "{{ route('dashboard.menu.update','slug') }}";--}}
+    {{--  uri = uri.replace("slug",id);--}}
+
+    {{--  $.ajax({--}}
+    {{--    url : uri,--}}
+    {{--    data: $(this).serialize(),--}}
+    {{--    type: 'PUT',--}}
+    {{--    success: function(response){--}}
+    {{--      succeed("#edit_menu_form","save",false);--}}
+    {{--      active = response.slug;--}}
+    {{--      menu_tbl.draw(false);--}}
+    {{--      $("#edit_menu_modal").modal("hide");--}}
+    {{--    },--}}
+    {{--    error: function(response){--}}
+    {{--      console.log(response);--}}
+    {{--      errored("#edit_menu_form","save",response);--}}
+    {{--    }--}}
+    {{--  })--}}
+    {{--});--}}
 
     $("body").on("click",".delete_menu_btn" ,function(){
       id = $(this).attr("data");

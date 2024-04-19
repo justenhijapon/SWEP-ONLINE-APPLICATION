@@ -71,9 +71,9 @@
           <h5 class="widget-user-desc">{{ Auth::check() ? Auth::user()->position : '' }}</h5>
         </div>
         <div class="widget-user-image image_o" data-content="CHANGE" id="img-circ">
-    
+
             <img class="img-circle"  src="{!! __html::check_img(Auth::user()->image) !!}" alt="User Avatar">
-          
+
         </div>
         <div class="box-footer">
           <div class="row">
@@ -105,7 +105,7 @@
             </li>
             <li>
               <a href="#">
-                <i class="fa fa-user margin-r-5"></i> Firstname 
+                <i class="fa fa-user margin-r-5"></i> Firstname
                 <span class="pull-right text-strong">
                   {{ Auth::user()->firstname }}
                 </span>
@@ -113,7 +113,7 @@
             </li>
             <li>
               <a href="#">
-                <i class="fa fa-user margin-r-5"></i> Middlename 
+                <i class="fa fa-user margin-r-5"></i> Middlename
                 <span class="pull-right text-strong">
                   {{ Auth::user()->middlename }}
                 </span>
@@ -129,7 +129,7 @@
             </li>
             <li>
               <a href="#">
-                <i class="fa fa-male margin-r-5"></i> Position 
+                <i class="fa fa-male margin-r-5"></i> Position
                 <span class="pull-right text-strong">
                   {{ Auth::user()->position }}
                 </span>
@@ -201,91 +201,8 @@
              <i class="fa fa-gears"></i> Account Settings
            </a>
           </li>
-          <li class="">
-            <a href="#activity_logs" data-toggle="tab" aria-expanded="true">
-              <i class="fa fa-clock-o"></i> Activity
-            </a>
-          </li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane " id="activity_logs">
-            <h4>Your activities</h4>
-            <div class="panel">
-              <div class="box-header with-border">
-                <h4 class="box-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
-                    <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
-                  </a>
-                </h4>
-              </div>
-              <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
-                <div class="box-body">
-                  <div class="row">
-                    <div class="col-md-1 col-sm-2 col-lg-2">
-                      <label>Module:</label>
-                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm module filters">
-                        <option value="">All</option>
-                        @foreach($modules as $key => $module)
-                          <option value="{{$module}}">{{$key}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                    <div class="col-md-1 col-sm-2 col-lg-2">
-                      <label>Event:</label>
-                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm event filters">
-                        <option value="">All</option>
-                        @foreach($events as $key => $event)
-                          <option value="{{$event}}">{{$key}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-lg-4">
-                      <div class="form-group">
-                        <label>Date range:</label>
-
-                        <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                          </div>
-                          <input type="text" class="form-control pull-right filters" id="date_range" autocomplete="off">
-                          <span class="input-group-btn">
-                          <button type="button" class="btn btn-warning clearBtn" title="Clear dates" disabled="disabled">
-                            <i class="fa fa-times"></i>
-                          </button>
-                        </span>
-
-                        </div>
-                        <!-- /.input group -->
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="activity_logs_container" style="display: none">
-              <table class="table table-bordered table-striped" id="activity_logs_table" style="width: 100% !important; font-size: inherit;">
-                <thead>
-                  <tr class="{{ __static::bg_color(Auth::user()->color) }}">
-                    <th>Module</th>
-                    <th>Event</th>
-                    <th>Action</th>
-                    <th>Timestamp</th>
-                    <th>TimestampDefault</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                </tbody>
-              </table>
-            </div>
-            <div id="tbl_loader">
-              <center>
-                <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
-              </center>
-            </div>
-          </div>
-      
           <div class="tab-pane active" id="settings">
             <div class="row">
 
@@ -311,7 +228,7 @@
 
                       <div class="form-group">
                         <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} pull-right">
-                          <i class="fa fa-save "></i> Save 
+                          <i class="fa fa-save "></i> Save
                         </button>
                       </div>
 
@@ -344,7 +261,7 @@
                       </div>
                       <div class="form-group">
                         <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} pull-right">
-                          <i class="fa fa-save"></i> Save 
+                          <i class="fa fa-save"></i> Save
                         </button>
                       </div>
                     </form>
@@ -377,7 +294,7 @@
                           @endphp
                         @endif
                         <div class="scrolling-card" data="{{$color}}">
-                          <ul class="mailbox-attachments clearfix">
+                          <ul class="mailbox-attachments">
                             <li class="scrolling-li {{$bg}}" data="{{$color}}">
                                <span class="mailbox-attachment-icon has-img"><img src="{{ asset('images/skins') }}/{{$color}}.jpg"></span>
 
@@ -421,12 +338,12 @@
             <p>
     <!-- Below are a series of inputs which allow file selection and interaction with the cropper api -->
         <input type="file" id="fileInput" accept="image/*" hidden="" style="display: none" />
-        
-       
+
+
     </p>
     <div style="width: 100%" id="img_container" >
       <img id="image">
-    </div>   
+    </div>
 
     <div id="img_loader" style="display: none">
       <center>
@@ -434,14 +351,14 @@
       </center>
     </div>
     <br>
-    
+
 
 
       </div>
       <div class="modal-footer">
         <div class="progress" style="display: none;">
           <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-        </div> 
+        </div>
 
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" id="btnCrop" class="btn btn-primary">Save changes</button>
@@ -504,7 +421,7 @@
           "class" : 'time-th'
         },
         {
-          "targets": 4, 
+          "targets": 4,
           "visible" :false
         }
       ],
@@ -514,14 +431,14 @@
             $("#activity_logs_container").fadeIn();
           });
         },
-      "language": 
-        {          
+      "language":
+        {
           "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
         },
       "drawCallback": function(settings){
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="modal"]').tooltip();
-      
+
       }
     })
 
@@ -585,7 +502,7 @@
         }
       })
     });
-    
+
     $("#username_form").submit(function(e) {
       e.preventDefault();
       wait_button("#username_form");
@@ -693,7 +610,7 @@
     //     }
     // });
 
-    
+
 
     $("#img-circ").click(function() {
       $("#fileInput").click();
@@ -765,11 +682,11 @@
           });
 
           //initialAvatarURL = avatar.src;
-          
+
           //avatar.src = canvas.toDataURL();
           //console.log(canvas.toDataURL());
           $progress.fadeIn();
-          
+
           canvas.toBlob(function (blob) {
             var formData = new FormData();
 
@@ -813,7 +730,7 @@
 
               error: function (jqXHR, status, errorThrown) {
 
-                
+
                 switch(jqXHR.status){
                   case(404):
                     notify("You don't have permission to change your profile picture.","warning");
@@ -824,7 +741,7 @@
               },
 
               complete: function () {
-                
+
               },
             });
 
@@ -835,5 +752,5 @@
   </script>
 
 
-  
+
 @endsection

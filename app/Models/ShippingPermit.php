@@ -33,4 +33,15 @@ class ShippingPermit extends Model
 
     public $timestamps = false;
 
+    /** Relationships */
+    public function portOfOrigin(){
+        return $this->belongsTo(Port::class,'sp_port_of_origin' ,'slug');
+    }
+
+    public function portOfDestination(){
+        return $this->belongsTo(Port::class,'sp_port_of_destination' ,'slug');
+    }
+
+
+
 }

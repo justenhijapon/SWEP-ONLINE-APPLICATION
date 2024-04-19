@@ -46,10 +46,11 @@
                         'cols' => 8,
                         'options' => \App\Core\Helpers\Arrays::portofOrigin(),
                     ],$sp ?? null) !!}
-                    {!! \App\Core\Helpers\__form2::textbox('sp_mill',[
+                    {!! \App\Core\Helpers\__form2::select('sp_mill',[
                         'label' => 'Mill:',
                         'cols' => 4,
-                    ],$sp ?? null) !!}
+                        'options' => \App\Core\Helpers\Arrays::originmill(),
+                    ]) !!}
                 </div>
                 <div class="row">
 
@@ -105,9 +106,11 @@
                         'label' => 'Plate No.:',
                         'cols' => 4,
                     ],$sp ?? null) !!}
-                    {!! \App\Core\Helpers\__form2::textbox('sp_or_no',[
+                    {!! \App\Core\Helpers\__form2::select('sp_or_no',[
                         'label' => 'O.R. No.:',
                         'cols' => 4,
+                        'id' => 'or_no',
+                        'options' => \App\Core\Helpers\Arrays::spOR(),
                     ],$sp ?? null) !!}
                 </div>
                 <div class="row">
@@ -131,9 +134,9 @@
                     {!! \App\Core\Helpers\__form2::select('sp_status',[
                         'label' => 'Status:',
                         'options' => [
-                            'Pending' => 'Pending',
-                            'Shipped' => 'Shipped',
-                            'Cancelled' => 'Cancelled'
+                            'PENDING' => 'PENDING',
+                            'SHIPPED' => 'SHIPPED',
+                            'CANCELLED' => 'CANCELLED'
                             ],
                         'cols' => 4,
                     ],$sp ?? null) !!}
@@ -237,6 +240,27 @@
                 errored(form,res);
             }
         })
+    })
+
+    $("body").on("change","#or_no",function (){
+        let url = '{{route('dashboard.ajax','for')}}';
+        let or_no = $(this).val();
+        url = url.replace('for','getMillFromOR');
+        $.ajax({
+            url : url,
+            data: {
+                or_no : or_no,
+            },
+            type: 'GET',
+            success:function (response){
+                $("#edit_shipping_permits_form_{{$rand}} input[name='sp_amount']").val(response.sample);
+                $("#edit_shipping_permits_form_{{$rand}} input[name='sp_volume']").val(response.or_payor);
+
+            },
+            error: function (response){
+                $or ?? abort(503,'OR not found');
+            }
+        });
     })
 
 </script>

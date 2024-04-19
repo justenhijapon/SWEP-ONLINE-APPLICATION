@@ -4,6 +4,9 @@ namespace App\Core\Helpers;
 
 use App\Models\BlockFarm;
 use App\Models\MillDistrict;
+use App\Models\OfficialReciepts;
+use App\Models\OfficialRecieptUtilization;
+use App\Models\Origin;
 use App\Models\Pap;
 use App\Models\PapItems;
 use App\Models\Port;
@@ -13,91 +16,6 @@ use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class Arrays
 {
-    public static function blockFarms(){
-        $bfs = BlockFarm::query()->get();
-
-        return $bfs->mapWithKeys(function ($data){
-            return [
-                $data->block_farm_name => $data->block_farm_name,
-            ];
-        })->sort();
-    }
-
-    public static function blockFarmsName(){
-        $bfs = BlockFarm::query()->get();
-
-        return $bfs->mapWithKeys(function ($data){
-            return [
-                $data->block_farm_name => $data->block_farm_name,
-            ];
-        })->toArray();
-    }
-
-    public static function millDistricts(){
-        $mds = MillDistrict::query()->get();
-        return $mds->mapWithKeys(function ($data){
-            return [
-                $data->mill_district => $data->mill_district,
-            ];
-        })->toArray();
-    }
-
-    public static function projectCodes(){
-        $projects = Projects::query()->get();
-        return $projects->mapWithKeys(function ($data){
-            return [
-                $data->project_code => $data->project_code.' - '. $data->activity,
-            ];
-        })->toArray();
-    }
-
-    public static function unitsOfMeasurement(){
-        $arr = [];
-        $ops = Options::query()->where('for','=','unitsOfMeasurement')->get();
-        if(!empty($ops)){
-            foreach ($ops as $op){
-                $arr[$op->value] = $op->display;
-            }
-        }
-        ksort($arr);
-        return $arr;
-    }
-    public static function modesOfProcurement(){
-        $arr = [];
-        $ops = Options::query()->where('for','=','modesOfProcurement')->get();
-        if(!empty($ops)){
-            foreach ($ops as $op){
-                $arr[$op->value] = $op->display;
-            }
-        }
-        ksort($arr);
-        return $arr;
-    }
-
-    public static function projectCodesGrouped(){
-        $paps = Pap::query()
-            ->with(['items'])
-            ->get();
-        $array = [];
-        foreach ($paps as $pap){
-            $array[$pap->pap_code] = [];
-            foreach ($pap->items as $item){
-                $array[$pap->pap_code][$item->slug] = $item->item;
-            }
-        }
-        return $array;
-    }
-
-    public static function papItems(){
-        $papItems = PapItems::query()->get();
-
-        return $papItems->mapWithKeys(function ($data){
-            return [
-                $data->slug => $data->pap_code,
-            ];
-        });
-    }
-
     public static function portofOrigin(){
         $po = Port::query()
             ->with('portoforigin')
@@ -122,6 +40,18 @@ class Arrays
         return $array;
     }
 
+    public static function originmill(){
+        $om = Origin::query()
+            ->with('originMill')
+            ->get();
+
+        $array = [];
+        foreach ($om as $mill){
+            $array[$mill->origin][$mill->slug] = $mill->name;
+        }
+        return $array;
+}
+
     public static function spvessel(){
         $spv = Port::query()->get();
 
@@ -140,6 +70,33 @@ class Arrays
                 $data->vessel => $data->vessel,
             ];
         })->toArray();
+    }
+
+    public static function spOR(){
+        $spor = OfficialReciepts::query()->get();
+
+        return $spor->mapWithKeys(function ($data){
+            return [
+                $data->or_no => $data->or_no,
+            ];
+        })->toArray();
+    }
+
+
+
+    public static function cropYear($end = 2000){
+
+        $years = array_combine(range(date("Y"), $end), range(date("Y"), $end));
+
+        $yearsArray = [];
+        foreach ($years as $year){
+            $pastyear = $year-1;
+            $yearsArray[$pastyear.'-'.$year] = $pastyear.'-'.$year;
+        }
+
+        return $yearsArray;
+
+
     }
 
 }

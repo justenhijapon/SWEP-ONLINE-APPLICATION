@@ -46,11 +46,13 @@ class SidenavComposer{
         $menu_tree = [];
 
         foreach ($user_submenus_db as $user_submenu_db){
-            if($user_submenu_db->subMenu->menu->is_menu != 0){
-                if($user_submenu_db->subMenu->is_nav == 1){
-                    $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug][$user_submenu_db->subMenu->name] = [];
-                    $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug]['menu_obj'] = $user_submenu_db->subMenu->menu;
-                    $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug]['submenus'][$user_submenu_db->subMenu->name]['submenu_obj'] = $user_submenu_db->subMenu;
+            if(!empty($user_submenu_db->subMenu->menu)){
+                if($user_submenu_db->subMenu->menu->is_menu != 0){
+                    if($user_submenu_db->subMenu->is_nav == 1){
+                        $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug][$user_submenu_db->subMenu->name] = [];
+                        $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug]['menu_obj'] = $user_submenu_db->subMenu->menu;
+                        $menu_tree[$user_submenu_db->subMenu->menu->order.'_'.$user_submenu_db->subMenu->menu->slug]['submenus'][$user_submenu_db->subMenu->name]['submenu_obj'] = $user_submenu_db->subMenu;
+                    }
                 }
             }
        }

@@ -3,7 +3,9 @@
 namespace App\Providers;
  
 use Illuminate\Support\ServiceProvider;
- 
+use App\Core\Interfaces\ActivityLogInterface;
+use App\Http\Controllers\ProfileController;
+use App\Core\Services\ProfileService;
 
 class RepositoryServiceProvider extends ServiceProvider {
 	
@@ -19,10 +21,11 @@ class RepositoryServiceProvider extends ServiceProvider {
 		$this->app->bind('App\Core\Interfaces\SubmenuInterface', 'App\Core\Repositories\SubmenuRepository');
 
 		$this->app->bind('App\Core\Interfaces\ProfileInterface', 'App\Core\Repositories\ProfileRepository');
+        $this->app->bind('App\Core\Interfaces\ActivityLogInterface',  'App\Core\Repositories\ActivityLogRepository');
 
 
 
-	}
+    }
 
 
 

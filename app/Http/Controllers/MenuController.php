@@ -84,6 +84,12 @@ class MenuController extends Controller{
         return view('dashboard.menu.reorder_menu')->with(['menus'=> $menus]);
     }
 
+    public function get_meunus(){
+        $menus =  $this->menu->getAll();
+
+        return view('dashboard.menu.reorder_menu')->with(['menus'=> $menus]);
+    }
+
 
 
     public function reorderMenus(Request $request){
@@ -105,15 +111,19 @@ class MenuController extends Controller{
         return $this->menu->store($request);
 
     }
- 
+
 
 
 
     public function edit($slug){
 
-        return $this->menu->edit($slug);
-
-
+        $menu = Menu::query()
+            ->where('slug', $slug)
+            ->first();
+            $menu ?? abort(404,'Origin not found.');
+        return view('dashboard.menu.edit')->with([
+            'menu'=>$menu,
+        ]);
     }
 
 

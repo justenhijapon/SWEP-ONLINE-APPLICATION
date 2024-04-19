@@ -49,6 +49,7 @@
 
 
 
+
 {{-- Notify --}}
 <script type="text/javascript" src="{{ asset('template/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
