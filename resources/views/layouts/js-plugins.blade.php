@@ -96,7 +96,10 @@
 <script type="text/javascript" src="{{asset('template/plugins/typeahead/js/bootstrap-typeahead.min.js')}}"></script>
 
 {{--  Cropper --}}
-<script type="text/javascript" src="{{asset('template/plugins/cropperjs/dist/cropper.js')}}"></script>
+{{--<script type="text/javascript" src="{{asset('template/plugins/cropperjs/dist/cropper.js')}}"></script>--}}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<!-- Include Cropper.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
 
 {{-- SWAL2 --}}
 <script type="text/javascript" src="{{asset('template/plugins/swal2/dist/sweetalert2.all.min.js')}}"></script>
@@ -123,3 +126,4 @@
 {{-- BS MODAL --}}
 {{-- <script type="text/javascript" src="{{asset('template/plugins/bootstrap-modal/js/bootstrap-modal.js')}}"></script>
 <script type="text/javascript" src="{{asset('template/plugins/bootstrap-modal/js/bootstrap-modalmanager.js')}}"></script> --}}
+

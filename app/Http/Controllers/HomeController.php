@@ -31,33 +31,27 @@ class HomeController extends Controller{
 
 
     public function index(){
-        $user = User::all();
-        $totaluser = $user->count();
+        $users = User::all();
         $sp = ShippingPermit::all();
-        $totalsp = $sp->count();
-        $totalspdone = $sp->where('sp_status', 'SHIPPED')->count();
+        $lastSpDate = $sp->last()->sp_date;
+        $spDates = ShippingPermit::pluck('sp_date')->toArray();
+        $spAmount = ShippingPermit::pluck('sp_amount')->toArray();
         $totalspcancelled = $sp->where('sp_status', 'CANCELLED')->all();
         $pendingsp = $sp->where('sp_status', 'PENDING')->all();
-        $or = OfficialReciepts::all();
-        $totalor = $or->count();
-        $shipped = $sp->where('sp_status', 'SHIPPED')->count();
-        $pending = $sp->where('sp_status', 'PENDING')->count();
-        $cancelled = $sp->where('sp_status', 'CANCELLED')->count();
-        $users = User::all();
+//        $or = OfficialReciepts::all();
+//        $totalor = $or->count();
+
 
 
         return view('dashboard.home.index')->with([
-            'totaluser' => $totaluser,
-            'totalsp' => $totalsp,
-            'totalor' => $totalor,
-            'totalspdone' => $totalspdone,
+            'users' => $users,
             'sp' => $sp,
+            'lastSpDate' => $lastSpDate,
+            'spDates' => $spDates,
+            'spAmount' => $spAmount,
             'pendingsp' => $pendingsp,
             'totalspcancelled' => $totalspcancelled,
-            'shipped' => $shipped,
-            'pending' => $pending,
-            'cancelled' => $cancelled,
-            'users' => $users,
+//            'totalor' => $totalor,
         ]);
 
     }

@@ -23,7 +23,35 @@
             background-color: {{ __static::pagination_color(Auth::user()->color) }} ;
             border-color: {{ __static::pagination_color(Auth::user()->color) }}
       }
+
+        /* Make the main header sticky */
+        .main-header {
+            position: fixed;
+            width: 100%;
+            z-index: 1030; /* Ensure it appears above other elements */
+        }
+
+        /* Make the main sidebar sticky */
+        .main-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
     </style>
+    <script>
+        $(document).ready(function() {
+            // Initialize SlimScroll on the main sidebar
+            $('.main-sidebar').slimScroll({
+                height: '100%', // Set the height as desired
+                railVisible: true, // Show the scrollbar rail
+                alwaysVisible: true, // Keep scrollbar always visible
+                wheelStep: 10 // Scroll amount on mouse wheel
+            });
+        });
+    </script>
 </head>
 
 
@@ -42,13 +70,13 @@
         @yield('content2')
     </div>
 
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.1.0
-        </div>
-        <strong>Copyright &copy; 2018-2019 <a href="#">SRA</a>.</strong> All rights
-        reserved.
-    </footer>
+{{--    <footer class="main-footer">--}}
+{{--        <div class="pull-right hidden-xs">--}}
+{{--            <b>Version</b> 1.1.0--}}
+{{--        </div>--}}
+{{--        <strong>Copyright &copy; 2018-2019 <a href="#">SRA</a>.</strong> All rights--}}
+{{--        reserved.--}}
+{{--    </footer>--}}
 
 </div>
 @include('layouts.js-plugins')
@@ -59,6 +87,31 @@
 
 <script type="text/javascript">
     let modal_loader = $("#modal_loader").parent('div').html();
+    $('#menu-search').on('input', function() {
+        var searchText = $(this).val().toLowerCase();
+        $('.sidebar-menu li').each(function() {
+            if ($(this).hasClass('header')) {
+                // Skip header elements
+                return true; // Equivalent to continue in a regular loop
+            }
+            var menuItemText = $(this).text().toLowerCase();
+            if (menuItemText.includes(searchText)) {
+                $(this).slideDown();
+            } else {
+                $(this).slideUp();
+            }
+        });
+    });
+
+    $('.sidebar').slimScroll({
+        height: '100%', // Set the height as desired
+        railVisible: true, // Show the scrollbar rail
+        alwaysVisible: true, // Keep scrollbar always visible
+        wheelStep: 10 // Scroll amount on mouse wheel
+    });
+
+
+
 </script>
 @yield('scripts')
 

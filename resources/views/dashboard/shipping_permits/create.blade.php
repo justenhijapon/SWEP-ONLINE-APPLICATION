@@ -3,214 +3,228 @@
 @section('content')
 
     <section class="content-header">
-        <h1>Add Shipping Permit</h1>
+        <h1 class="text-center">Add Shipping Permit</h1>
     </section>
 
     <section class="content">
         {{-- Table Grid --}}
-        <div class="box">
-            <div class="box-header with-border">
-                <h3 class="box-title">Permit Details</h3>
-                <div class="pull-right">
-                    <button type="button" class="btn btn-default" data-toggle="modal" onclick="window.location='{{ url("dashboard/shipping_permits") }}'" > Back</button>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Permit Details</h3>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                    onclick="window.location='{{ url("dashboard/shipping_permits") }}'"> Back</button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <form autocomplete="off" id="form_add_shipping_permits" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- First Column Form Elements -->
+                                            <div class="row">
+                                                <!-- Shipping Permit No. -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_no',[
+                                                'label' => 'Shipping Permit No.:',
+                                                'cols' => 6,
+                                                'class' => 'autonum_init',
+                                                ]) !!}
+                                                <!-- EDD/ETD -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_edd_etd',[
+                                                'label' => 'EDD/ETD:',
+                                                'type' => 'date',
+                                                'cols' => 3,
+                                                ]) !!}
+
+                                                <!-- EDA/ETA -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_eda_eta',[
+                                                'label' => 'EDA/ETA:',
+                                                'type' => 'date',
+                                                'cols' => 3,
+                                                ]) !!}
+                                            </div>
+                                            <div class="row">
+                                                <!-- Permit Date -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_date',[
+                                                'label' => 'Permit Date:',
+                                                'type' => 'date',
+                                                'cols' => 2,
+                                                ]) !!}
+                                                <!-- Port of Origin -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_port_of_origin',[
+                                                'label' => 'Port of Origin:',
+                                                'cols' => 5,
+                                                'options' => \App\Core\Helpers\Arrays::portofOrigin(),
+                                                ]) !!}
+                                                <!-- Port of Destination -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_port_of_destination',[
+                                                'label' => 'Port of Destination:',
+                                                'cols' => 5,
+                                                'options' => \App\Core\Helpers\Arrays::portofdestination(),
+                                                ]) !!}
+                                            </div>
+                                            <div class="row">
+                                                <!-- Mill -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_mill',[
+                                                'label' => 'Mill:',
+                                                'cols' => 3,
+                                                'options' => \App\Core\Helpers\Arrays::originmill(),
+                                                ]) !!}
+                                                <!-- Sugar Class -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_sugar_class',[
+                                                'label' => 'Sugar Class:',
+                                                'options' => [
+                                                'RAW' => 'RAW',
+                                                'DIRECT CONSUMPTION' => 'DIRECT CONSUMPTION',
+                                                'REFINED' => 'REFINED',
+                                                'OTHER'=> 'OTHER'
+                                                ],
+                                                'cols' => 3,
+                                                ]) !!}
+                                                <!-- Volume -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_volume',[
+                                                'label' => 'Volume:',
+                                                'cols' => 3,
+                                                ]) !!}
+                                                <!-- UoM -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_uom',[
+                                                'label' => 'UoM:',
+                                                'cols' => 3,
+                                                ]) !!}
+                                            </div>
+                                            <div class="row">
+                                                <!-- Name of Vessel -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_vessel',[
+                                                'label' => 'Name of Vessel:',
+                                                'cols' => 3,
+                                                'options' => \App\Core\Helpers\Arrays::spvessel(),
+
+                                                ]) !!}
+                                                <!-- Ship Operator -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_ship_operator',[
+                                                'label' => 'Ship Operator:',
+                                                'cols' => 3,
+                                                ]) !!}
+                                                <!-- Freight -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_freight',[
+                                                'label' => 'Freight:',
+                                                'cols' => 3,
+                                                'options' => \App\Core\Helpers\Arrays::spfreight(),
+
+                                                ]) !!}
+                                                <!-- Plate No. -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_plate_no',[
+                                                'label' => 'Plate No.:',
+                                                'cols' => 3,
+                                                ]) !!}
+                                            </div>
+                                            <div class="row">
+                                                <!-- Remarks -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_remarks',[
+                                                'label' => 'Remarks:',
+                                                'cols' => 8,
+                                                ]) !!}
+                                                <!-- Amount -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_amount',[
+                                                'label' => 'Amount:',
+                                                'cols' => 4,
+                                                'class' => 'autonum',
+                                                ]) !!}
+                                            </div>
+                                            <div class="row">
+                                                <!-- O.R. No. -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_or_no',[
+                                                'label' => 'O.R. No.:',
+                                                'cols' => 4,
+                                                'id' => 'or_no',
+                                                'options' => ['or1' , ' or2']
+                                                ]) !!}
+
+                                                <!-- Ref SP No. -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_ref_sp_no',[
+                                                'label' => 'Ref SP No.:',
+                                                'cols' => 4,
+                                                ]) !!}
+                                                <!-- Status -->
+                                                {!! \App\Core\Helpers\__form2::select('sp_status',[
+                                                'label' => 'Status:',
+                                                'options' => [
+                                                'PENDING' => 'PENDING',
+                                                'SHIPPED' => 'SHIPPED',
+                                                'CANCELLED' => 'CANCELLED'
+                                                ],
+                                                'cols' => 4,
+                                                ]) !!}
+                                            </div>
+                                            <div class="row">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Shipper</h3>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <!-- Markings -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_markings',[
+                                                'label' => 'Markings:',
+                                                'cols' => 12,
+                                                ]) !!}
+                                            </div>
+                                            <div class="row">
+                                                <!-- Shipper, Shipper Address, and Shipper Tin -->
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper',[
+                                                'label' => 'Shipper:',
+                                                'cols' => 5,
+                                                ]) !!}
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper_add',[
+                                                'label' => 'Shipper Address:',
+                                                'cols' => 5,
+                                                ]) !!}
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper_tin',[
+                                                'label' => 'Shipper Tin:',
+                                                'cols' => 2,
+                                                ]) !!}
+                                            </div>
+                                            <!-- Consignee, Consignee Address, and Consignee Tin -->
+                                            <div class="row">
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee',[
+                                                'label' => 'Consignee:',
+                                                'cols' => 5,
+                                                ]) !!}
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee_add',[
+                                                'label' => 'Consignee Address:',
+                                                'cols' => 5,
+                                                ]) !!}
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee_tin',[
+                                                'label' => 'Consignee Tin:',
+                                                'cols' => 2,
+                                                ]) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left"
+                                        onclick="window.location='{{ url("dashboard/shipping_permits") }}'"
+                                        data-dismiss="modal">Close</button>
+                                <button type="submit"
+                                        class="btn {!! __static::bg_color(Auth::user()->color) !!}"><i class="fa fa-save"></i>
+                                    Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-body -->
                 </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <form autocomplete="off" id="form_add_shipping_permits" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <div class="col-md-12">
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_no',[
-                                    'label' => 'Shipping Permit No.:',
-                                    'cols' => 6,
-                                     'class' => 'autonum_init',
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_edd_etd',[
-                                    'label' => 'EDD/ETD:',
-                                    'type' => 'date',
-                                    'cols' => 6,
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_date',[
-                                    'label' => 'Permit Date:',
-                                    'type' => 'date',
-                                    'cols' => 6,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_eda_eta',[
-                                    'label' => 'EDA/ETA:',
-                                    'type' => 'date',
-                                    'cols' => 6,
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::select('sp_port_of_origin',[
-                                    'label' => 'Port of Origin:',
-                                    'cols' => 8,
-                                    'options' => \App\Core\Helpers\Arrays::portofOrigin(),
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::select('sp_mill',[
-                                    'label' => 'Mill:',
-                                    'cols' => 4,
-                                    'options' => \App\Core\Helpers\Arrays::originmill(),
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::select('sp_port_of_destination',[
-                                    'label' => 'Port of Destination:',
-                                    'cols' => 8,
-                                    'options' => \App\Core\Helpers\Arrays::portofdestination(),
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::select('sp_sugar_class',[
-                                    'label' => 'Sugar Class:',
-                                    'options' => [
-                                        'RAW' => 'RAW',
-                                        'DIRECT CONSUMPTION' => 'DIRECT CONSUMPTION',
-                                        'REFINED' => 'REFINED',
-                                        'OTHER'=> 'OTHER'
-                                        ],
-                                    'cols' => 4,
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::select('sp_vessel',[
-                                    'label' => 'Name of Vessel:',
-                                    'cols' => 8,
-                                    'options' => \App\Core\Helpers\Arrays::spvessel(),
-
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_volume',[
-                                    'label' => 'Volume:',
-                                    'cols' => 4,
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_ship_operator',[
-                                    'label' => 'Ship Operator:',
-                                    'cols' => 8,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_uom',[
-                                    'label' => 'UoM:',
-                                    'cols' => 4,
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::select('sp_freight',[
-                                    'label' => 'Freight:',
-                                    'cols' => 4,
-                                    'options' => \App\Core\Helpers\Arrays::spfreight(),
-
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_plate_no',[
-                                    'label' => 'Plate No.:',
-                                    'cols' => 4,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::select('sp_or_no',[
-                                    'label' => 'O.R. No.:',
-                                    'cols' => 4,
-                                    'id' => 'or_no',
-                                    'options' => \App\Core\Helpers\Arrays::spOR(),
-
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_remarks',[
-                                    'label' => 'Remarks:',
-                                    'cols' => 8,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_amount',[
-                                    'label' => 'Amount:',
-                                    'cols' => 4,
-                                    'class' => 'autonum',
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_ref_sp_no',[
-                                    'label' => 'Ref SP No.:',
-                                    'cols' => 8,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::select('sp_status',[
-                                    'label' => 'Status:',
-                                    'options' => [
-                                        'PENDING' => 'PENDING',
-                                        'SHIPPED' => 'SHIPPED',
-                                        'CANCELLED' => 'CANCELLED'
-                                        ],
-                                    'cols' => 4,
-                                ]) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Shipper</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="col-md-12">
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_markings',[
-                                    'label' => 'Markings:',
-                                    'cols' => 12,
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper',[
-                                    'label' => 'Shipper:',
-                                    'cols' => 5,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper_add',[
-                                    'label' => 'Shipper Address:',
-                                    'cols' => 5,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper_tin',[
-                                    'label' => 'Shipper Tin:',
-                                    'cols' => 2,
-                                ]) !!}
-                            </div>
-                            <div class="row">
-
-                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee',[
-                                    'label' => 'Consignee:',
-                                    'cols' => 5,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee_add',[
-                                    'label' => 'Consignee Address:',
-                                    'cols' => 5,
-                                ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee_tin',[
-                                    'label' => 'Consignee Tin:',
-                                    'cols' => 2,
-                                ]) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" onclick="window.location='{{ url("dashboard/shipping_permits") }}'"  data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!}"><i class="fa fa-save"></i> Save</button>
-                    </div>
-
-                </form>
-
-            </div>
-            <!-- /.box-body -->
         </div>
-
-
     </section>
 
-
 @endsection
+
 
 @section('scripts')
 
@@ -270,7 +284,7 @@
 
             })
 
-        });
+
 
 
 
@@ -294,6 +308,8 @@
                 }
             });
         })
+
+        });
     </script>
 
 @endsection

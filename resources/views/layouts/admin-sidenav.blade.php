@@ -7,18 +7,25 @@
       <div class="pull-left info">
 
         @if(Auth::check())
-          <p>{{ Auth::user()->firstname }}</p>
+          <p>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</p>
         @endif
 
         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
       </div>
     </div>
+      <div class="sidebar-form">
+          <div class="input-group">
+              <input type="text" id="menu-search" placeholder="Search menu..." class="form-control">
+              <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                    </button>
+                </span>
+          </div>
+      </div>
     <ul class="sidebar-menu" data-widget="tree">
 
       @if(Auth::check())
         @if(count($global_menu_tree) > 0)
-          <li class="header">NAVIGATION</li>
-
             <li>
                 <a href="{{route('dashboard.home')}}">
                     <i class="fa fa-home"></i>
@@ -54,8 +61,8 @@
                                     <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
                                     <span>{{$user_menu['menu_obj']->name}}</span>
                                     <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
                                 </a>
                                 <ul class="treeview-menu" style="display: none;">
                                     @foreach($user_menu['submenus'] as $submenu)
@@ -124,8 +131,8 @@
                                     <i class="fa {{$user_menu['menu_obj']->icon}}"></i>
                                     <span>{{$user_menu['menu_obj']->name}}</span>
                                     <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
                                 </a>
                                 <ul class="treeview-menu" style="display: none;">
                                     @foreach($user_menu['submenus'] as $submenu)

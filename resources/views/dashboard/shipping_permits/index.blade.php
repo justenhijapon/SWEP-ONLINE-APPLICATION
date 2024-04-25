@@ -339,7 +339,7 @@
                     {
                         "targets" : 6,
                         "orderable": false,
-                        "class" : 'action-3'
+                        "class" : 'action-2'
                     },
 
                 ],

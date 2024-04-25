@@ -66,10 +66,7 @@
     <div class="col-md-4">
       <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header bg-aqua" style="background: url({{asset('images/sra.jpg')}}) center center; background-size: cover;">
-          <h3 class="widget-user-username">{{ Auth::check() ? Auth::user()->fullname : '' }}</h3>
-          <h5 class="widget-user-desc">{{ Auth::check() ? Auth::user()->position : '' }}</h5>
-        </div>
+        <div class="widget-user-header bg-aqua" style="background: url({{asset('images/sra.jpg')}}) center center; background-size: cover;"></div>
         <div class="widget-user-image image_o" data-content="CHANGE" id="img-circ">
 
             <img class="img-circle"  src="{!! __html::check_img(Auth::user()->image) !!}" alt="User Avatar">
@@ -77,21 +74,15 @@
         </div>
         <div class="box-footer">
           <div class="row">
-            <div class="col-sm-6 border-right">
+            <div class="col-sm-12">
               <div class="description-block">
-                <h5 class="description-header">{{number_format($total_encoded)}}</h5>
-                <span class="description-text">Entries you encoded</span>
+                <h3 class="widget-user-username">{{ Auth::check() ? Auth::user()->fullname : '' }}</h3>
+                <h5 class="widget-user-desc">{{ Auth::check() ? Auth::user()->position : '' }}</h5>
               </div>
               <!-- /.description-block -->
             </div>
             <!-- /.col -->
-            <div class="col-sm-6 border-right">
-              <div class="description-block">
-                <h5 class="description-header">{{number_format($total_updated) }}</h5>
-                <span class="description-text">Entries last updated by you</span>
-              </div>
-              <!-- /.description-block -->
-            </div>
+
             <!-- /.col -->
           </div>
           <!-- /.row -->
@@ -226,6 +217,7 @@
 
                       </div>
 
+
                       <div class="form-group">
                         <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} pull-right">
                           <i class="fa fa-save "></i> Save
@@ -252,11 +244,11 @@
                         ) !!}
 
                         {!! __form::textbox_password_btn(
-                            '4 password', 'password', 'Password *', 'Password', '', 'password', '', ''
+                            '4 password', 'password', 'New Password *', 'New Password', '', 'password', '', ''
                         ) !!}
 
                         {!! __form::textbox_password_btn(
-                            '4 password_confirmation', 'password_confirmation', 'Confirm Password *', 'Confirm Password', '', 'password_confirmation', '', ''
+                            '4 password_confirmation', 'password_confirmation', 'Confirm New Pass', 'Confirm New Password', '', 'password_confirmation', '', ''
                         ) !!}
                       </div>
                       <div class="form-group">
@@ -269,14 +261,13 @@
                 </div>
               </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default" >
               <div class="panel-heading">
                 Color Scheme
               </div>
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-sm-12">
-                    <div class="scrolling-wrapper">
+                  <div class="scrolling-wrapper" style="padding-left: 10px">
                       @php
                         $themes = __static::user_colors();
                         ksort($themes);
@@ -311,7 +302,7 @@
                         </div>
                       @endforeach
                     </div>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -319,7 +310,7 @@
         </div>
       </div>
     </div>
-
+  </div>
 </section>
 </div>
 @endsection
@@ -339,18 +330,17 @@
     <!-- Below are a series of inputs which allow file selection and interaction with the cropper api -->
         <input type="file" id="fileInput" accept="image/*" hidden="" style="display: none" />
 
+          </p>
+          <div style="width: 100%; height: 100%" id="img_container" >
+            <img id="image">
 
-    </p>
-    <div style="width: 100%" id="img_container" >
-      <img id="image">
-    </div>
-
-    <div id="img_loader" style="display: none">
-      <center>
-        <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
-      </center>
-    </div>
-    <br>
+          </div>
+          <div id="img_loader" style="display: none">
+            <center>
+              <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+            </center>
+          </div>
+          <br>
 
 
 
@@ -371,106 +361,6 @@
 
 @section('scripts')
   <script type="text/javascript">
-    function filter_dt(){
-      mod = $(".module").val();
-      event = $(".event").val();
-      date_range = $("#date_range").val();
-      activity_tbl.ajax.url(
-        "{{ route('dashboard.profile.details') }}?mod="+mod+"&event="+event+"&date_range="+date_range).load();
-
-      $(".filters").each(function(index, el) {
-        if($(this).val() != ''){
-          $(this).parent("div").addClass('has-success');
-          $(this).siblings('label').addClass('text-green');
-        }else{
-          $(this).parent("div").removeClass('has-success');
-          $(this).siblings('label').removeClass('text-green');
-        }
-      });
-    }
-  </script>
-  <script type="text/javascript">
-
-    activity_tbl = $("#activity_logs_table").DataTable({
-      'dom' : 'lBfrtip',
-      "processing": true,
-      "serverSide": true,
-      "ajax" : '{{ route("dashboard.profile.details") }}',
-      "columns": [
-          { "data": "module" },
-          { "data": "event" },
-          { "data": "remarks" },
-          { "data": "created_at" },
-          { "data": "created_at_raw" },
-      ],
-      'order': [[4, 'desc']],
-      buttons: [
-          {!! __js::dt_buttons() !!}
-      ],
-      "columnDefs":[
-        {
-          "targets" : 0,
-          "class" : 'th-90'
-        },
-        {
-          "targets" : 1,
-          "class" : 'sex-th'
-        },
-        {
-          "targets" : 3,
-          "class" : 'time-th'
-        },
-        {
-          "targets": 4,
-          "visible" :false
-        }
-      ],
-      "responsive": false,
-      "initComplete": function( settings, json ) {
-          $('#tbl_loader').fadeOut(function(){
-            $("#activity_logs_container").fadeIn();
-          });
-        },
-      "language":
-        {
-          "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
-        },
-      "drawCallback": function(settings){
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="modal"]').tooltip();
-
-      }
-    })
-
-    //Search Bar Styling
-    style_datatable('#activity_logs_table');
-
-    //Need to press enter to search
-      $('#activity_logs_table_filter input').unbind();
-      $('#activity_logs_table_filter input').bind('keyup', function (e) {
-          if (e.keyCode == 13) {
-              activity_tbl.search(this.value).draw();
-          }
-      });
-
-    $("#date_range").daterangepicker({
-
-    });
-    $("#date_range").val('');
-
-    $("body").on("click",".clearBtn", function(){
-      $("#date_range").val('');
-      $("#date_range").change();
-      $(this).attr("disabled","disabled");
-    })
-
-
-    $(".filters").change(function(){
-      filter_dt();
-      if($("#date_range").val()!=""){
-        $(".clearBtn").removeAttr('disabled');
-      }
-    })
 
     $(".scrolling-card").click(function(event) {
       color = $(this).attr('data');
@@ -505,7 +395,7 @@
 
     $("#username_form").submit(function(e) {
       e.preventDefault();
-      wait_button("#username_form");
+      // wait_button("#username_form");
       $.ajax({
         url : "{{ route('dashboard.profile.update_account_username') }}",
         data: $(this).serialize(),
@@ -514,9 +404,12 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-          succeed("#username_form","save",false);
-          $("span[for='username']").html(response);
+          // succeed("#username_form","save",false);
+          // $("span[for='username']").html(response);
+          console.log(response);
           notify("Username successfully updated.","success");
+          succeed(form,true,false);
+          $("#username_form input[name='username']").focus();
         },
         error: function(response){
           errored("#username_form","save",response);
@@ -526,7 +419,7 @@
 
     $("#password_form").submit(function(e) {
       e.preventDefault();
-      wait_button("#password_form");
+      // wait_button("#password_form");
       $.ajax({
         url: "{{ route('dashboard.profile.update_account_password') }}",
         data: $(this).serialize(),
@@ -542,17 +435,21 @@
 
 
           if(response == -1){
-            succeed("#password_form","save", false);
-            $(".old_password").addClass('has-error');
-            $(".old_password").append('<span class="help-block">Incorrect password.</span>');
+            // succeed("#password_form","save", false);
+            console.log(response);
+            notify("Incorrect Old Password.","danger");
+            // $(".old_password").addClass('has-error');
+            // $(".old_password").append('<span class="help-block">Incorrect password.</span>');
           }
           if(response == 1){
-            succeed("#password_form","save", true);
-            notify("Password updated.","success");
+            // succeed("#password_form","save", true);
+            console.log(response);
+            notify("Password Updated","success");
           }
         },
         error: function(response){
           console.log(response);
+          notify("New and Confrim Password does not match","warning");
           errored("#password_form","save",response);
         }
       })
@@ -613,7 +510,7 @@
 
 
     $("#img-circ").click(function() {
-      $("#fileInput").click();
+    $("#fileInput").click();
     })
   </script>
 
@@ -670,6 +567,7 @@
         cropper.destroy();
         cropper = null;
       });
+
 
       $('#btnCrop').on('click', function () {
         var initialAvatarURL;
