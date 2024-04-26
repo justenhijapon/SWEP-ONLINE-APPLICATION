@@ -26,7 +26,7 @@
 
       @if(Auth::check())
         @if(count($global_menu_tree) > 0)
-            <li>
+            <li id="home-nav">
                 <a href="{{route('dashboard.home')}}">
                     <i class="fa fa-home"></i>
                     <span>Home</span>
@@ -153,4 +153,17 @@
     </ul>
   </section>
 </aside>
+{{--@section('scripts')--}}
+{{--<script>--}}
+{{--    $(document).ready(function() {--}}
+{{--        // Initialize SlimScroll on the main sidebar--}}
+{{--        $('.main-sidebar').slimScroll({--}}
+{{--            height: '100%', // Set the height as desired--}}
+{{--            railVisible: true, // Show the scrollbar rail--}}
+{{--            alwaysVisible: true, // Keep scrollbar always visible--}}
+{{--            wheelStep: 10 // Scroll amount on mouse wheel--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
+{{--@endsection--}}
 

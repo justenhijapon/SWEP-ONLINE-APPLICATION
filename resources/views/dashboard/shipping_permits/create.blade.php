@@ -141,7 +141,7 @@
                                                 'label' => 'O.R. No.:',
                                                 'cols' => 4,
                                                 'id' => 'or_no',
-                                                'options' => ['or1' , ' or2']
+                                                'options' => \App\Core\Helpers\Arrays::spOR(),
                                                 ]) !!}
 
                                                 <!-- Ref SP No. -->
@@ -299,7 +299,6 @@
                 },
                 type: 'GET',
                 success:function (response){
-                    $("#form_add_shipping_permits input[name='sp_amount']").val(response.sample);
                     $("#form_add_shipping_permits input[name='sp_volume']").val(response.or_payor);
 
                 },

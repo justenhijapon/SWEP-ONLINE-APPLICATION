@@ -42,6 +42,9 @@ class ShippingPermit extends Model
         return $this->belongsTo(Port::class,'sp_port_of_destination' ,'slug');
     }
 
+    public function spMIll_Origin(){
+        return $this->belongsTo(Origin::class,'sp_mill' ,'slug');
 
+    }
 
 }

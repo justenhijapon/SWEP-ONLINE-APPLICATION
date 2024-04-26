@@ -339,7 +339,7 @@
                     {
                         "targets" : 6,
                         "orderable": false,
-                        "class" : 'action-2'
+                        "class" : 'action-10p'
                     },
 
                 ],
@@ -471,6 +471,8 @@
 
             });
         });
+
+
         
 
     </script>

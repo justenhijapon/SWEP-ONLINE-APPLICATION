@@ -16,6 +16,7 @@ class printController extends Controller
             ->with([
                 "portOfOrigin",
                 "portOfDestination",
+                "spMIll_Origin",
             ])
             ->where('slug', $slug)
             ->first();

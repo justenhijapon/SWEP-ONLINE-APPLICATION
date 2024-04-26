@@ -7,7 +7,14 @@
         @media print {
             @page {
                 size: A4;
-
+                margin: 0;
+            }
+            .content-container {
+                width: 105mm; /* Half the width of A4 */
+                height: 148.5mm; /* Half the height of A4 */
+                margin: 0 auto; /* Center the content container */
+                transform: scale(0.5); /* Scale down the content */
+                transform-origin: top left; /* Ensure scaling starts from the top left */
             }
         }
 
@@ -24,6 +31,11 @@
             text-align: center;
             vertical-align: middle;
             display: inline-block;
+        }
+
+        #title h4 {
+            margin: 0; /* Removes the default margin */
+            padding: 0; /* Removes any default padding */
         }
 
         .sp-copy{
@@ -61,7 +73,6 @@
         }
 
 
-
     </style>
 </head>
 <body>
@@ -79,8 +90,8 @@
         <h2>PERMIT TO SHIP SUGAR WITHIN PHILIPPINE TERRITORY</h2>
     </div>
 </div>
-
-
+<br>
+<br><br><br>
 <table style="width: 100%">
     <tbody>
         <tr>
@@ -123,7 +134,7 @@
 
         </tr>
         <tr>
-            <td colspan="3" class="borderlr">&nbsp;</td>
+            <td colspan="3" class="borderlr">{{ $test->spMIll_Origin->name }}</td>
             <td style="border-top: 1px solid black; font-weight: bold; padding-left: 5px;"><input type="checkbox">RAW</td>
             <td style="border-top: 1px solid black; border-right: 1px solid black; font-weight: bold; padding-left: 5px;" ><input type="checkbox">REFINED</td>
         </tr>

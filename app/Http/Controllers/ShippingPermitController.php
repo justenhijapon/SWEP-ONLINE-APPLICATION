@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Core\Helpers\Helpers;
+use App\Exports\GroupedShippingPermitExport;
+use App\Exports\ShippingPermitExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shipping_Permit\ShippingPermitFormRequest;
 use App\Models\Port;
@@ -246,7 +248,7 @@ class ShippingPermitController extends Controller
 
             if($request->excel == true){
 
-                return Excel::download(new UsersExport($request->get('columns'),$sp->get(),$this->columns()), 'shipping_permit_report.xlsx');
+                return Excel::download(new ShippingPermitExport($request->get('columns'),$sp->get(),$this->columns()), 'shipping_permit_report.xlsx');
             }
             return view('printables.shipping_permits.list_all')->with([
                 'sp' => $sp->get(),
@@ -257,26 +259,39 @@ class ShippingPermitController extends Controller
             ]);
         }
 
-        if($type == "sp_port_of_origin"){
+        if($type == "sp_port_of_origin") {
             $sp = $sp->get();
             $port_origin = [];
-            foreach ($sp as $port){
+            foreach ($sp as $port) {
                 $port_origin[$port->sp_port_of_origin][$port->slug] = $port;
             }
-            if($request->excel == true){
-                echo "<script>
-                alert('Only List All Layout can generate Excel Report');
-                window.location.href='/dashboard/ShippingPermit_reports';
-                </script>";
-            }
-            return view('printables.shipping_permits.grouped_list')->with([
-                'sp' => $sp,
-                'port_origin' => $port_origin,
-                'columns_chosen' => $request->get('columns'),
-                'columns' => $this->columns(),
-                'filters'=> $filters,
+            if ($type == "sp_port_of_origin") {
 
-            ]);
+                // Sort $sp by port before exporting
+                $sp = $sp->sortByDesc('sp_port_of_origin');
+
+                if ($request->excel == true) {
+//                echo "<script>
+//                alert('Only List All Layout can generate Excel Report');
+//                window.location.href='/dashboard/ShippingPermit_reports';
+//                </script>";
+                    return Excel::download(new GroupedShippingPermitExport(
+                        $request->get('columns'),
+                        $sp,
+                        $this->columns(),
+                        $port_origin
+                    ), 'grouped_by_port_shipping_permit_report.xlsx');
+
+                }
+                return view('printables.shipping_permits.grouped_list')->with([
+                    'sp' => $sp,
+                    'port_origin' => $port_origin,
+                    'columns_chosen' => $request->get('columns'),
+                    'columns' => $this->columns(),
+                    'filters' => $filters,
+
+                ]);
+            }
         }
 
     }

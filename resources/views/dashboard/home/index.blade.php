@@ -194,7 +194,7 @@
               <div class="box-header with-border">
                 <h4 class="box-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="">
-                    Pending Shipping Permit
+                    Pending
                   </a>
                 </h4>
               </div>
@@ -242,7 +242,7 @@
               <div class="box-header with-border">
                 <h4 class="box-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse2023" class="collapsed" aria-expanded="false">
-                    Cancelled Shipping Permit
+                    Cancelled
                   </a>
                 </h4>
               </div>
@@ -341,7 +341,7 @@
     var salesData = {
       labels: labels,
       datasets: [{
-        label: 'Sales',
+        label: 'Amount',
         backgroundColor: 'rgba(60,141,188,0.9)',
         borderColor: 'rgba(60,141,188,0.8)',
         pointRadius: false,
