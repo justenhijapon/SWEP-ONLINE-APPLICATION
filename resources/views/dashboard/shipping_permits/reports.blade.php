@@ -49,8 +49,22 @@
                                         <label>Sugar Class:</label>
                                         <select name="sp_mill" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
                                             <option value="">All</option>
-                                            <option value="asd">asd</option>
-                                            <option value="test">test</option>
+                                                @php
+                                                    $displayedMillNames = [];
+                                                @endphp
+
+                                                @foreach ($sp as $spm)
+                                                    @php
+                                                        $millName = $spm->spMIll_Origin->name;
+                                                    @endphp
+
+                                                    @if (!in_array($millName, $displayedMillNames))
+                                                        <option value="{{ $spm->sp_mill }}">{{ $millName }}</option>
+                                                        @php
+                                                            $displayedMillNames[] = $millName;
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
                                         </select>
                                     </div>
 
@@ -59,9 +73,23 @@
 
                                         <select name="sp_port_of_origin" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
                                             <option value="">All</option>
+
                                             @if(count($sp) > 0)
-                                                @foreach ($sp as $key => $sp)
-                                                    <option value="{{$sp->sp_port_of_origin}}">{{$sp->portOfOrigin->port_name}}</option>
+                                                @php
+                                                    $displayedPortNames = [];
+                                                @endphp
+
+                                                @foreach ($sp as $key => $singleSp)
+                                                    @php
+                                                        $portName = $singleSp->portOfOrigin->port_name;
+                                                    @endphp
+
+                                                    @if (!in_array($portName, $displayedPortNames))
+                                                        <option value="{{ $singleSp->sp_port_of_origin }}">{{ $portName }}</option>
+                                                        @php
+                                                            $displayedPortNames[] = $portName;
+                                                        @endphp
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </select>

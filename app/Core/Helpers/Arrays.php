@@ -82,6 +82,14 @@ class Arrays
         })->toArray();
     }
 
+    public static function spStatus(){
+        return [
+                'PENDING' => 'PENDING',
+                'SHIPPED' => 'SHIPPED',
+                'CANCELLED' => 'CANCELLED'
+        ];
+    }
+
 
 
     public static function cropYear($end = 2000){

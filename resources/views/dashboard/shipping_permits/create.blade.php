@@ -133,6 +133,7 @@
                                                 'label' => 'Amount:',
                                                 'cols' => 4,
                                                 'class' => 'autonum',
+                                                'placeholder' => 0,
                                                 ]) !!}
                                             </div>
                                             <div class="row">
@@ -277,7 +278,8 @@
                             }
                         })
                     } else if (result.isDenied) {
-                        Swal.fire("Changes are not saved", "", "info");
+                        window.print();
+
                     }
                 });
 

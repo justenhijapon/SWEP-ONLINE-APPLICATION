@@ -27,20 +27,21 @@ class HomeController extends Controller{
     }
 
 
-
-
-
     public function index(){
         $users = User::all();
         $sp = ShippingPermit::all();
-        $lastSpDate = $sp->last()->sp_date;
-        $spDates = ShippingPermit::pluck('sp_date')->toArray();
-        $spAmount = ShippingPermit::pluck('sp_amount')->toArray();
+
+        $spAmount = array_slice(ShippingPermit::pluck('sp_amount')->toArray(), -4);
+        $spDates = array_slice(ShippingPermit::pluck('sp_date')->toArray(), -4);
         $totalspcancelled = $sp->where('sp_status', 'CANCELLED')->all();
         $pendingsp = $sp->where('sp_status', 'PENDING')->all();
-//        $or = OfficialReciepts::all();
-//        $totalor = $or->count();
-
+        $or = OfficialReciepts::all();
+        $totalor = $or->count();
+        $lsp = ShippingPermit::all();
+        for ($i = 0; $i < 3; $i++) {
+            $lsp->pop();
+        }
+        $lastSpDate = $lsp->last();
 
 
         return view('dashboard.home.index')->with([
@@ -51,7 +52,7 @@ class HomeController extends Controller{
             'spAmount' => $spAmount,
             'pendingsp' => $pendingsp,
             'totalspcancelled' => $totalspcancelled,
-//            'totalor' => $totalor,
+            'totalor' => $totalor,
         ]);
 
     }

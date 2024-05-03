@@ -14,7 +14,53 @@
                 <div class="pull-right">
                     <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" onclick="window.location='{{ url("/dashboard/shipping_permits/create") }}'" ><i class="fa fa-plus"></i> Add</button>
                 </div>
+            </div>
+            <div class="panel">
+                <div class="box-header with-border">
+                    <h4 class="box-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                            <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-1 col-sm-2 col-lg-2">
+                                <label>O.R. No.:</label>
+                                <select id="or_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @foreach($spor as $or)
+                                    <option value="{{$or->or_no}}">{{$or->or_no}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-1 col-sm-2 col-lg-2">
+                                <label>Status:</label>
+                                <select id="status_filter" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="SHIPPED">Shipped</option>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="CANCELLED">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 col-sm-3 col-lg-3"> <!-- Adjusted column size for date range -->
+                                <div class="form-group">
+                                    <input type="checkbox" id="date_range_check">
+                                    <label> Permit Date:</label>
 
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input name="date_range" type="text" class="form-control pull-right filters" id="date_range" autocomplete="off" disabled>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -23,6 +69,7 @@
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                             <th>SLUG</th>
+                            <th>Official Reciept No.</th>
                             <th>Shipping Permit No.</th>
                             <th>Permit Date</th>
                             <th>EDD/ETD</th>
@@ -282,11 +329,68 @@
 
     <script type="text/javascript">
         {!! __js::modal_loader() !!}
-        function filter_dt(){
+    </script>
+    <script type="text/javascript">
+        // Filters
+        $('#or_filter').on('change', function () {
+            var sp_or_no = $(this).val();
+            shipping_permits_table.columns(1).search(sp_or_no).draw();
+        });
+        $('#status_filter').on('change', function () {
+            var sp_status = $(this).val();
+            shipping_permits_table.columns(6).search(sp_status).draw();
+        });
+        //Date Range
+        $('#date_range_check').change(function() {
+            if ($(this).is(':checked')) {
+                // Enable date range input
+                $('#date_range').prop('disabled', false);
+            } else {
+                // Disable date range input
+                $('#date_range').prop('disabled', true);
+                // Clear date range filter and redraw the table
+                shipping_permits_table.columns(3).search('').draw();
+            }
+        });
 
-            shipping_permits_table.ajax.url("{{ route('dashboard.shipping_permits.index') }}"+"?sp_status="+sp_status).load();
+        // Date range picker initialization
+        $('#date_range').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
 
-        }
+        // Listen for date range picker change event
+        $('#date_range').on('apply.daterangepicker', function(ev, picker) {
+            // Set the value of the input
+            $(this).val(picker.startDate.format('MMMM D, YYYY') + ' - ' + picker.endDate.format('MMMM D, YYYY'));
+            // Filter data based on selected date range
+            var startDate = picker.startDate.format('YYYY-MM-DD');
+            var endDate = picker.endDate.format('YYYY-MM-DD');
+
+            var currentDate = moment(startDate);
+            var datesArray = [];
+
+            while (currentDate <= moment(endDate)) {
+                datesArray.push(currentDate.format('YYYY-MM-DD'));
+                currentDate = currentDate.clone().add(1, 'days');
+            }
+
+            var datesString = datesArray.join('|');
+
+            shipping_permits_table.columns(3).search(datesString, true, false).draw();
+
+        });
+
+        // Clear date range input when 'Clear' button is clicked
+        $('#date_range').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+            // Clear date range filter and redraw the table
+            shipping_permits_table.columns(3).search('').draw();
+        });
+
+
     </script>
 
     <script type="text/javascript">
@@ -313,6 +417,7 @@
                 },
                 "columns": [
                     {"data": "slug"},
+                    {"data": "sp_or_no"},
                     {"data": "sp_no"},
                     {"data": "sp_date"},
                     {"data": "sp_edd_etd"},
@@ -332,17 +437,25 @@
                     },
 
                     {
-                        "targets" : [5],
+                        "targets" : [6],
                         "orderable": true,
                         "class" : 'w-6p'
                     },
                     {
-                        "targets" : 6,
+                        "targets" : 7,
                         "orderable": false,
                         "class" : 'action-10p'
                     },
+                    {
+                        "targets": [3,4,5], // sp_date column index
+                        "render": function (data, type, full, meta) {
+                            // Format the date using moment.js or any other library
+                            return moment(data).format("MMMM D, YYYY"); // Adjust format as needed
+                        }
+                    }
 
                 ],
+                "order": [[3, "desc"]], // Sort by sp_date column in ascending order
                 "responsive": false,
                 "initComplete": function( settings, json ) {
                     $('#tbl_loader').fadeOut(function(){
@@ -473,7 +586,7 @@
         });
 
 
-        
+
 
     </script>
 

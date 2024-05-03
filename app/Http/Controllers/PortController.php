@@ -24,6 +24,7 @@ class PortController extends Controller
                         'data' => $data,
                     ]);
                 })
+                ->escapeColumns([])
                 ->rawColumns(['action'])
                 ->setRowId('slug')
                 ->make();

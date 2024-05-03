@@ -43,7 +43,7 @@
                 @foreach($global_menu_tree as $user_menu)
                     @if($user_menu['menu_obj']->category == 'SU')
                         @if(!$superuserHeaderDisplayed)
-                            <li class="header">ADMIN</li>
+                            <li class="header">SUPER USER</li>
                             @php
                                 $superuserHeaderDisplayed = true;
                             @endphp

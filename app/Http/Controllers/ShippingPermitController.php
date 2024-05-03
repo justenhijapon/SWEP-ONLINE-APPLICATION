@@ -7,6 +7,7 @@ use App\Exports\GroupedShippingPermitExport;
 use App\Exports\ShippingPermitExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shipping_Permit\ShippingPermitFormRequest;
+use App\Models\OfficialReciepts;
 use App\Models\Port;
 use App\Models\ShippingPermit;
 use Carbon\Carbon;
@@ -24,6 +25,8 @@ class ShippingPermitController extends Controller
         return view('dashboard.shipping_permits.create');
     }
     public function index(Request $request){
+        $spor = OfficialReciepts::all();
+
         if($request->ajax())
         {
             $sp = ShippingPermit::query();
@@ -49,7 +52,9 @@ class ShippingPermitController extends Controller
                 ->make();
         }
 
-        return view('dashboard.shipping_permits.index');
+        return view('dashboard.shipping_permits.index')->with([
+            'spor' => $spor
+        ]);
     }
 
     public function store(ShippingPermitFormRequest $request){
@@ -74,7 +79,7 @@ class ShippingPermitController extends Controller
         $sp->sp_plate_no = $request->sp_plate_no;
         $sp->sp_or_no = $request->sp_or_no;
         $sp->sp_remarks = $request->sp_remarks;
-        $sp->sp_amount = Helpers::sanitizeAutonum($request->sp_amount);
+        $sp->sp_amount = $request->sp_amount !== null ? Helpers::sanitizeAutonum($request->sp_amount) : 0;
         $sp->sp_ref_sp_no = $request->sp_ref_sp_no;
         $sp->sp_status = $request->sp_status;
         $sp->sp_markings = $request->sp_markings;
@@ -141,7 +146,7 @@ class ShippingPermitController extends Controller
         $sp->sp_plate_no = $request->sp_plate_no;
         $sp->sp_or_no = $request->sp_or_no;
         $sp->sp_remarks = $request->sp_remarks;
-        $sp->sp_amount = Helpers::sanitizeAutonum($request->sp_amount);
+        $sp->sp_amount = $request->sp_amount !== null ? Helpers::sanitizeAutonum($request->sp_amount) : 0;
         $sp->sp_ref_sp_no = $request->sp_ref_sp_no;
         $sp->sp_status = $request->sp_status;
         $sp->sp_markings = $request->sp_markings;
@@ -185,6 +190,7 @@ class ShippingPermitController extends Controller
             "Date" => "sp_date",
             "Shipping Permit No" => "sp_no",
             "Port of Origin" => "sp_port_of_origin",
+            "Amount" => "sp_amount",
 
         ];
         return $columns;

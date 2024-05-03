@@ -91,12 +91,12 @@
         });
     });
 
-    $('.sidebar').slimScroll({
-        height: '100%', // Set the height as desired
-        railVisible: true, // Show the scrollbar rail
-        alwaysVisible: true, // Keep scrollbar always visible
-        wheelStep: 10 // Scroll amount on mouse wheel
-    });
+    // $('.sidebar').slimScroll({
+    //     height: '100%', // Set the height as desired
+    //     railVisible: true, // Show the scrollbar rail
+    //     alwaysVisible: true, // Keep scrollbar always visible
+    //     wheelStep: 10 // Scroll amount on mouse wheel
+    // });
 
 
 

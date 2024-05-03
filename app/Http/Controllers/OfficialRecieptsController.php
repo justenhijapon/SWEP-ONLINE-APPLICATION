@@ -71,16 +71,16 @@ class OfficialRecieptsController extends Controller
         $or->or_money_order = Helpers::sanitizeAutonum($request->or_money_order);
         $or->or_total_paid = Helpers::sanitizeAutonum($request->or_total_paid);
 
-        $utilizationArray = [];
-        foreach ((array) $request->items as $item){
-            array_push($utilizationArray,[
-                'slug' => $or->slug,
-                'oru_txn_type' => $item['oru_txn_type'],
-                'oru_sp_no' => $item['oru_sp_no'],
-                'oru_volume' => $item['oru_volume'],
-                'oru_amount' => Helpers::sanitizeAutonum($item['oru_amount']),
-            ]);
-        }
+//        $utilizationArray = [];
+//        foreach ((array) $request->items as $item){
+//            array_push($utilizationArray,[
+//                'slug' => $or->slug,
+//                'oru_txn_type' => $item['oru_txn_type'],
+//                'oru_sp_no' => $item['oru_sp_no'],
+//                'oru_volume' => $item['oru_volume'],
+//                'oru_amount' => Helpers::sanitizeAutonum($item['oru_amount']),
+//            ]);
+//        }
 
 
         $or->created_at = Carbon::now();
@@ -89,7 +89,7 @@ class OfficialRecieptsController extends Controller
         $or->ip_updated = $request->ip();
 
         if($or->save()){
-            OfficialRecieptUtilization::insert($utilizationArray);
+//            OfficialRecieptUtilization::insert($utilizationArray);
             return $or->only('slug');
         }
     }
@@ -112,9 +112,10 @@ class OfficialRecieptsController extends Controller
             ->where('slug', $slug)
             ->first();
             $or ?? abort(404,'Seminar not found.');
+        $total = $or->orShippingPermit->sum('sp_amount');
         return view('dashboard.official_reciepts.edit')->with([
             'or'=>$or,
-
+            'total'=>$total,
         ]);
     }
 
@@ -141,16 +142,16 @@ class OfficialRecieptsController extends Controller
         $or->or_money_order = Helpers::sanitizeAutonum($request->or_money_order);
         $or->or_total_paid = Helpers::sanitizeAutonum($request->or_total_paid);
 
-        $utilizationArray = [];
-        foreach ((array) $request->items as $item){
-            array_push($utilizationArray,[
-                'slug' => $or->slug,
-                'oru_txn_type' => $item['oru_txn_type'],
-                'oru_sp_no' => $item['oru_sp_no'],
-                'oru_volume' => $item['oru_volume'],
-                'oru_amount' => Helpers::sanitizeAutonum($item['oru_amount']),
-            ]);
-        }
+//        $utilizationArray = [];
+//        foreach ((array) $request->items as $item){
+//            array_push($utilizationArray,[
+//                'slug' => $or->slug,
+//                'oru_txn_type' => $item['oru_txn_type'],
+//                'oru_sp_no' => $item['oru_sp_no'],
+//                'oru_volume' => $item['oru_volume'],
+//                'oru_amount' => Helpers::sanitizeAutonum($item['oru_amount']),
+//            ]);
+//        }
 
 
         $or->created_at = Carbon::now();
@@ -158,8 +159,8 @@ class OfficialRecieptsController extends Controller
         $or->ip_created = $request->ip();
         $or->ip_updated = $request->ip();
         if($or->update()){
-            $or->orUtilization()->delete();
-            OfficialRecieptUtilization::insert($utilizationArray);
+//            $or->orUtilization()->delete();
+//            OfficialRecieptUtilization::insert($utilizationArray);
             return $or->only('slug');
         }
 

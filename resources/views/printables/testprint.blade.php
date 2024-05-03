@@ -71,7 +71,11 @@
             border-right: 1px solid black;
             border-top: 1px solid black;
         }
-
+        img {
+            border-radius: 4px;
+            padding: 5px;
+            width: 150px;
+        }
 
     </style>
 </head>
@@ -92,7 +96,7 @@
 </div>
 <br>
 <br><br><br>
-<table style="width: 100%">
+<table style="width: 100%;">
     <tbody>
         <tr>
             <td colspan="3" style="padding-left: 20px; font-weight: bold;">TO: SHIPPING CO./ AIRCRAFT OPERATOR, BUREAU OF CUSTOMS,</td>

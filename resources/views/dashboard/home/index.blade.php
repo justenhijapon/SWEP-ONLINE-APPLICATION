@@ -25,8 +25,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-{{--              <h3>{{ $totalor }}</h3>--}}
-              <h3>N/A</h3>
+              <h3>{{ $totalor }}</h3>
               <p>Number Of Official Reciept</p>
             </div>
             <div class="icon">
@@ -83,8 +82,7 @@
             <div class="row">
               <div class="col-md-12">
                 <p class="text-center">
-
-                  <strong>From {{ $sp->first()->sp_date }}- To {{ $lastSpDate }}  </strong>
+                  <strong>From {{ date("F j, Y", strtotime($lastSpDate->sp_date)) }} - To {{ date("F j, Y", strtotime($sp->last()->sp_date)) }}</strong>
                 </p>
                 <div class="chart">
                   <canvas id="salesChart" style="height: 180px; width: 859px;" height="180" width="859"></canvas>
@@ -203,7 +201,7 @@
                   <div class="row">
                     <div class="box-body">
                       <div class="table-responsive">
-                        <table class="table no-margin">
+                        <table id="dataTable" class="table no-margin">
                           <thead>
                           <tr>
                             <th>Shipping permit No.</th>
@@ -251,7 +249,7 @@
                   <div class="row">
                     <div class="box-body">
                       <div class="table-responsive">
-                        <table class="table no-margin">
+                        <table id="dataTableC" class="table no-margin">
                           <thead>
                           <tr>
                             <th>Shipping permit No.</th>
@@ -319,25 +317,19 @@
       }
     });
 
+    $(document).ready(function() {
+      $('#dataTable').DataTable();
+    });
+    $(document).ready(function() {
+      $('#dataTableC').DataTable();
+    });
+
   </script>
 
   <script>
-    // Assuming $sp is an array of objects containing sp_date and sp_amount properties
+    var data = @json($spAmount);
+    var labels = @json($spDates );
 
-    // Extracting labels and data from $sp
-    var labels = [];
-    var data = [];
-
-    // Loop through each object in $sp and extract sp_date as labels and sp_amount as data
-    @foreach($spAmount as $items)
-    data.push('{{ $items }}');
-    @endforeach
-    @foreach($spDates as $item)
-    labels.push('{{ $item }}');
-    @endforeach
-
-
-    // Data object for the chart
     var salesData = {
       labels: labels,
       datasets: [{
@@ -353,12 +345,10 @@
       }]
     };
 
-    // Get the canvas element
     var ctx = document.getElementById('salesChart').getContext('2d');
 
-    // Create the chart
     var salesChart = new Chart(ctx, {
-      type: 'line',
+      type: 'bar',
       data: salesData,
       options: {
         responsive: true,

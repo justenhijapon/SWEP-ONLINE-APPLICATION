@@ -6,6 +6,7 @@
         <h1>Manage Ports</h1>
     </section>
 
+
     <section class="content">
         {{-- Table Grid --}}
         <div class="box">
@@ -15,6 +16,30 @@
                     <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_port_modal"><i class="fa fa-plus"></i> New Port</button>
                 </div>
             </div>
+            <div class="panel">
+                <div class="box-header with-border">
+                    <h4 class="box-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                            <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-1 col-sm-2 col-lg-2">
+                                <label>Origin:</label>
+                                <select id="category_filter" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="Luzon/Mindanao">Luzon/Mindanao</option>
+                                    <option value="Visayas">Visayas</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="port_table_container" style="display: none">
@@ -22,7 +47,7 @@
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                             <th>SLUG</th>
-                            <th>Category</th>
+                            <th>Origin</th>
                             <th>Port Name</th>
                             <th>Ship</th>
                             <th>Vessel</th>
@@ -124,6 +149,12 @@
         {!! __js::modal_loader() !!}
 
     </script>
+    <script type="text/javascript">
+        $('#category_filter').on('change', function () {
+            var category = $(this).val();
+            port_table.columns(1).search(category).draw();
+        });
+    </script>
 
     <script type="text/javascript">
 
@@ -199,8 +230,6 @@
                     port_table.search(this.value).draw();
                 }
             });
-
-
 
         })
 

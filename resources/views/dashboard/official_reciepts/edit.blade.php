@@ -87,25 +87,25 @@
                                     </thead>
 
                                     <tbody>
-                                    @foreach($or->orUtilization as $key => $orUtilization)
+                                    @foreach($or->orShippingPermit as $key => $orShippingPermit)
                                         <tr>
                                             <td>
-                                                {!! \App\Core\Helpers\__form2::textboxOnly('items['.$orUtilization->slug.'][oru_txn_type]',[
-                                                    'label' => 'TXN Type:',
-                                                ],$orUtilization->oru_txn_type ?? null) !!}
+                                                {!! \App\Core\Helpers\__form2::selectOnly('items['.$orShippingPermit->sp_or_no.'][sp_status]',[
+                                                  'options' => \App\Core\Helpers\Arrays::spStatus(),
+                                                ],$orShippingPermit->sp_status ?? null) !!}
                                             </td>
-                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orUtilization->slug.'][oru_sp_no]',[
+                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->sp_or_no.'][sp_no]',[
                                                 'label' => 'S.P. No.:',
-                                             ],$orUtilization->oru_sp_no ?? null) !!}
+                                             ],$orShippingPermit->sp_no ?? null) !!}
                                             </td>
-                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orUtilization->slug.'][oru_volume]',[
+                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->sp_or_no.'][sp_volume]',[
                                                 'label' => 'Volume:',
-                                             ],$orUtilization->oru_volume ?? null) !!}
+                                             ],$orShippingPermit->sp_volume ?? null) !!}
                                             </td>
-                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orUtilization->slug.'][oru_amount]',[
+                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->sp_or_no.'][sp_amount]',[
                                                 'label' => 'Amount:',
                                                 'class' => 'autonum_rand',
-                                             ],$orUtilization->oru_amount ?? null) !!}
+                                             ],$orShippingPermit->sp_amount ?? null) !!}
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-sm bg-red delete_row_item">
@@ -186,34 +186,34 @@
                             <div class="col-md-12">
                                 <div class="row">
 
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_markings',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_cancellation',[
                                         'label' => 'Cancellation:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_consignee',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_shut_out',[
                                         'label' => 'Shut-out:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_shipper',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_transhipment',[
                                         'label' => 'Transhipment:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_consignee_add',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_shipping_permit',[
                                         'label' => 'Shipping Permit:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_shipper_add',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_other_fees',[
                                         'label' => 'Other Fees:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}
                                 </div>
                                 <div class="row">
 
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_markings',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_other_fees_2',[
                                         'label' => 'Total Amount:',
                                         'cols' => 12,
-                                    ],$or ?? null) !!}
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_consignee',[
+                                    ],$total ?? null) !!}
+                                    {!! \App\Core\Helpers\__form2::textbox('or_total_amount',[
                                         'label' => 'Report No.:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}

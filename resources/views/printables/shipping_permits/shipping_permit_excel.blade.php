@@ -2,16 +2,17 @@
     <tbody>
     @php
         $num = 0;
+        $totalAmount = 0; // Initialize total amount variable
 
-          // $key = array_search("numbering", $columns_chosen);
-
-          // unset($columns_chosen[$key]);
 
     @endphp
     @if(!empty($sp))
         <tr>
             @if(!empty($columns_chosen))
-
+                <!-- Calculate colspan based on the number of visible columns -->
+                @php
+                    $colspan = count($columns_chosen) - 1;
+                @endphp
                 @if(in_array("numbering", $columns_chosen))
                     <th>#</th>
                 @endif
@@ -48,6 +49,11 @@
                                         {{$sp->portOfOrigin->port_name}}
                                     </td>
                                     @break
+                                @case('sp_amount')
+                                    <td class="{{$column_chosen}}">
+                                        {{$sp->$column_chosen}}
+                                    </td>
+                                    @break
                                 @default
                                     <td class="{{$column_chosen}}">
                                         {{$sp->$column_chosen}}
@@ -58,7 +64,14 @@
                     @endforeach
                 @endif
             </tr>
+            <!-- Calculate total amount -->
+            @php $totalAmount += $sp->sp_amount; @endphp
         @endforeach
+        <!-- Total row -->
+        <tr>
+            <th colspan="{{$colspan}}">Total:</th>
+            <td>{{ $totalAmount }}</td> <!-- Display total amount -->
+        </tr>
     @endif
 
     </tbody>

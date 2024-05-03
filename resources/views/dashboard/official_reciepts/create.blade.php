@@ -8,12 +8,7 @@
         <tr>
             <td>
                 {!! \App\Core\Helpers\__form2::selectOnly('items[rand][oru_txn_type]',[
-                    'options' => [
-                       'CANCELLATION' => 'CANCELLATION',
-                       'SHUT-OUT' => 'SHUT-OUT',
-                       'TRANSHIPMENT' => 'TRANSHIPMENT',
-                       'TRANSHIPMENT' => 'TRANSHIPMENT',
-                       ],
+                    'options' => \App\Core\Helpers\Arrays::spStatus(),
                 ]) !!}
             </td>
             <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_sp_no]',[
@@ -201,34 +196,38 @@
                                             <div class="col-md-12">
                                                 <div class="row">
 
-                                                    {!! \App\Core\Helpers\__form2::textbox('sp_markings',[
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_cancellation',[
                                                         'label' => 'Cancellation:',
                                                         'cols' => 12,
                                                     ]) !!}
-                                                    {!! \App\Core\Helpers\__form2::textbox('sp_consignee',[
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_shut_out',[
                                                         'label' => 'Shut-out:',
                                                         'cols' => 12,
                                                     ]) !!}
-                                                    {!! \App\Core\Helpers\__form2::textbox('sp_shipper',[
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_transhipment',[
                                                         'label' => 'Transhipment:',
                                                         'cols' => 12,
                                                     ]) !!}
-                                                    {!! \App\Core\Helpers\__form2::textbox('sp_consignee_add',[
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_shipping_permit',[
                                                         'label' => 'Shipping Permit:',
                                                         'cols' => 12,
                                                     ]) !!}
-                                                    {!! \App\Core\Helpers\__form2::textbox('sp_shipper_add',[
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_other_fees',[
+                                                        'label' => 'Other Fees:',
+                                                        'cols' => 12,
+                                                    ]) !!}
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_other_fees_2',[
                                                         'label' => 'Other Fees:',
                                                         'cols' => 12,
                                                     ]) !!}
                                                 </div>
                                                 <div class="row">
 
-                                                    {!! \App\Core\Helpers\__form2::textbox('sp_markings',[
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_total_amount',[
                                                         'label' => 'Total Amount:',
                                                         'cols' => 12,
                                                     ]) !!}
-                                                    {!! \App\Core\Helpers\__form2::textbox('sp_consignee',[
+                                                    {!! \App\Core\Helpers\__form2::textbox('or_report_no',[
                                                         'label' => 'Report No.:',
                                                         'cols' => 12,
                                                     ]) !!}

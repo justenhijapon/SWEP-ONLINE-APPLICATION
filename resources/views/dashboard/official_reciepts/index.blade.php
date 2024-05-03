@@ -375,6 +375,13 @@
                         "visible" : false
                     },
                     {
+                    "targets": 2, // sp_date column index
+                            "render": function (data, type, full, meta) {
+                            // Format the date using moment.js or any other library
+                            return moment(data).format("MMMM D, YYYY"); // Adjust format as needed
+                        }
+                    },
+                    {
                         "targets" : 4,
                         "orderable" : false,
                         "class" : 'action-30p'
