@@ -42,6 +42,7 @@ class HomeController extends Controller{
         $totalor = $or->count();
 
 
+
         return view('dashboard.home.index')->with([
             'users' => $users,
             'sp' => $sp,

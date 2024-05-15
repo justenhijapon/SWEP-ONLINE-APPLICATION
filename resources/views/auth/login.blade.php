@@ -66,10 +66,16 @@
 						</div>
 					</div>
 				</form>
+
+				<div class="pull-right hidden-xs">
+					<b>Version</b> 1.1.0
+				</div>
+				<strong>Copyright &copy; 2018-2019 <a href="#">SRA</a>.</strong> All rights
+				reserved.
+
 			</div>
 			<!-- Image Container -->
 			<div class="image-container" style="flex: 1; text-align: center; padding-right: 10px;">
-
 				<img src="{{ asset('images/sra.png') }}" alt="Login Image" style="max-width: 100%; height: auto;">
 			</div>
 		</div>

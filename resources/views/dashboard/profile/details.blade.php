@@ -201,7 +201,7 @@
               <div class="col-md-4">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    Username
+                    Change Username
                   </div>
                   <div class="panel-body">
                     <form id="username_form" autocomplete="off" action="">
@@ -234,7 +234,7 @@
               <div class="col-md-8">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    Password
+                    Change Password
                   </div>
                   <div class="panel-body">
                     <form id="password_form" autocomplete="off" action="">
@@ -263,7 +263,7 @@
             </div>
             <div class="panel panel-default" >
               <div class="panel-heading">
-                Color Scheme
+                Select Color Scheme
               </div>
               <div class="panel-body">
                 <div class="row">

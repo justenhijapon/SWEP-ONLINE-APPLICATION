@@ -103,7 +103,7 @@
 {{--        <nav class="navbar navbar-static-top">--}}
 {{--          <div class="container">--}}
 {{--            <div class="navbar-header">--}}
-{{--              <a href="#" class="navbar-brand"><b>SRA WEB PORTAL - Shipping Permit</b></a>--}}
+{{--              <a href="#" class="navbar-brand"><b>SUGAR REGULATORY ADMINISTRATION</b></a>--}}
 {{--            </div>--}}
 {{--            <div class="navbar-custom-menu">--}}
 {{--              <ul class="nav navbar-nav">--}}
@@ -130,6 +130,7 @@
 {{--      </footer>--}}
       
     </div>
+
 
     @include('layouts.js-plugins')
     
