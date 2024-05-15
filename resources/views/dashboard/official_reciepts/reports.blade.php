@@ -15,39 +15,49 @@
             <div class="box-header with-border">
                 <i class="fa fa-warning"></i>
 
-                <h3 class="box-title">Alerts</h3>
+                <h3 class="box-title">O.R. Report</h3>
             </div>
 
 
             <div class="box-body">
-
                 <div class="row">
                     <div class="col-md-3">
                         <div class="well well-sm">
                             <form id="generate_report_form">
-                                Filters
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Layout:</label>
-                                        <select name="layout" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
-                                            <option value="all">List All</option>
-                                        </select>
-                                    </div>
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                                            <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Layout:</label>
+                                                <select name="layout" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
+                                                    <option value="all">List All</option>
+                                                </select>
+                                            </div>
+                                            <br>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="date_range_check">
+                                                    <label> Date range:</label>
 
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input type="checkbox" id="date_range_check">
-                                            <label> Date range:</label>
-
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input name="date_range" type="text" class="form-control pull-right filters" id="date_range" autocomplete="off"disabled>
+                                                    </div>
                                                 </div>
-                                                <input name="date_range" type="text" class="form-control pull-right filters" id="date_range" autocomplete="off"disabled>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12">
                                         <br>
                                         Select columns to show: <span class="text-info text-strong pull-right">(Drag to reorder)</span>

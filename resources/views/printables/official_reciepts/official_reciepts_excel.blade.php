@@ -43,7 +43,7 @@
                                         {{$or->$column_chosen}}
                                     </td>
                                     @break
-                                @case('utilization')
+                                @case('orShippingPermit')
                                         <td class="{{$column_chosen}}">
                                             @foreach($or->orShippingPermit as $orhippingpermit)
                                                 {{$orhippingpermit->sp_no}}<br>

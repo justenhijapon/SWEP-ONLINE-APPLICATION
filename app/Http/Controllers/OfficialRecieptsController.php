@@ -171,7 +171,7 @@ class OfficialRecieptsController extends Controller
             "Numbering" => "numbering",
             "Date" => "or_date",
             "Official Reciept No" => "or_no",
-            "Utilization"=>"utilization",
+            "Shipping Permits"=>"orShippingPermit",
 
         ];
         return $columns;

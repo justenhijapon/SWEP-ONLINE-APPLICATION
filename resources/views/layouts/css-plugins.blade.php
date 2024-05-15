@@ -60,3 +60,5 @@
 {{-- BS MODAL --}}
 {{-- <link rel="stylesheet" href="{{asset('template/plugins/bootstrap-modal/css/bootstrap-modal.css')}}">
  --}}
+
+

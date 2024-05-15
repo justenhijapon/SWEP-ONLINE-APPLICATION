@@ -73,7 +73,7 @@ class Arrays
     }
 
     public static function spOR(){
-        $spor = OfficialReciepts::query()->get();
+        $spor = OfficialReciepts::query()->orderBy('created_at', 'desc')->get();
 
         return $spor->mapWithKeys(function ($data){
             return [

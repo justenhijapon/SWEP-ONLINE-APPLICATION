@@ -222,17 +222,16 @@
                                                     ]) !!}
                                                 </div>
                                                 <div class="row">
-
                                                     {!! \App\Core\Helpers\__form2::textbox('or_total_amount',[
                                                         'label' => 'Total Amount:',
                                                         'cols' => 12,
+                                                        'readonly' => 'readonly'
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_report_no',[
                                                         'label' => 'Report No.:',
                                                         'cols' => 12,
                                                     ]) !!}
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>

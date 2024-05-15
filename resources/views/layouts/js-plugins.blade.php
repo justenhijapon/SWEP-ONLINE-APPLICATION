@@ -104,6 +104,8 @@
 {{-- SWAL2 --}}
 <script type="text/javascript" src="{{asset('template/plugins/swal2/dist/sweetalert2.all.min.js')}}"></script>
 
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
 

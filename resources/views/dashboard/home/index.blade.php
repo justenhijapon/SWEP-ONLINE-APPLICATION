@@ -34,21 +34,21 @@
             <a href="{{ route('dashboard.official_reciepts.index') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-          <div class="inner">
-            <h3>{{ $sp->where('sp_status', 'SHIPPED')->count() }}</h3>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>{{ $sp->where('sp_status', 'SHIPPED')->count() }}</h3>
 
-            <p>Total Product Shipped</p>
+              <p>Total Product Shipped</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-truck"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
-          <div class="icon">
-            <i class="fa fa-truck"></i>
-          </div>
-          <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
-      </div>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -64,12 +64,141 @@
             <a href="{{ route('dashboard.user.index') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h4 class="box-title">Shipping Permit EDA/ETA</h4>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id='calendar'></div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+    </div>
+      <div class="col-md-4">
+        <div class="box box-success">
+          <div class="box-header with-border">
+            <h4 class="box-title">Shipping Permits Status</h4>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="box-group" id="accordion">
+              <div class="panel box box-primary">
+                <div class="box-header with-border">
+                  <h4 class="box-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="">
+                      Pending
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true" style="">
+                  <div class="box-body">
+                    <div class="row">
+                      <div class="box-body">
+                        <div class="table-responsive">
+                          <table id="dataTable" class="table no-margin">
+                            <thead>
+                            <tr>
+                              <th>Shipping permit No.</th>
+                              <th>OR NO</th>
+                              <th>EDD/ETD</th>
+                              <th>EDA/ATA</th>
+                              <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-        <!-- ./col -->
+                            @foreach($pendingsp as $sp)
+                              <tr>
+                                <td>{{$sp->sp_no}}</td>
+                                <td>{{$sp->sp_or_no}}</td>
+                                <td>{{$sp->sp_edd_etd}}</td>
+                                <td>{{$sp->sp_eda_eta}}</td>
+                                <td><span class="label label-warning">Pending</span></td>
+                              </tr>
+                            @endforeach
+
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+
+                      <div class="box-footer clearfix">
+                        <a href="{{route('dashboard.shipping_permits.index')}}" class="btn btn-sm btn-info btn-flat pull-right" >View All Permits</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel box box-danger">
+                <div class="box-header with-border">
+                  <h4 class="box-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2023" class="collapsed" aria-expanded="false">
+                      Cancelled
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse2023" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                  <div class="box-body">
+                    <div class="row">
+                      <div class="box-body">
+                        <div class="table-responsive">
+                          <table id="dataTableC" class="table no-margin">
+                            <thead>
+                            <tr>
+                              <th>Shipping permit No.</th>
+                              <th>OR NO</th>
+                              <th>EDD/ETD</th>
+                              <th>EDA/ATA</th>
+                              <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach($totalspcancelled as $sp)
+                              <tr>
+                                <td>{{$sp->sp_no}}</td>
+                                <td>{{$sp->sp_or_no}}</td>
+                                <td>{{$sp->sp_edd_etd}}</td>
+                                <td>{{$sp->sp_eda_eta}}</td>
+                                <td><span class="label label-danger">cancelled</span></td>
+                              </tr>
+                            @endforeach
+
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+
+                      <div class="box-footer clearfix">
+                        <a href="{{route('dashboard.shipping_permits.index')}}" class="btn btn-sm btn-info btn-flat pull-right" >View All Permits</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-4">
-        <div class="box" style="max-height: 500px;">
+        <div class="box box-primary" style="max-height: 500px;">
           <div class="box-header with-border">
             <h3 class="box-title">Amount Utilized</h3>
             <div class="box-tools pull-right">
@@ -82,10 +211,18 @@
             <div class="row">
               <div class="col-md-12">
                 <p class="text-center">
-                  <strong>From {{ date("F j, Y", strtotime($lastSpDate->sp_date)) }} - To {{ date("F j, Y", strtotime($sp->last()->sp_date)) }}</strong>
+                  <strong>From {{ date("F j, Y", strtotime(reset($spDates))) }} - To {{ date("F j, Y", strtotime(end($spDates))) }}</strong>
                 </p>
                 <div class="chart">
                   <canvas id="salesChart" style="height: 180px; width: 859px;" height="180" width="859"></canvas>
+                </div>
+                <div class="box-footer">
+                  <div class="row">
+                    <div class="description-block border-right">
+                      <h5 class="description-header">₱ {{ array_sum($spAmount) }}</h5>
+                      <span class="description-text">TOTAL Amount Utilized</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -93,7 +230,7 @@
         </div>
       </div>
       <div class="col-md-4">
-          <div class="box box-default" style="max-height: 500px;">
+          <div class="box box-success" style="max-height: 500px;">
           <div class="box-header with-border">
             <h3 class="box-title">Permits Statistics</h3>
             <div class="box-tools pull-right">
@@ -126,7 +263,7 @@
       <div class="col-md-4">
         <div class="box box-danger">
           <div class="box-header with-border">
-            <h3 class="box-title">Latest Members</h3>
+            <h3 class="box-title">Users</h3>
             <div class="box-tools pull-right">
               <span class="label label-danger">{{ $users->count() }} Members</span>
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -175,123 +312,12 @@
         </div>
       </div>
     </div>
-    <div class="row">
-    <div class="col-lg-12">
-      <div class="box box-success">
-        <div class="box-header with-border">
-          <h4 class="box-title">Shipping Permits Status</h4>
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-          </div>
-        </div>
-        <div class="box-body">
-          <div class="box-group" id="accordion">
-            <div class="panel box box-primary">
-              <div class="box-header with-border">
-                <h4 class="box-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="">
-                    Pending
-                  </a>
-                </h4>
-              </div>
-              <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true" style="">
-                <div class="box-body">
-                  <div class="row">
-                    <div class="box-body">
-                      <div class="table-responsive">
-                        <table id="dataTable" class="table no-margin">
-                          <thead>
-                          <tr>
-                            <th>Shipping permit No.</th>
-                            <th>OR NO</th>
-                            <th>EDD/ETD</th>
-                            <th>EDA/ATA</th>
-                            <th>Status</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-
-                          @foreach($pendingsp as $sp)
-                            <tr>
-                              <td>{{$sp->sp_no}}</td>
-                              <td>{{$sp->sp_or_no}}</td>
-                              <td>{{$sp->sp_edd_etd}}</td>
-                              <td>{{$sp->sp_eda_eta}}</td>
-                              <td><span class="label label-warning">Pending</span></td>
-                            </tr>
-                          @endforeach
-
-                          </tbody>
-                        </table>
-                      </div>
-
-                    </div>
-
-                    <div class="box-footer clearfix">
-                      <a href="{{route('dashboard.shipping_permits.index')}}" class="btn btn-sm btn-info btn-flat pull-right" >View All Permits</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="panel box box-primary">
-              <div class="box-header with-border">
-                <h4 class="box-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2023" class="collapsed" aria-expanded="false">
-                    Cancelled
-                  </a>
-                </h4>
-              </div>
-              <div id="collapse2023" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="box-body">
-                  <div class="row">
-                    <div class="box-body">
-                      <div class="table-responsive">
-                        <table id="dataTableC" class="table no-margin">
-                          <thead>
-                          <tr>
-                            <th>Shipping permit No.</th>
-                            <th>OR NO</th>
-                            <th>EDD/ETD</th>
-                            <th>EDA/ATA</th>
-                            <th>Status</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-
-                          @foreach($totalspcancelled as $sp)
-                            <tr>
-                              <td>{{$sp->sp_no}}</td>
-                              <td>{{$sp->sp_or_no}}</td>
-                              <td>{{$sp->sp_edd_etd}}</td>
-                              <td>{{$sp->sp_eda_eta}}</td>
-                              <td><span class="label label-danger">cancelled</span></td>
-                            </tr>
-                          @endforeach
-
-                          </tbody>
-                        </table>
-                      </div>
-
-                    </div>
-
-                    <div class="box-footer clearfix">
-                      <a href="{{route('dashboard.shipping_permits.index')}}" class="btn btn-sm btn-info btn-flat pull-right" >View All Permits</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /.box-body -->
-      </div>
-    </div>
 
 
-  </div>
+
+
+
+
 </section>
 
 @endsection
@@ -309,7 +335,7 @@
 
     var ctx = document.getElementById('pieChart').getContext('2d');
     var pieChart = new Chart(ctx, {
-      type: 'pie',
+      type: 'doughnut',
       data: data,
       options: {
         responsive: true,
@@ -318,31 +344,67 @@
     });
 
     $(document).ready(function() {
-      $('#dataTable').DataTable();
-    });
-    $(document).ready(function() {
-      $('#dataTableC').DataTable();
+      // Initialize DataTables with no features
+      var dataTableOptions = {
+        paging: false,
+        searching: false,
+        ordering: false,
+        info: false
+        // Add any other options you want to customize here
+      };
+
+      // Initialize DataTable for the first table
+      $('#dataTable').DataTable(dataTableOptions);
+
+      // Initialize DataTable for the second table
+      $('#dataTableC').DataTable(dataTableOptions);
     });
 
   </script>
 
   <script>
-    var data = @json($spAmount);
-    var labels = @json($spDates );
+    var spAmountP = @json($spAmountP);
+    var spAmountC = @json($spAmountC);
+    var spAmount = @json($spAmount);
+    var labels = @json($spDates);
 
     var salesData = {
       labels: labels,
-      datasets: [{
-        label: 'Amount',
-        backgroundColor: 'rgba(60,141,188,0.9)',
-        borderColor: 'rgba(60,141,188,0.8)',
-        pointRadius: false,
-        pointColor: '#3b8bba',
-        pointStrokeColor: 'rgba(60,141,188,1)',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(60,141,188,1)',
-        data: data
-      }]
+      datasets: [
+        // {
+        //   label: 'Pending',
+        //   backgroundColor: 'rgba(255, 193, 7, 0.9)',
+        //   borderColor: 'rgba(255, 193, 7, 0.8)',
+        //   pointRadius: false,
+        //   pointColor: '#3b8bba',
+        //   pointStrokeColor: 'rgba(60,141,188,1)',
+        //   pointHighlightFill: '#fff',
+        //   pointHighlightStroke: 'rgba(60,141,188,1)',
+        //   data: spAmountP
+        // },
+        // {
+        //   label: 'Cancelled',
+        //   backgroundColor: 'rgba(210, 70, 90, 0.9)',
+        //   borderColor: 'rgba(210, 70, 90, 0.8)',
+        //   pointRadius: false,
+        //   pointColor: '#d2465a',
+        //   pointStrokeColor: 'rgba(210, 70, 90, 1)',
+        //   pointHighlightFill: '#fff',
+        //   pointHighlightStroke: 'rgba(210, 70, 90, 1)',
+        //   data: spAmountC
+        // },
+        {
+          label: 'Shipped',
+          backgroundColor: 'rgba(60,141,188,0.9)',
+          borderColor: 'rgba(60,141,188,0.8)',
+          pointRadius: false,
+          pointColor: '#3b8bba',
+          pointStrokeColor: 'rgba(60,141,188,1)',
+          pointHighlightFill: '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data: spAmount
+        }
+      ]
     };
 
     var ctx = document.getElementById('salesChart').getContext('2d');
@@ -369,6 +431,39 @@
       }
     });
   </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+
+      var events = [];
+      // Iterate through the arrays and create events
+      @foreach($pendingsp as $sp)
+      events.push({
+        title: 'No:{{ $sp->sp_no }} EDA/ETA {{ $sp->sp_eda_eta }}',
+        start: '{{ $sp->sp_edd_etd }}',
+        end: '{{ $sp->sp_eda_eta }}',
+        color: 'red'
+      });
+      @endforeach
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: events
+      });
+
+      calendar.render();
+    });
+  </script>
+
+
+
+
 @endsection
 
 
