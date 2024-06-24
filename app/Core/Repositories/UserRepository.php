@@ -58,7 +58,7 @@ class UserRepository extends BaseRepository implements UserInterface {
         }
 
 
-        $get = $get->latest()->get(['slug', 'username', 'lastname', 'firstname', 'middlename', 'is_online', 'is_active']);
+        $get = $get->latest()->get(['slug', 'username', 'lastname', 'firstname', 'middlename','user_access', 'is_online', 'is_active']);
         return $get;
     }
 
@@ -130,6 +130,7 @@ class UserRepository extends BaseRepository implements UserInterface {
         $user->email = $request->email;
         $user->position = $request->position;
         // $user->username = $request->username;
+        $user->user_access = $request->user_access;
         $user->updated_at = $this->carbon->now();
         $user->ip_updated = request()->ip();
         $user->user_updated = $this->auth->user()->user_id;

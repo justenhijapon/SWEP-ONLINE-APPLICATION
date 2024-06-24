@@ -43,12 +43,17 @@
                                         {{$or->$column_chosen}}
                                     </td>
                                     @break
+                                @case('or_mill')
+                                    <td class="{{$column_chosen}}">
+                                        {{$or->orMIll_Origin->mill_name}}
+                                    </td>
+                                    @break
                                 @case('orShippingPermit')
-                                        <td class="{{$column_chosen}}">
-                                            @foreach($or->orShippingPermit as $orhippingpermit)
-                                                {{$orhippingpermit->sp_no}}<br>
-                                            @endforeach
-                                        </td>
+                                    <td class="{{$column_chosen}}">
+                                        @foreach($or->orUtilization as $orhippingpermit)
+                                            {{$orhippingpermit->oru_sp_no}}<br>
+                                        @endforeach
+                                    </td>
                                     @break
                                 @default
                                     <td class="{{$column_chosen}}">

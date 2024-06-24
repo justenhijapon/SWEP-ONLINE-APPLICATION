@@ -31,10 +31,10 @@ class HomeController extends Controller{
         $users = User::all();
         $sp = ShippingPermit::all();
 
-        $spAmount = array_slice(ShippingPermit::where('sp_status', 'SHIPPED')->pluck('sp_amount')->toArray(), -10);
-        $spAmountP = array_slice(ShippingPermit::where('sp_status', 'PENDING')->pluck('sp_amount')->toArray(), -10);
-        $spAmountC = array_slice(ShippingPermit::where('sp_status', 'CANCELLED')->pluck('sp_amount')->toArray(), -10);
-        $spDates = array_slice(ShippingPermit::where('sp_status', 'SHIPPED')->pluck('sp_date')->toArray(), -10);
+        $spAmount = array_slice(ShippingPermit::pluck('sp_amount')->toArray(), -20);
+        $spAmountP = array_slice(ShippingPermit::where('sp_status', 'PENDING')->pluck('sp_amount')->toArray(), -20);
+        $spAmountC = array_slice(ShippingPermit::where('sp_status', 'CANCELLED')->pluck('sp_amount')->toArray(), -20);
+        $spDates = array_slice(ShippingPermit::where('sp_status', 'SHIPPED')->pluck('sp_date')->toArray(), -20);
 
         $totalspcancelled = $sp->where('sp_status', 'CANCELLED')->all();
         $pendingsp = $sp->where('sp_status', 'PENDING')->all();

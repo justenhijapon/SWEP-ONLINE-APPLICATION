@@ -20,18 +20,23 @@
 
         <div class="col-md-12">
             <div class="row">
-
+                {!! \App\Core\Helpers\__form2::textbox('consignee_id',[
+                    'label' => 'Consignee ID:',
+                    'cols' => 6,
+                    'type' => 'number'
+                ],$consignee ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('consignee_name',[
                     'label' => 'Name:',
                     'cols' => 12,
                 ],$consignee ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('consignee_address',[
-                    'label' => 'Address:',
+                    'label' => 'Business Address:',
                     'cols' => 12,
                 ],$consignee ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('consignee_tin',[
-                    'label' => 'Tin:',
+                    'label' => 'TIN:',
                     'cols' => 12,
+                    'type' => 'number'
                 ],$consignee ?? null) !!}
 
 

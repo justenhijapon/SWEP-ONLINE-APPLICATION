@@ -26,28 +26,10 @@
                 <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-1 col-sm-2 col-lg-2">
-                                <label>O.R. No.:</label>
-                                <select id="or_filter" class="form-control">
-                                    <option value="">All</option>
-                                    @foreach($spor as $or)
-                                    <option value="{{$or->or_no}}">{{$or->or_no}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-1 col-sm-2 col-lg-2">
-                                <label>Status:</label>
-                                <select id="status_filter" class="form-control">
-                                    <option value="">All</option>
-                                    <option value="SHIPPED">Shipped</option>
-                                    <option value="PENDING">Pending</option>
-                                    <option value="CANCELLED">Cancelled</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 col-sm-3 col-lg-3"> <!-- Adjusted column size for date range -->
+                            <div class="col-md-2 col-sm-1 col-lg-2"> <!-- Adjusted column size for date range -->
                                 <div class="form-group">
                                     <input type="checkbox" id="date_range_check">
-                                    <label> Permit Date:</label>
+                                    <label>Filter by Permit Date:</label>
 
                                     <div class="input-group">
                                         <div class="input-group-addon">
@@ -58,7 +40,98 @@
 
                                 </div>
                             </div>
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by O.R. No.:</label>
+                                <select id="or_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @foreach($spor as $or)
+                                    <option value="{{$or->or_no}}">{{$or->or_no}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
+{{--                                <label>Filter by Mill:</label>--}}
+{{--                                <select id="mill_filter" class="form-control">--}}
+{{--                                    <option value="">All</option>--}}
+{{--                                    @foreach($mill as $mills)--}}
+{{--                                        <option value="{{$mills->slug}}">{{$mills->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
+{{--                                <label>Filter by Sugar Class:</label>--}}
+{{--                                <select id="sugar_class_filter" class="form-control">--}}
+{{--                                    <option value="">All</option>--}}
+{{--                                    <option value="RAW">RAW</option>--}}
+{{--                                    <option value="REFINED">REFINED</option>--}}
+{{--                                    <option value="DIRECT CONSUMPTION">DIRECT CONSUMPTION</option>--}}
+{{--                                    <option value="OTHER">OTHER</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
+{{--                                <label>Filter by Status:</label>--}}
+{{--                                <select id="status_filter" class="form-control">--}}
+{{--                                    <option value="">All</option>--}}
+{{--                                    <option value="SHIPPED">Shipped</option>--}}
+{{--                                    <option value="PENDING">Pending</option>--}}
+{{--                                    <option value="CANCELLED">Cancelled</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
                         </div>
+{{--                        <div class="row">--}}
+{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
+{{--                                <label>Filter by Port of Origin:</label>--}}
+{{--                                <select id="port_origin_filter" class="form-control">--}}
+{{--                                    <option value="">All</option>--}}
+{{--                                    @foreach($port as $ports)--}}
+{{--                                        <option value="{{$ports->slug}}">{{$ports->port_name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
+{{--                                <label>Filter by Port of Destination:</label>--}}
+{{--                                <select id="port_destination_filter" class="form-control">--}}
+{{--                                    <option value="">All</option>--}}
+{{--                                    @foreach($port as $ports)--}}
+{{--                                        <option value="{{$ports->slug}}">{{$ports->port_name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-2 col-sm-1 col-lg-2"> <!-- Adjusted column size for date range -->--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <input type="checkbox" id="date_range_check_1">--}}
+{{--                                    <label>Filter by EDD/ETD:</label>--}}
+
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-addon">--}}
+{{--                                            <i class="fa fa-calendar"></i>--}}
+{{--                                        </div>--}}
+{{--                                        <input name="date_range_1" type="text" class="form-control pull-right filters" id="date_range_1" autocomplete="off" disabled>--}}
+{{--                                    </div>--}}
+
+{{--                                </div>--}}
+{{--                            </div>--}}
+
+{{--                            <div class="col-md-2 col-sm-1 col-lg-2"> <!-- Adjusted column size for date range -->--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <input type="checkbox" id="date_range_check_2">--}}
+{{--                                    <label>Filter by EDA/ETA:</label>--}}
+
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-addon">--}}
+{{--                                            <i class="fa fa-calendar"></i>--}}
+{{--                                        </div>--}}
+{{--                                        <input name="date_range_2" type="text" class="form-control pull-right filters" id="date_range_2" autocomplete="off" disabled>--}}
+{{--                                    </div>--}}
+
+{{--                                </div>--}}
+{{--                            </div>--}}
+
+
+
+
+
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -72,8 +145,14 @@
                             <th>Official Reciept No.</th>
                             <th>Shipping Permit No.</th>
                             <th>Permit Date</th>
-                            <th>EDD/ETD</th>
-                            <th>EDA/ETA</th>
+{{--                            <th>EDD/ETD</th>--}}
+{{--                            <th>EDA/ETA</th>--}}
+{{--                            <th>Port Of Origin</th>--}}
+{{--                            <th>Port Of Destination</th>--}}
+{{--                            <th>Mill</th>--}}
+                            <th>Sugar Class</th>
+                            <th>Volume</th>
+                            <th>Amount</th>
                             <th>Status</th>
                             <th class="action">Action</th>
                         </tr>
@@ -338,57 +417,76 @@
         });
         $('#status_filter').on('change', function () {
             var sp_status = $(this).val();
-            shipping_permits_table.columns(6).search(sp_status).draw();
+            shipping_permits_table.columns(8).search(sp_status).draw();
         });
-        //Date Range
-        $('#date_range_check').change(function() {
-            if ($(this).is(':checked')) {
-                // Enable date range input
-                $('#date_range').prop('disabled', false);
-            } else {
-                // Disable date range input
-                $('#date_range').prop('disabled', true);
-                // Clear date range filter and redraw the table
-                shipping_permits_table.columns(3).search('').draw();
-            }
-        });
+        // $('#port_origin_filter').on('change', function () {
+        //     var sp_port_of_origin = $(this).val();
+        //     shipping_permits_table.columns(6).search(sp_port_of_origin).draw();
+        // });
+        // $('#port_destination_filter').on('change', function () {
+        //     var sp_port_of_destination = $(this).val();
+        //     shipping_permits_table.columns(7).search(sp_port_of_destination).draw();
+        // });
 
-        // Date range picker initialization
-        $('#date_range').daterangepicker({
-            autoUpdateInput: false,
-            locale: {
-                cancelLabel: 'Clear'
-            }
+        $('#mill_filter').on('change', function () {
+            var sp_mill = $(this).val();
+            shipping_permits_table.columns(4).search(sp_mill).draw();
         });
 
-        // Listen for date range picker change event
-        $('#date_range').on('apply.daterangepicker', function(ev, picker) {
-            // Set the value of the input
-            $(this).val(picker.startDate.format('MMMM D, YYYY') + ' - ' + picker.endDate.format('MMMM D, YYYY'));
-            // Filter data based on selected date range
-            var startDate = picker.startDate.format('YYYY-MM-DD');
-            var endDate = picker.endDate.format('YYYY-MM-DD');
-
-            var currentDate = moment(startDate);
-            var datesArray = [];
-
-            while (currentDate <= moment(endDate)) {
-                datesArray.push(currentDate.format('YYYY-MM-DD'));
-                currentDate = currentDate.clone().add(1, 'days');
-            }
-
-            var datesString = datesArray.join('|');
-
-            shipping_permits_table.columns(3).search(datesString, true, false).draw();
-
+        $('#sugar_class_filter').on('change', function () {
+            var sp_sugar_class = $(this).val();
+            shipping_permits_table.columns(5).search(sp_sugar_class).draw();
         });
 
-        // Clear date range input when 'Clear' button is clicked
-        $('#date_range').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
-            // Clear date range filter and redraw the table
-            shipping_permits_table.columns(3).search('').draw();
-        });
+
+        function initializeDateRangePicker(checkId, rangeId, columnIndex) {
+            // Date range checkbox change event
+            $(checkId).change(function() {
+                var rangeInput = $(rangeId);
+                if ($(this).is(':checked')) {
+                    rangeInput.prop('disabled', false);
+                } else {
+                    rangeInput.prop('disabled', true);
+                    shipping_permits_table.columns(columnIndex).search('').draw();
+                }
+            });
+
+            // Date range picker initialization
+            $(rangeId).daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+
+            // Listen for date range picker change event
+            $(rangeId).on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('MMMM D, YYYY') + ' - ' + picker.endDate.format('MMMM D, YYYY'));
+                var startDate = picker.startDate.format('YYYY-MM-DD');
+                var endDate = picker.endDate.format('YYYY-MM-DD');
+                var currentDate = moment(startDate);
+                var datesArray = [];
+
+                while (currentDate <= moment(endDate)) {
+                    datesArray.push(currentDate.format('YYYY-MM-DD'));
+                    currentDate = currentDate.clone().add(1, 'days');
+                }
+
+                var datesString = datesArray.join('|');
+                shipping_permits_table.columns(columnIndex).search(datesString, true, false).draw();
+            });
+
+            // Clear date range input when 'Clear' button is clicked
+            $(rangeId).on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+                shipping_permits_table.columns(columnIndex).search('').draw();
+            });
+        }
+
+        // Initialize date range picker for each range
+        initializeDateRangePicker('#date_range_check', '#date_range', 3);
+        // initializeDateRangePicker('#date_range_check_1', '#date_range_1', 4);
+        // initializeDateRangePicker('#date_range_check_2', '#date_range_2', 5);
 
 
     </script>
@@ -420,10 +518,24 @@
                     {"data": "sp_or_no"},
                     {"data": "sp_no"},
                     {"data": "sp_date"},
-                    {"data": "sp_edd_etd"},
-                    {"data": "sp_eda_eta"},
+                    // {"data": "sp_edd_etd"},
+                    // {"data": "sp_eda_eta"},
+                    // {"data": "sp_port_of_origin"},
+                    // {"data": "sp_port_of_destination"},
+                    // {"data": "sp_mill"},
+                    {"data": "sp_sugar_class"},
+                    {"data": "sp_volume"},
+                    {
+                        "data": "sp_amount",
+                        "render": function(data, type, row) {
+                            // Check if the data is null and set it to 0 if it is
+                            var amount = data ? data : 0;
+                            // Add peso sign to the amount
+                            return "₱" + amount;
+                        }
+                    },
                     {"data": "sp_status"},
-                    {"data": "action"}
+                    {"data": "action"},
 
                 ],
 
@@ -435,19 +547,23 @@
                         "targets" :  0 ,
                         "visible" : false
                     },
-
                     {
-                        "targets" : [6],
+                        "targets" : [7,6],
+                        "orderable": true,
+                        "class" : 'w-5p'
+                    },
+                    {
+                        "targets" : 7,
                         "orderable": true,
                         "class" : 'w-6p'
                     },
                     {
-                        "targets" : 7,
+                        "targets" : 8,
                         "orderable": false,
                         "class" : 'action-10p'
                     },
                     {
-                        "targets": [3,4,5], // sp_date column index
+                        "targets": [3], // sp_date column index
                         "render": function (data, type, full, meta) {
                             // Format the date using moment.js or any other library
                             return moment(data).format("MMMM D, YYYY"); // Adjust format as needed
@@ -469,6 +585,7 @@
                 "drawCallback": function(settings){
                     $('[data-toggle="tooltip"]').tooltip();
                     $('[data-toggle="modal"]').tooltip();
+                    $('[data-toggle="dropdown"]').tooltip();
                     if(active !== ''){
                         $("#shipping_permits_table #"+active).addClass('success');
                     }
@@ -585,7 +702,75 @@
             });
         });
 
+        function printShippingPermit(slug) {
+            var printUrl = '{{ route("shipping_permit.print", ":slug") }}'.replace(':slug', slug);
 
+            // Use AJAX to fetch the content from the URL
+            $.ajax({
+                url: printUrl,
+                success: function(data) {
+                    // Create an iframe to load the content
+                    var iframe = document.createElement('iframe');
+                    iframe.style.position = 'absolute';
+                    iframe.style.width = '0px';
+                    iframe.style.height = '0px';
+                    iframe.style.border = 'none';
+                    document.body.appendChild(iframe);
+
+                    // Write the fetched content to the iframe
+                    iframe.contentWindow.document.open();
+                    iframe.contentWindow.document.write(data);
+                    iframe.contentWindow.document.close();
+
+                    // Trigger the print dialog
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+
+                    // Remove the iframe after printing
+                    setTimeout(function() {
+                        document.body.removeChild(iframe);
+                    }, 1000);
+                },
+                error: function() {
+                    alert('Failed to load the content for printing.');
+                }
+            });
+        }
+
+        {{--function printShippingPermits(slug) {--}}
+        {{--    var printUrl = '{{ route("printables.index", ":slug") }}'.replace(':slug', slug);--}}
+
+        {{--    // Use AJAX to fetch the content from the URL--}}
+        {{--    $.ajax({--}}
+        {{--        url: printUrl,--}}
+        {{--        success: function(data) {--}}
+        {{--            // Create an iframe to load the content--}}
+        {{--            var iframe = document.createElement('iframe');--}}
+        {{--            iframe.style.position = 'absolute';--}}
+        {{--            iframe.style.width = '0px';--}}
+        {{--            iframe.style.height = '0px';--}}
+        {{--            iframe.style.border = 'none';--}}
+        {{--            document.body.appendChild(iframe);--}}
+
+        {{--            // Write the fetched content to the iframe--}}
+        {{--            iframe.contentWindow.document.open();--}}
+        {{--            iframe.contentWindow.document.write(data);--}}
+        {{--            iframe.contentWindow.document.close();--}}
+
+        {{--            // Trigger the print dialog--}}
+        {{--            iframe.contentWindow.focus();--}}
+        {{--            iframe.contentWindow.print();--}}
+
+        {{--            // Remove the iframe after printing--}}
+        {{--            setTimeout(function() {--}}
+        {{--                document.body.removeChild(iframe);--}}
+        {{--            }, 1000);--}}
+        {{--        },--}}
+        {{--        error: function() {--}}
+        {{--            alert('Failed to load the content for printing.');--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--}--}}
 
 
     </script>

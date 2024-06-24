@@ -13,7 +13,7 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li class="dropdown tasks-menu inactive">
-          <a href="#" >
+          <a href="{{ route('dashboard.shipping_permits.index') }}" >
             <i class="fa fa-calendar"></i> {{Carbon::now()->format('F d, Y')}}
           </a>
         </li>
@@ -37,6 +37,7 @@
                 @if(Auth::check())
                   {{ __sanitize::html_encode(Auth::user()->firstname) .' '. __sanitize::html_encode(Auth::user()->lastname) }}
                   <small>{{ __sanitize::html_encode(Auth::user()->position) }}</small>
+                  <small>Last Login: {{ e(optional(Auth::user()->last_login_time)->format('F j, Y')) }} at {{ __sanitize::html_encode(Auth::user()->last_login_machine) }}</small>
                 @endif
 
               </p>

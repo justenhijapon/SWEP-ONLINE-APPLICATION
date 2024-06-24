@@ -36,11 +36,18 @@
 
       <div class="row">
           {!! __form::textbox(
-            '6 email', 'email', 'email', 'Email *', 'Email', $user->email, 'e_email', '', ''
+            '4 email', 'email', 'email', 'Email *', 'Email', $user->email, 'e_email', '', ''
           ) !!}
 
           {!! __form::textbox(
-            '6 position', 'position', 'text', 'Position *', 'Position',  $user->position, 'e_position', '', ''
+            '4 position', 'position', 'text', 'Position *', 'Position',  $user->position, 'e_position', '', ''
+          ) !!}
+          {!! __form::select_static(
+              '4 user_access', 'user_access', 'User Access *', $user->user_access, [
+                'SUPER USER' => 'super_user',
+                'ADMIN' => 'admin',
+                'USER' => 'user',
+              ], '', '', '', ''
           ) !!}
       </div>
 

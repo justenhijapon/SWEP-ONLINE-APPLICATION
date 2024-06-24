@@ -46,7 +46,74 @@
                         <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" onclick="window.location='{{ url("/dashboard/official_reciepts/create") }}'" ><i class="fa fa-plus"></i> Add</button>
 
                 </div>
+            </div>
+            <div class="panel">
+                <div class="box-header with-border">
+                    <h4 class="box-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                            <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-2 col-sm-3 col-lg-3"> <!-- Adjusted column size for date range -->
+                                <div class="form-group">
+                                    <input type="checkbox" id="date_range_check">
+                                    <label> Filter by Date:</label>
 
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input name="date_range" type="text" class="form-control pull-right filters" id="date_range" autocomplete="off" disabled>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Payor:</label>
+                                <select id="payor_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniqueOrPayors = $or->pluck('or_payor')->unique();
+                                    @endphp
+                                    @foreach($uniqueOrPayors as $payor)
+                                        <option value="{{ $payor }}">{{ $payor }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Mill:</label>
+                                <select id="mill_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniqueOrMill = $or->pluck('or_mill')->unique();
+                                    @endphp
+                                    @foreach($uniqueOrMill as $mill)
+                                        <option value="{{ $mill }}">{{ $mill }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Crop Year:</label>
+                                <select id="crop_year_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniqueOrCropYear = $or->pluck('or_crop_year')->unique();
+                                    @endphp
+                                    @foreach($uniqueOrCropYear as $cropYear)
+                                        <option value="{{ $cropYear }}">{{ $cropYear }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -58,7 +125,9 @@
                             <th >Official Receipt No.</th>
                             <th>Reciept Date</th>
                             <th>Payor</th>
-                            <th>Utilization</th>
+                            <th>Mill</th>
+                            <th>Crop Year</th>
+                            <th>Shipping Permit</th>
                             <th class="action">Action</th>
                         </tr>
                         </thead>
@@ -329,7 +398,70 @@
 @section('scripts')
     <script type="text/javascript">
         {!! __js::modal_loader() !!}
+        $('#payor_filter').on('change', function () {
+            var or_payor = $(this).val();
+            official_reciepts_table.columns(3).search(or_payor).draw();
+        });
 
+        $('#mill_filter').on('change', function () {
+            var or_mill = $(this).val();
+            official_reciepts_table.columns(4).search(or_mill).draw();
+        });
+
+        $('#crop_year_filter').on('change', function () {
+            var or_crop_year = $(this).val();
+            official_reciepts_table.columns(5).search(or_crop_year).draw();
+        });
+
+        //Date Range
+        $('#date_range_check').change(function() {
+            if ($(this).is(':checked')) {
+                // Enable date range input
+                $('#date_range').prop('disabled', false);
+            } else {
+                // Disable date range input
+                $('#date_range').prop('disabled', true);
+                // Clear date range filter and redraw the table
+                official_reciepts_table.columns(2).search('').draw();
+            }
+        });
+
+        // Date range picker initialization
+        $('#date_range').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+
+        // Listen for date range picker change event
+        $('#date_range').on('apply.daterangepicker', function(ev, picker) {
+            // Set the value of the input
+            $(this).val(picker.startDate.format('MMMM D, YYYY') + ' - ' + picker.endDate.format('MMMM D, YYYY'));
+            // Filter data based on selected date range
+            var startDate = picker.startDate.format('YYYY-MM-DD');
+            var endDate = picker.endDate.format('YYYY-MM-DD');
+
+            var currentDate = moment(startDate);
+            var datesArray = [];
+
+            while (currentDate <= moment(endDate)) {
+                datesArray.push(currentDate.format('YYYY-MM-DD'));
+                currentDate = currentDate.clone().add(1, 'days');
+            }
+
+            var datesString = datesArray.join('|');
+
+            official_reciepts_table.columns(2).search(datesString, true, false).draw();
+
+        });
+
+        // Clear date range input when 'Clear' button is clicked
+        $('#date_range').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+            // Clear date range filter and redraw the table
+            official_reciepts_table.columns(2).search('').draw();
+        });
     </script>
 
     <script type="text/javascript">
@@ -361,9 +493,10 @@
                     {"data": "or_no"},
                     {"data": "or_date"},
                     {"data": "or_payor"},
+                    {"data": "or_mill"},
+                    {"data": "or_crop_year"},
                     {"data": "utilization"},
                     {"data": "action"}
-
                 ],
 
                 buttons: [
@@ -382,17 +515,18 @@
                         }
                     },
                     {
-                        "targets" : 4,
+                        "targets" : 6,
                         "orderable" : false,
-                        "class" : 'action-30p'
+                        "class" : 'action-10p'
                     },
                     {
-                        "targets" : 5,
+                        "targets" : 7,
                         "orderable" : false,
                         "class" : 'action-10p'
                     },
 
                 ],
+                "order": [[2, "desc"]],
                 "responsive": false,
                 "initComplete": function( settings, json ) {
                     $('#tbl_loader').fadeOut(function(){

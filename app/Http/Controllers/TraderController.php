@@ -34,6 +34,7 @@ class TraderController extends Controller
 
         $trader = new Trader();
         $trader->slug = Str::random(16);
+        $trader->trader_id = $request->trader_id;
         $trader->trader_name = $request->trader_name;
         $trader->trader_address = $request->trader_address;
         $trader->trader_tin = $request->trader_tin;
@@ -77,7 +78,7 @@ class TraderController extends Controller
             ->where('slug', $slug)
             ->first();
             $trader ?? abort(404,'attributions not found.');
-
+        $trader->trader_id = $request->trader_id;
         $trader->trader_name = $request->trader_name;
         $trader->trader_address = $request->trader_address;
         $trader->trader_tin = $request->trader_tin;

@@ -2,31 +2,32 @@
 
 @section('body')
     <style type="text/css">
-        .or{
-            text-align: left
-        }
-        .date{
-            text-align: left
-        }
-        .numbering{
-            width: 10px;
-        }
+        /*.or{*/
+        /*    text-align: left*/
+        /*}*/
+        /*.date{*/
+        /*    text-align: left*/
+        /*}*/
+        /*.numbering{*/
+        /*    width: 10px;*/
+        /*}*/
 
-        .enrolee_name{
-            text-align: left
-        }
+        /*.enrolee_name{*/
+        /*    text-align: left*/
+        /*}*/
 
-        .mill_district{
-            text-align: left
-        }
-        .members, .male_members, .female_members{
-            width: 8%
-        }
+        /*.mill_district{*/
+        /*    text-align: left*/
+        /*}*/
+        /*.members, .male_members, .female_members{*/
+        /*    width: 8%*/
+        /*}*/
         @media print{
             .noPrint{
                 display: none
             }
         }
+
     </style>
 
 

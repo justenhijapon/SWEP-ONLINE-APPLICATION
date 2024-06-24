@@ -16,29 +16,29 @@
                     <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_port_modal"><i class="fa fa-plus"></i> New Port</button>
                 </div>
             </div>
-            <div class="panel">
-                <div class="box-header with-border">
-                    <h4 class="box-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
-                            <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
-                        </a>
-                    </h4>
-                </div>
-                <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-1 col-sm-2 col-lg-2">
-                                <label>Origin:</label>
-                                <select id="category_filter" class="form-control">
-                                    <option value="">All</option>
-                                    <option value="Luzon/Mindanao">Luzon/Mindanao</option>
-                                    <option value="Visayas">Visayas</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="panel">--}}
+{{--                <div class="box-header with-border">--}}
+{{--                    <h4 class="box-title">--}}
+{{--                        <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">--}}
+{{--                            <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>--}}
+{{--                        </a>--}}
+{{--                    </h4>--}}
+{{--                </div>--}}
+{{--                <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">--}}
+{{--                    <div class="box-body">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-md-1 col-sm-2 col-lg-2">--}}
+{{--                                <label>Origin:</label>--}}
+{{--                                <select id="category_filter" class="form-control">--}}
+{{--                                    <option value="">All</option>--}}
+{{--                                    <option value="Luzon/Mindanao">Luzon/Mindanao</option>--}}
+{{--                                    <option value="Visayas">Visayas</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <!-- /.box-header -->
             <div class="box-body">
@@ -47,10 +47,9 @@
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                             <th>SLUG</th>
-                            <th>Origin</th>
+                            <th>Port ID</th>
                             <th>Port Name</th>
-                            <th>Ship</th>
-                            <th>Vessel</th>
+                            <th>Port Location</th>
                             <th class="action">Action</th>
                         </tr>
                         </thead>
@@ -80,7 +79,7 @@
     {!! __html::modal_delete('port_delete') !!}
     <!-- Add port Modal -->
     <div class="modal fade" id="add_port_modal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -92,24 +91,33 @@
                         <div class="col-md-12">
                             <div class="row">
 
-                                {!! \App\Core\Helpers\__form2::select('category',[
-                                    'label' => 'Origin:',
-                                    'options' => ['Luzon/Mindanao' => 'Luzon/Mindanao','Visayas' =>'Visayas' ],
+{{--                                {!! \App\Core\Helpers\__form2::select('category',[--}}
+{{--                                    'label' => 'Origin:',--}}
+{{--                                    'options' => ['Luzon/Mindanao' => 'Luzon/Mindanao','Visayas' =>'Visayas' ],--}}
 
-                                    'cols' => 12,
+{{--                                    'cols' => 12,--}}
+{{--                                ]) !!}--}}
+                                {!! \App\Core\Helpers\__form2::textbox('port_id',[
+                                    'label' => 'Port ID:',
+                                    'cols' => 6,
+                                    'type' => 'number',
                                 ]) !!}
                                 {!! \App\Core\Helpers\__form2::textbox('port_name',[
                                     'label' => 'Port Name:',
                                     'cols' => 12,
                                 ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('ship',[
-                                    'label' => 'Ship Name:',
+                                {!! \App\Core\Helpers\__form2::textbox('port_location',[
+                                    'label' => 'Port Location:',
                                     'cols' => 12,
                                 ]) !!}
-                                {!! \App\Core\Helpers\__form2::textbox('vessel',[
-                                    'label' => 'Vessel Name:',
-                                    'cols' => 12,
-                                ]) !!}
+{{--                                {!! \App\Core\Helpers\__form2::textbox('ship',[--}}
+{{--                                    'label' => 'Ship Name:',--}}
+{{--                                    'cols' => 12,--}}
+{{--                                ]) !!}--}}
+{{--                                {!! \App\Core\Helpers\__form2::textbox('vessel',[--}}
+{{--                                    'label' => 'Vessel Name:',--}}
+{{--                                    'cols' => 12,--}}
+{{--                                ]) !!}--}}
 
 
                             </div>
@@ -125,12 +133,10 @@
             </div>
         </div>
     </div>
-    
-    {!! __html::modal_delete('port_delete') !!}
-    
+
     <!-- Edit modal -->
     <div class="modal fade" id="edit_port_modal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
 
                 <div id="edit_port_modal_loader">
@@ -149,12 +155,12 @@
         {!! __js::modal_loader() !!}
 
     </script>
-    <script type="text/javascript">
-        $('#category_filter').on('change', function () {
-            var category = $(this).val();
-            port_table.columns(1).search(category).draw();
-        });
-    </script>
+{{--    <script type="text/javascript">--}}
+{{--        $('#category_filter').on('change', function () {--}}
+{{--            var category = $(this).val();--}}
+{{--            port_table.columns(1).search(category).draw();--}}
+{{--        });--}}
+{{--    </script>--}}
 
     <script type="text/javascript">
 
@@ -180,10 +186,9 @@
                 },
                 "columns": [
                     {"data": "slug"},
-                    {"data": "category"},
+                    {"data": "port_id"},
                     {"data": "port_name"},
-                    {"data": "ship"},
-                    {"data": "vessel"},
+                    {"data": "port_location"},
                     {"data": "action"}
                 ],
 
@@ -196,7 +201,7 @@
                         "visible" : false
                     },
                     {
-                        "targets" : 5,
+                        "targets" : 4,
                         "orderable" : false,
                         "class" : 'action-10p'
                     },

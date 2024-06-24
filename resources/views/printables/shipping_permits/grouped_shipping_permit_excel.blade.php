@@ -1,11 +1,49 @@
-@if(!empty($port_origin))
+@if(!empty($group_array))
 
     <div class="col-md-12">
         @include('printables.header_sra')
         <div class="col-md-12">
-            <b>GROUPED LIST BY: Port</b>
+            @foreach($types as $type)
+                @switch($type)
+                    @case('sp_or_no')
+                        <b>GROUPED LIST BY: Official Receipt No.</b>
+                        @break
+                    @case('sp_status')
+                        <b>GROUPED LIST BY: Status</b>
+                        @break
+                    @case('sp_mill')
+                        <b>GROUPED LIST BY: Mill</b>
+                        @break
+                    @case('sp_ref_sp_no')
+                        <b>GROUPED LIST BY: Ref. Sp. No.</b>
+                        @break
+                    @case('sp_sugar_class')
+                        <b>GROUPED LIST BY: Sugar Class</b>
+                        @break
+                    @case('sp_port_of_origin')
+                        <b>GROUPED LIST BY: Port of Origin</b>
+                        @break
+                    @case('sp_port_of_destination')
+                        <b>GROUPED LIST BY: Port of Destination</b>
+                        @break
+                    @case('sp_vessel')
+                        <b>GROUPED LIST BY: Vessel</b>
+                        @break
+                    @case('sp_shipper')
+                        <b>GROUPED LIST BY: Shipper</b>
+                        @break
+                    @case('sp_consignee')
+                        <b>GROUPED LIST BY: Consignee</b>
+                        @break
+                    @case('sp_collecting_officer')
+                        <b>GROUPED LIST BY: Collecting Officer</b>
+                        @break
+                    @default
+                        <b>GROUPED LIST BY: {{$type}}</b>
+                @endswitch
+            @endforeach
         </div>
-        <br>
+        <br><br>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -21,7 +59,7 @@
             </thead>
             <tbody>
             @php $num = 0; @endphp
-            @foreach($port_origin as $key => $sp)
+            @foreach($group_array as $key => $sp)
                 @foreach($sp as $item)
                     @php $num++ @endphp
                     <tr>
@@ -43,13 +81,37 @@
                                         @break
                                     @case('sp_port_of_origin')
                                         <td class="{{$column_chosen}}">
-                                            {{$item->portOfOrigin->port_name}}
+                                            {{$item->sp_port_of_origin}}
+                                        </td>
+                                        @break
+                                    @case('sp_port_of_destination')
+                                        <td class="{{$column_chosen}}">
+                                            {{$item->sp_port_of_destination}}
+                                        </td>
+                                        @break
+                                    @case('sp_mill')
+                                        <td class="{{$column_chosen}}">
+                                            {{$item->spMIll_Origin->mill_name ?? null}}
+                                        </td>
+                                        @break
+                                    @case('sp_collecting_officer')
+                                        @php
+                                            $user = $item->spCollecting_Officer;
+                                            $co = '';  // Default value if $user is null
+                                            if ($user) {
+                                                $middleInitial = $user->middlename ? substr($user->middlename, 0, 1) . '.' : '';
+                                                $fullName = $user->lastname . ', ' . $user->firstname . ' ' . $middleInitial;
+                                                $co = $fullName;
+                                            }
+                                        @endphp
+                                        <td class="{{$column_chosen}}">
+                                            {{ $co }}
                                         </td>
                                         @break
                                     @default
-                                        <td class="{{$column_chosen}}">
-                                            {{$item->$column_chosen}}
-                                        </td>
+                                    <td class="{{$column_chosen}}">
+                                        {{$item->$column_chosen}}
+                                    </td>
                                 @endswitch
                             @endif
                         @endforeach

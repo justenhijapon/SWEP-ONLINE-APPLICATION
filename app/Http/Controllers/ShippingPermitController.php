@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Core\Helpers\Helpers;
+use App\Core\Helpers\TranslateTextHelper;
 use App\Exports\GroupedShippingPermitExport;
 use App\Exports\ShippingPermitExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shipping_Permit\ShippingPermitFormRequest;
 use App\Models\OfficialReciepts;
+use App\Models\Origin;
 use App\Models\Port;
 use App\Models\ShippingPermit;
 use Carbon\Carbon;
@@ -17,6 +19,7 @@ use Barryvdh\DomPDF\PDF;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use phpDocumentor\Reflection\Location;
+use Rmunate\Utilities\SpellNumber;
 
 
 class ShippingPermitController extends Controller
@@ -26,6 +29,8 @@ class ShippingPermitController extends Controller
     }
     public function index(Request $request){
         $spor = OfficialReciepts::all();
+        $port = Port::all();
+        $mill = Origin::all();
 
         if($request->ajax())
         {
@@ -36,16 +41,32 @@ class ShippingPermitController extends Controller
                         'data' => $data,
                     ]);
                 })
-                ->editColumn('sp_status', function($data){
-                    if($data->sp_status == 'PENDING'){
-                        return '<span class="label bg-orange col-md-12">PENDING</span>' ;
-                    }else if($data->sp_status == 'SHIPPED'){
-                        return '<span class="label bg-green col-md-12">SHIPPED</span>';
-                    }
-                    else if($data->sp_status == 'CANCELLED'){
-                        return '<span class="label bg-red col-md-12">CANCELLED</span>';
+                ->editColumn('sp_status', function($data) {
+                    switch($data->sp_status) {
+                        case 'TRANSHIPMENT':
+                        case 'W/ TRANSHIPMENT':
+                            return '<span class="label bg-orange col-md-12">'.$data->sp_status.'</span>';
+                        case 'ISSUED':
+                            return '<span class="label bg-green col-md-12">'.$data->sp_status.'</span>';
+                        case 'CANCELLATION':
+                        case 'CANCELLED':
+                        case 'CANCELLED ERROR IN PRINT':
+                        case 'SHUT-OUT':
+                            return '<span class="label bg-red col-md-12">'.$data->sp_status.'</span>';
+                        default:
+                            return '<span class="label bg-blue col-md-12">'.$data->sp_status.'</span>'; // Handle other statuses if necessary
                     }
                 })
+
+                ->editColumn('sp_port_of_origin', function($data){
+                    return $data->portOfOrigin->port_name ?? null;
+                })
+                ->editColumn('sp_port_of_destination', function($data){
+                    return $data->portOfDestination->port_name ?? null;
+                })
+//                ->editColumn('sp_mill', function($data){
+//                    return $data->spMIll_Origin->name;
+//                })
                 ->escapeColumns([])
                 ->rawColumns(['action'])
                 ->setRowId('slug')
@@ -53,7 +74,9 @@ class ShippingPermitController extends Controller
         }
 
         return view('dashboard.shipping_permits.index')->with([
-            'spor' => $spor
+            'spor' => $spor,
+            'port' => $port,
+            'mill' => $mill
         ]);
     }
 
@@ -83,6 +106,8 @@ class ShippingPermitController extends Controller
         $sp->sp_ref_sp_no = $request->sp_ref_sp_no;
         $sp->sp_status = $request->sp_status;
         $sp->sp_markings = $request->sp_markings;
+        $sp->sp_collecting_officer = $request->sp_collecting_officer;
+        $sp->sp_collecting_officer_position = $request->sp_collecting_officer_position;
         $sp->sp_shipper = $request->sp_shipper;
         $sp->sp_shipper_add = $request->sp_shipper_add;
         $sp->sp_shipper_tin = $request->sp_shipper_tin;
@@ -184,22 +209,65 @@ class ShippingPermitController extends Controller
 //            ]);
 //    }
 
+    public function print($slug)
+    {
+        $print = ShippingPermit::query()
+            ->with([
+                "spCollecting_Officer",
+                "spMIll_Origin",
+            ])
+            ->where('slug', $slug)
+            ->first();
+
+        // Handle null value for sp_volume
+        $spVolume = optional($print)->sp_volume ?? 0;  // Default to 0 if sp_volume is null
+        $word = SpellNumber::integer($spVolume)->toLetters();
+        $translated = TranslateTextHelper::translate($word);
+
+        return view('printables.shipping_permits.print')->with([
+            "print" => $print,
+            'translated' => $translated,
+        ]);
+    }
+
     private function columns(){
         $columns = [
             "Numbering" => "numbering",
-            "Date" => "sp_date",
+            "OR. No." => "sp_or_no",
             "Shipping Permit No" => "sp_no",
+            "Date" => "sp_date",
+            "EDD/ETD" => "sp_edd_etd",
+            "EDA/ETA" => "sp_eda_eta",
             "Port of Origin" => "sp_port_of_origin",
+            "Port of Destination" => "sp_port_of_destination",
+            "Vessel" => "sp_vessel",
+            "Ship Operator" => "sp_ship_operator",
+            "Freight" => "sp_freight",
+            "Plate No." => "sp_plate_no",
+            "Remarks" => "sp_remarks",
+            "Reference SP No." => "sp_ref_sp_no",
+            "Mill" => "sp_mill",
+            "Sugar Class" => "sp_sugar_class",
+            "Volume" => "sp_volume",
+            "UOM" => "sp_uom",
             "Amount" => "sp_amount",
-
+            "Status" => "sp_status",
+            "Markings" => "sp_markings",
+            "Shipper" => "sp_shipper",
+            "Shipper Address" => "sp_shipper_add",
+            "Shipper Tin" => "sp_shipper_tin",
+            "Consignee" => "sp_consignee",
+            "Consignee Address" => "sp_consignee_add",
+            "Consignee Tin" => "sp_consignee_tin",
+            "Collecting Officer" => "sp_collecting_officer",
         ];
         return $columns;
     }
     public function reports(){
         $sp = ShippingPermit::query()
             ->with([
-                "portOfOrigin",
-                "portOfDestination",
+                "spCollecting_Officer",
+                "spMIll_Origin",
             ]);
         return view('dashboard.shipping_permits.reports')->with([
             'columns' => $this->columns(),
@@ -211,96 +279,190 @@ class ShippingPermitController extends Controller
         $type = $request->get('layout');
         $sp = ShippingPermit::query()
             ->with([
-                "portOfOrigin",
-                "portOfDestination",
+                "spCollecting_Officer",
+                "spMIll_Origin",
             ]);
 
-        if($request->sp_sugar_class != "" AND $request->sp_sugar_class != "all"){
-            $sp = $sp->where('sp_sugar_class',"=",$request->sp_sugar_class);
+        $fields = [
+            'sp_or_no' => $request->sp_or_no,
+            'sp_status' => $request->sp_status,
+            'sp_mill' => $request->sp_mill,
+            'sp_ref_sp_no'=> $request->sp_ref_sp_no,
+            'sp_sugar_class' => $request->sp_sugar_class,
+            'sp_port_of_origin' => $request->sp_port_of_origin,
+            'sp_port_of_destination' => $request->sp_port_of_destination,
+            'sp_vessel' => $request->sp_vessel,
+            'sp_shipper' => $request->sp_shipper,
+            'sp_consignee' => $request->sp_consignee,
+            'sp_collecting_officer' => $request->sp_collecting_officer,
+        ];
+
+        foreach ($fields as $field => $value) {
+            if ($value != "" && $value != "all") {
+                $sp = $sp->where($field, "=", $value);
+            }
         }
 
-        if($request->sp_mill != "" AND $request->sp_mill != "all"){
-            $sp = $sp->where('sp_mill',"=",$request->sp_mill);
-        }
-
-        if($request->sp_port_of_origin != "" AND $request->sp_port_of_origin != "all"){
-            $sp = $sp->where('sp_port_of_origin',"=",$request->sp_port_of_origin);
-        }
 
         $filters = [];
 
         foreach ($request->all() as $key => $value) {
             if(!is_array($value)){
-                if($key != "layout" and $value != null){
-                        array_push($filters, $value);
+                if($key != "layout" && $value != null){
+                    array_push($filters, $value);
                 }
             }
         }
 
-        if(!empty($request->date_range)){
-            $date_range = "";
-            $date_range = explode('-', $request->date_range);
-            foreach ($date_range as $key => $value) {
-                $date_range[$key] = date("Ymd",strtotime($value));
+        function applyDateRangeFilter($request, $field, $column, $sp) {
+            if (!empty($request->$field)) {
+                $date_range = array_map(function($value) {
+                    return date("Ymd", strtotime($value));
+                }, explode('-', $request->$field));
+
+                $df = $date_range[0];
+                $dt = $date_range[1];
+
+                $sp = $sp->whereBetween($column, [$df, $dt]);
             }
-            $df = $date_range[0];
-            $dt = $date_range[1];
-
-            $sp = $sp->whereBetween('sp_date',[$df,$dt]);
-
+            return $sp;
         }
 
-        if($type == "all"){
+        $sp = applyDateRangeFilter($request, 'date_range', 'sp_date', $sp);
+        $sp = applyDateRangeFilter($request, 'date_range_1', 'sp_edd_etd', $sp);
+        $sp = applyDateRangeFilter($request, 'date_range_2', 'sp_eda_eta', $sp);
 
-            if($request->excel == true){
 
-                return Excel::download(new ShippingPermitExport($request->get('columns'),$sp->get(),$this->columns()), 'shipping_permit_report.xlsx');
+        $sp = $sp->get();
+        $types = [$type]; // Ensure $type is an array
+
+        if ($type == "all") {
+            if ($request->excel == true) {
+                return Excel::download(
+                    new ShippingPermitExport($request->get('columns'), $sp, $this->columns()),
+                    'Shipping Permit Report ' . date('d-m-Y') . '.xlsx'
+                );
             }
             return view('printables.shipping_permits.list_all')->with([
-                'sp' => $sp->get(),
+                'sp' => $sp,
                 'columns_chosen' => $request->get('columns'),
                 'columns' => $this->columns(),
-                'filters'=> $filters,
-
+                'filters' => $filters,
+                'types' => $types,
             ]);
         }
 
-        if($type == "sp_port_of_origin") {
-            $sp = $sp->get();
-            $port_origin = [];
-            foreach ($sp as $port) {
-                $port_origin[$port->sp_port_of_origin][$port->slug] = $port;
-            }
-            if ($type == "sp_port_of_origin") {
+        return $this->generateGroupedReport($request, $sp, $type, $filters);
+    }
 
-                // Sort $sp by port before exporting
-                $sp = $sp->sortByDesc('sp_port_of_origin');
+    private function generateGroupedReport(Request $request, $sp, $type, $filters) {
+        $group_array = [];
 
-                if ($request->excel == true) {
-//                echo "<script>
-//                alert('Only List All Layout can generate Excel Report');
-//                window.location.href='/dashboard/ShippingPermit_reports';
-//                </script>";
-                    return Excel::download(new GroupedShippingPermitExport(
-                        $request->get('columns'),
-                        $sp,
-                        $this->columns(),
-                        $port_origin
-                    ), 'grouped_by_port_shipping_permit_report.xlsx');
-
+        switch ($type) {
+            case "sp_or_no":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_or_no][$data->slug] = $data;
                 }
-                return view('printables.shipping_permits.grouped_list')->with([
-                    'sp' => $sp,
-                    'port_origin' => $port_origin,
-                    'columns_chosen' => $request->get('columns'),
-                    'columns' => $this->columns(),
-                    'filters' => $filters,
-
-                ]);
-            }
+                $sp = $sp->sortByDesc('sp_or_no');
+                break;
+            case "sp_status":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_status][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_status');
+                break;
+            case "sp_mill":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_mill][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_mill');
+                break;
+            case "sp_ref_sp_no":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_ref_sp_no][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_ref_sp_no');
+                break;
+            case "sp_sugar_class":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_sugar_class][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_sugar_class');
+                break;
+            case "sp_port_of_origin":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_port_of_origin][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_port_of_origin');
+                break;
+            case "sp_port_of_destination":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_port_of_destination][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_port_of_destination');
+                break;
+            case "sp_vessel":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_vessel][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_vessel');
+                break;
+            case "sp_shipper":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_shipper][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_shipper');
+                break;
+            case "sp_consignee":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_consignee][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_consignee');
+                break;
+            case "sp_collecting_officer":
+                foreach ($sp as $data) {
+                    $group_array[$data->sp_collecting_officer][$data->slug] = $data;
+                }
+                $sp = $sp->sortByDesc('sp_collecting_officer');
+                break;
+            default:
+                break;
         }
 
+        if ($request->excel == true) {
+            $groupedBy = match ($type) {
+                'sp_or_no' => 'Official Receipt No.',
+                'sp_status' => 'Status',
+                'sp_mill' => 'Mill',
+                'sp_ref_sp_no' => 'Ref. Sp. No.',
+                'sp_sugar_class' => 'Sugar Class',
+                'sp_port_of_origin' => 'Port of Origin',
+                'sp_port_of_destination' => 'Port of Destination',
+                'sp_vessel' => 'Vessel',
+                'sp_shipper' => 'Shipper',
+                'sp_consignee' => 'Consignee',
+                'sp_collecting_officer' => 'Collecting Officer',
+                default => str_replace('_', ' ', $type),
+            };
+            return Excel::download(new GroupedShippingPermitExport(
+                $request->get('columns'),
+                $sp,
+                $this->columns(),
+                $group_array,
+            ), 'Grouped by ' . $groupedBy . ' Shipping Permit Report ' . date('d-m-Y') . '.xlsx');
+        }
+
+
+        return view('printables.shipping_permits.grouped_list')->with([
+            'sp' => $sp,
+            'group_array' => $group_array,
+            'columns_chosen' => $request->get('columns'),
+            'columns' => $this->columns(),
+            'filters' => $filters,
+            'types' => [$type]
+        ]);
     }
+
 
 
 }

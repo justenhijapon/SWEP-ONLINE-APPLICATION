@@ -113,7 +113,7 @@
                 @foreach($global_menu_tree as $user_menu)
                     @if($user_menu['menu_obj']->category == 'ADMIN')
                         @if(!$adminHeaderDisplayed)
-                            <li class="header">DATA INPUT</li>
+                            <li class="header">ADMIN</li>
                             @php
                                 $adminHeaderDisplayed = true;
                             @endphp

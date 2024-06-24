@@ -36,11 +36,32 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 100%;
+            max-height: 100vh;
             overflow-y: auto; /* Enable vertical scrolling */
-            scrollbar-width: thin; /* For Firefox */
-            scrollbar-color: #888 #f1f1f1; /* thumb and track colors */
+            /*scrollbar-width: thin; !* For Firefox *!*/
+            /*scrollbar-color: #888 #f1f1f1; !* thumb and track colors *!*/
         }
+
+        /*::-webkit-scrollbar {*/
+        /*    width: 20px;  !* Remove scrollbar space *!*/
+        /*    !*background: transparent;  !* Optional: just make scrollbar invisible *!*!*/
+        /*}*/
+
+        .main-sidebar::-webkit-scrollbar {
+            width: 0;
+            height: 8px;
+            background-color: #4b646f; /* or add it to the track */
+        }
+
+        .main-sidebar::-webkit-scrollbar-thumb {
+            background: #4b646f;
+        }
+
+        .main-sidebar::-webkit-scrollbar-track {
+            background: #1a2226;
+        }
+
+
 
     </style>
 
@@ -90,15 +111,6 @@
             }
         });
     });
-
-    // $('.sidebar').slimScroll({
-    //     height: '100%', // Set the height as desired
-    //     railVisible: true, // Show the scrollbar rail
-    //     alwaysVisible: true, // Keep scrollbar always visible
-    //     wheelStep: 10 // Scroll amount on mouse wheel
-    // });
-
-
 
 </script>
 @yield('scripts')

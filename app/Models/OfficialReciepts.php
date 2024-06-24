@@ -41,4 +41,9 @@ class OfficialReciepts extends Model
     public function orShippingPermit() {
         return $this->hasMany('App\Models\ShippingPermit','sp_or_no','or_no');
     }
+
+    public function orMIll_Origin(){
+        return $this->belongsTo(Mill::class,'or_mill' ,'slug');
+
+    }
 }

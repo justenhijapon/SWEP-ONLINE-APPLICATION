@@ -4,7 +4,7 @@
 <section class="content">
 	<div class="login-box">
 		<div class="login-logo">
-			<a href="#"><b>SHIPPING PERMIT</b></a>
+			<a href="#"><b>SUGAR REGULATORY ADMINISTRATION</b></a>
 		</div>
 		<div>
 			@if(Session::has('AUTH_AUTHENTICATED'))
@@ -35,7 +35,7 @@
 		<div class="login-box-body" style="display: flex;">
 			<!-- Form Container -->
 			<div style="flex: 1;">
-				<p class="login-box-msg"><b>SRA - WEB PORTAL | LOGIN</b></p>
+				<p class="login-box-msg"><b>SHIPPING PERMIT | LOGIN</b></p>
 
 				<form method="POST" action="{{ route('auth.login') }}">
 					@csrf
@@ -76,7 +76,7 @@
 			</div>
 			<!-- Image Container -->
 			<div class="image-container" style="flex: 1; text-align: center; padding-right: 10px;">
-				<img src="{{ asset('images/sra.png') }}" alt="Login Image" style="max-width: 100%; height: auto;">
+				<img src="{{ asset('images/SRA_DA logo.png') }}" alt="Login Image" style="max-width: 100%; height: auto;">
 			</div>
 		</div>
 	</div>

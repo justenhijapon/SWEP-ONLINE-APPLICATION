@@ -22,7 +22,7 @@ class PortFormRequest extends FormRequest{
 
         $rules = [
 
-            'category'=>'required|string|max:45',
+//            'category'=>'required|string|max:45',
             'port_name'=>'required|string|max:45',
 
 

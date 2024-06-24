@@ -34,16 +34,21 @@ class ShippingPermit extends Model
     public $timestamps = false;
 
     /** Relationships */
-    public function portOfOrigin(){
-        return $this->belongsTo(Port::class,'sp_port_of_origin' ,'slug');
-    }
-
-    public function portOfDestination(){
-        return $this->belongsTo(Port::class,'sp_port_of_destination' ,'slug');
-    }
+//    public function portOfOrigin(){
+//        return $this->belongsTo(Port::class,'sp_port_of_origin' ,'slug');
+//    }
+//
+//    public function portOfDestination(){
+//        return $this->belongsTo(Port::class,'sp_port_of_destination' ,'slug');
+//    }
 
     public function spMIll_Origin(){
-        return $this->belongsTo(Origin::class,'sp_mill' ,'slug');
+        return $this->belongsTo(Mill::class,'sp_mill' ,'slug');
+
+    }
+
+    public function spCollecting_Officer(){
+        return $this->belongsTo(User::class,'sp_collecting_officer' ,'user_id');
 
     }
 

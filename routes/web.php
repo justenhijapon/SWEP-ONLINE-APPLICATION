@@ -47,6 +47,9 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
     /** PORT **/
     Route::resource('port', 'PortController');
 
+    /** Mill **/
+    Route::resource('mill', 'MillController');
+
     /** Origin **/
     Route::resource('origin', 'OriginController');
 
@@ -55,6 +58,12 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
     /** Consignee **/
     Route::resource('consignee', 'ConsigneeController');
+
+    /** Vessel **/
+    Route::resource('vessel', 'VesselController');
+
+    /** Sugar Liens **/
+    Route::resource('sugar_liens', 'SugarLiensController');
 
     /** Shipping Permit **/
     Route::resource('shipping_permits', 'ShippingPermitController');
@@ -77,18 +86,17 @@ Route::get('dashboard/home', 'HomeController@index')->name('dashboard.home')->mi
 /** Testing **/
 Route::get('/dashboard/test', function(){
 
-	return dd(Illuminate\Support\Str::random(16),Illuminate\Support\Str::random(11));
+//	return dd(Illuminate\Support\Str::random(16),Illuminate\Support\Str::random(11));
 	//dd(number_format(null));
-
 	//dd(9>=9);
 
 });
 
 //Route::get('/printables/index', [\App\Http\Controllers\printController::class, 'index']);
+//Route::get('/printables/print/{id}', 'printController@print')->name('printables.print');
+
 Route::get('/printables/index/{slug}', 'printController@index')->name('printables.index');
-Route::get('/printables/print/{id}', 'printController@print')->name('printables.print');
-
-
+Route::get('/shipping_permit/print/{slug}', 'ShippingPermitController@print')->name('shipping_permit.print');
 Route::get('users/export/', [\App\Http\Controllers\ShippingPermitController::class, 'export']);
 
 

@@ -34,6 +34,7 @@ class ConsigneeController extends Controller
 
         $consignee = new Consignee();
         $consignee->slug = Str::random(16);
+        $consignee->consignee_id = $request->consignee_id;
         $consignee->consignee_name = $request->consignee_name;
         $consignee->consignee_address = $request->consignee_address;
         $consignee->consignee_tin = $request->consignee_tin;
@@ -78,6 +79,7 @@ class ConsigneeController extends Controller
             ->first();
             $consignee ?? abort(404,'Consignee not found.');
 
+        $consignee->consignee_id = $request->consignee_id;
         $consignee->consignee_name = $request->consignee_name;
         $consignee->consignee_address = $request->consignee_address;
         $consignee->consignee_tin = $request->consignee_tin;

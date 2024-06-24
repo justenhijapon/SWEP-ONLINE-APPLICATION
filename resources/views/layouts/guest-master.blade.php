@@ -77,8 +77,8 @@
 
       }
       .image-container img {
-        width: 200px; /* Set the desired width */
-        height: 200px; /* Set the desired height */
+        width: 300px; /* Set the desired width */
+        height: 300px; /* Set the desired height */
       }
       .form-container {
         flex: 1;

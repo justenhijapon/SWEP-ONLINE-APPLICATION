@@ -22,9 +22,10 @@
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                             <th>SLUG</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Tin</th>
+                            <th>Consignee ID</th>
+                            <th>Consignee Name</th>
+                            <th>Business Address</th>
+                            <th>TIN</th>
                             <th class="action">Action</th>
                         </tr>
                         </thead>
@@ -54,7 +55,7 @@
     {!! __html::modal_delete('consignee_delete') !!}
     <!-- Add consignee Modal -->
     <div class="modal fade" id="add_consignee_modal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -65,18 +66,23 @@
                     <div class="modal-body">
                         <div class="col-md-12">
                             <div class="row">
-
+                                {!! \App\Core\Helpers\__form2::textbox('consignee_id',[
+                                    'label' => 'Consignee ID:',
+                                    'cols' => 6,
+                                    'type' => 'number'
+                                ]) !!}
                                 {!! \App\Core\Helpers\__form2::textbox('consignee_name',[
                                     'label' => 'Name:',
                                     'cols' => 12,
                                 ]) !!}
                                 {!! \App\Core\Helpers\__form2::textbox('consignee_address',[
-                                    'label' => 'Address:',
+                                    'label' => 'Business Address:',
                                     'cols' => 12,
                                 ]) !!}
                                 {!! \App\Core\Helpers\__form2::textbox('consignee_tin',[
-                                    'label' => 'Tin:',
+                                    'label' => 'TIN:',
                                     'cols' => 12,
+                                    'type' => 'number'
                                 ]) !!}
 
 
@@ -98,7 +104,7 @@
 
     <!-- Edit modal -->
     <div class="modal fade" id="edit_consignee_modal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
 
                 <div id="edit_consignee_modal_loader">
@@ -142,6 +148,7 @@
                 },
                 "columns": [
                     {"data": "slug"},
+                    {"data": "consignee_id"},
                     {"data": "consignee_name"},
                     {"data": "consignee_address"},
                     {"data": "consignee_tin"},
@@ -158,7 +165,7 @@
                         "visible" : false
                     },
                     {
-                        "targets" : 4,
+                        "targets" : 5,
                         "orderable" : false,
                         "class" : 'action-10p'
                     },

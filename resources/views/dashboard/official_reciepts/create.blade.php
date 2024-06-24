@@ -8,15 +8,17 @@
         <tr>
             <td>
                 {!! \App\Core\Helpers\__form2::selectOnly('items[rand][oru_txn_type]',[
-                    'options' => \App\Core\Helpers\Arrays::spStatus(),
+                    'options' => \App\Core\Helpers\Arrays::TXNType(),
                 ]) !!}
             </td>
             <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_sp_no]',[
                         'label' => 'S.P. No.:',
+                        'type' => 'number',
                      ]) !!}
             </td>
             <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_volume]',[
                         'label' => 'Volume:',
+                        'type' => 'number',
                      ]) !!}
             </td>
             <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_amount]',[
@@ -48,15 +50,16 @@
                     <div class="modal-body">
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-4">
                                     <div class="modal-header">
                                         <h4 class="modal-title text-strong">O.R. Details</h4>
                                     </div>
                                     <div class="row">
 
                                         {!! \App\Core\Helpers\__form2::textbox('or_no',[
-                                            'label' => 'O.R. No.:',
-                                            'cols' => 6,
+                                             'label' => 'O.R. No.:',
+                                             'cols' => 6,
+                                             'type' => 'number',
                                              'class' => 'autonum_init',
                                         ]) !!}
                                         {!! \App\Core\Helpers\__form2::textbox('or_date',[
@@ -67,32 +70,29 @@
                                     </div>
                                     <div class="row">
 
-                                        {!! \App\Core\Helpers\__form2::textbox('or_mill',[
+                                        {!! \App\Core\Helpers\__form2::select('or_mill',[
                                             'label' => 'Mill:',
                                             'cols' => 6,
+                                            'options' => \App\Core\Helpers\Arrays::millarray(),
                                         ]) !!}
-                                        {!! \App\Core\Helpers\__form2::textbox('or_sugar_class',[
+                                        {!! \App\Core\Helpers\__form2::select('or_sugar_class',[
                                             'label' => 'Sugar Class:',
                                             'cols' => 6,
+                                            'options' => \App\Core\Helpers\Arrays::SugarClass(),
                                         ]) !!}
                                     </div>
                                     <div class="row">
 
-                                        {!! \App\Core\Helpers\__form2::textbox('or_payor',[
+                                        {!! \App\Core\Helpers\__form2::select('or_payor',[
                                             'label' => 'Payor:',
-                                            'cols' => 12,
+                                            'cols' => 8,
+                                            'options' => \App\Core\Helpers\Arrays::orPayor(),
                                         ]) !!}
-
-                                    </div>
-                                    <div class="row">
-
                                         {!! \App\Core\Helpers\__form2::select('or_crop_year',[
                                             'label' => 'Crop Year:',
                                             'options' => \App\Core\Helpers\Arrays::cropYear(),
-                                            'cols' => 12,
+                                            'cols' => 4,
                                         ]) !!}
-
-
                                     </div>
                                     <div class="row">
                                         <div class="panel panel-default">
@@ -128,6 +128,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="row">
                                         <div class="modal-header">
                                             <h4 class="modal-title text-strong">Payment Details</h4>
@@ -143,6 +145,7 @@
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_cash_amount',[
                                                         'label' => 'Cash Amount:',
+                                                        'class' => 'autonum',
                                                         'cols' => 6,
                                                     ]) !!}
                                                 </div>
@@ -150,10 +153,12 @@
 
                                                     {!! \App\Core\Helpers\__form2::textbox('or_chk_acct_no',[
                                                         'label' => 'Chk. Acct No.:',
+                                                        'type' => 'number',
                                                         'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_check_amount',[
                                                         'label' => 'Check Amount:',
+                                                        'class' => 'autonum',
                                                         'cols' => 6,
                                                     ]) !!}
 
@@ -162,10 +167,12 @@
                                                 <div class="row">
                                                     {!! \App\Core\Helpers\__form2::textbox('or_chk_no',[
                                                         'label' => 'Check No.:',
+                                                        'type' => 'number',
                                                         'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_money_order',[
                                                         'label' => 'Money Order:',
+                                                        'class' => 'autonum',
                                                         'cols' => 6,
                                                     ]) !!}
 
@@ -173,10 +180,13 @@
                                                 <div class="row">
                                                     {!! \App\Core\Helpers\__form2::textbox('or_chk_date',[
                                                         'label' => 'Check Date:',
+                                                        'type' => 'date',
                                                         'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_total_paid',[
                                                         'label' => 'Total Paid:',
+                                                         'class' => 'autonum',
+                                                        'readonly' => 'readonly',
                                                         'cols' => 6,
                                                     ]) !!}
 
@@ -184,7 +194,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col-md-4">
                                     <div class="row">
@@ -198,27 +207,27 @@
 
                                                     {!! \App\Core\Helpers\__form2::textbox('or_cancellation',[
                                                         'label' => 'Cancellation:',
-                                                        'cols' => 12,
+                                                        'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_shut_out',[
                                                         'label' => 'Shut-out:',
-                                                        'cols' => 12,
+                                                        'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_transhipment',[
                                                         'label' => 'Transhipment:',
-                                                        'cols' => 12,
+                                                        'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_shipping_permit',[
                                                         'label' => 'Shipping Permit:',
-                                                        'cols' => 12,
+                                                        'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_other_fees',[
                                                         'label' => 'Other Fees:',
-                                                        'cols' => 12,
+                                                        'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_other_fees_2',[
                                                         'label' => 'Other Fees:',
-                                                        'cols' => 12,
+                                                        'cols' => 6,
                                                     ]) !!}
                                                 </div>
                                                 <div class="row">

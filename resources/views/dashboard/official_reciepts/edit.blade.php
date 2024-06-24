@@ -22,6 +22,7 @@
                         {!! \App\Core\Helpers\__form2::textbox('or_no',[
                             'label' => 'O.R. No.:',
                             'cols' => 6,
+                             'type' => 'number',
                              'class' => 'autonum_init',
                         ],$or ?? null) !!}
                         {!! \App\Core\Helpers\__form2::textbox('or_date',[
@@ -29,23 +30,25 @@
                             'type' => 'date',
                             'cols' => 6,
                         ],$or ?? null) !!}
+
                     </div>
                     <div class="row">
-
-                        {!! \App\Core\Helpers\__form2::textbox('or_mill',[
+                        {!! \App\Core\Helpers\__form2::select('or_mill',[
                             'label' => 'Mill:',
                             'cols' => 6,
+                            'options' => \App\Core\Helpers\Arrays::millarray(),
                         ],$or ?? null) !!}
-                        {!! \App\Core\Helpers\__form2::textbox('or_sugar_class',[
+                        {!! \App\Core\Helpers\__form2::select('or_sugar_class',[
                             'label' => 'Sugar Class:',
                             'cols' => 6,
+                            'options' => \App\Core\Helpers\Arrays::SugarClass(),
                         ],$or ?? null) !!}
                     </div>
                     <div class="row">
-
-                        {!! \App\Core\Helpers\__form2::textbox('or_payor',[
-                            'label' => 'Payor:',
-                            'cols' => 12,
+                        {!! \App\Core\Helpers\__form2::select('or_payor',[
+                           'label' => 'Payor:',
+                           'cols' => 12,
+                           'options' => \App\Core\Helpers\Arrays::orPayor(),
                         ],$or ?? null) !!}
 
                     </div>
@@ -87,25 +90,25 @@
                                     </thead>
 
                                     <tbody>
-                                    @foreach($or->orShippingPermit as $key => $orShippingPermit)
+                                    @foreach($or->orUtilization as $key => $orShippingPermit)
                                         <tr>
                                             <td>
-                                                {!! \App\Core\Helpers\__form2::selectOnly('items['.$orShippingPermit->sp_or_no.'][sp_status]',[
+                                                {!! \App\Core\Helpers\__form2::selectOnly('items['.$orShippingPermit->slug.'][oru_txn_type]',[
                                                   'options' => \App\Core\Helpers\Arrays::spStatus(),
-                                                ],$orShippingPermit->sp_status ?? null) !!}
+                                                ],$orShippingPermit->oru_txn_type ?? null) !!}
                                             </td>
-                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->sp_or_no.'][sp_no]',[
+                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->slug.'][oru_sp_no]',[
                                                 'label' => 'S.P. No.:',
-                                             ],$orShippingPermit->sp_no ?? null) !!}
+                                             ],$orShippingPermit->oru_sp_no ?? null) !!}
                                             </td>
-                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->sp_or_no.'][sp_volume]',[
+                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->slug.'][oru_volume]',[
                                                 'label' => 'Volume:',
-                                             ],$orShippingPermit->sp_volume ?? null) !!}
+                                             ],$orShippingPermit->oru_volume ?? null) !!}
                                             </td>
-                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->sp_or_no.'][sp_amount]',[
+                                            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->slug.'][oru_amount]',[
                                                 'label' => 'Amount:',
                                                 'class' => 'autonum_rand',
-                                             ],$orShippingPermit->sp_amount ?? null) !!}
+                                             ],$orShippingPermit->oru_amount ?? null) !!}
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-sm bg-red delete_row_item">
@@ -142,6 +145,7 @@
                                     {!! \App\Core\Helpers\__form2::textbox('or_chk_acct_no',[
                                         'label' => 'Chk. Acct No.:',
                                         'cols' => 6,
+                                         'type' => 'number',
                                     ],$or ?? null) !!}
                                     {!! \App\Core\Helpers\__form2::textbox('or_check_amount',[
                                         'label' => 'Check Amount:',
@@ -154,6 +158,7 @@
                                     {!! \App\Core\Helpers\__form2::textbox('or_chk_no',[
                                         'label' => 'Check No.:',
                                         'cols' => 6,
+                                         'type' => 'number',
                                     ],$or ?? null) !!}
                                     {!! \App\Core\Helpers\__form2::textbox('or_money_order',[
                                         'label' => 'Money Order:',
@@ -169,6 +174,7 @@
                                     {!! \App\Core\Helpers\__form2::textbox('or_total_paid',[
                                         'label' => 'Total Paid:',
                                         'cols' => 6,
+                                        'readonly' => 'readonly',
                                     ],$or ?? null) !!}
 
                                 </div>
@@ -206,14 +212,19 @@
                                         'label' => 'Other Fees:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}
+                                    {!! \App\Core\Helpers\__form2::textbox('or_other_fees_2',[
+                                        'label' => 'Other Fees:',
+                                        'cols' => 12,
+                                    ],$or ?? null) !!}
                                 </div>
                                 <div class="row">
 
-                                    {!! \App\Core\Helpers\__form2::textbox('or_other_fees_2',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_total_amount',[
                                         'label' => 'Total Amount:',
                                         'cols' => 12,
+                                        'readonly' => 'readonly'
                                     ],$total ?? null) !!}
-                                    {!! \App\Core\Helpers\__form2::textbox('or_total_amount',[
+                                    {!! \App\Core\Helpers\__form2::textbox('or_report_no',[
                                         'label' => 'Report No.:',
                                         'cols' => 12,
                                     ],$or ?? null) !!}

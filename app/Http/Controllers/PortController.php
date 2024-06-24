@@ -41,6 +41,8 @@ class PortController extends Controller
         $port->slug = Str::random(16);
         $port->category = $request->category;
         $port->port_name = $request->port_name;
+        $port->port_id = $request->port_id;
+        $port->port_location = $request->port_location;
         $port->ship = $request->ship;
         $port->vessel = $request->vessel;
         $port->created_at = Carbon::now();
@@ -86,6 +88,8 @@ class PortController extends Controller
 
         $port->category = $request->category;
         $port->port_name = $request->port_name;
+        $port->port_id = $request->port_id;
+        $port->port_location = $request->port_location;
         $port->ship = $request->ship;
         $port->vessel = $request->vessel;
         $port->created_at = Carbon::now();

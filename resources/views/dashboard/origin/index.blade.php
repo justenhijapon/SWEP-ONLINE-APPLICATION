@@ -45,8 +45,8 @@
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                             <th>SLUG</th>
-                            <th>Name</th>
-                            <th>Source</th>
+                            <th>Descriptive Name</th>
+                            <th>Address</th>
                             <th>Origin</th>
                             <th class="action">Action</th>
                         </tr>

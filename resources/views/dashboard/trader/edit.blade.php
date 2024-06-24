@@ -20,18 +20,23 @@
 
         <div class="col-md-12">
             <div class="row">
-
+                {!! \App\Core\Helpers\__form2::textbox('trader_id',[
+                    'label' => 'Trader ID:',
+                    'cols' => 6,
+                    'type' => 'number',
+                ],$trader ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('trader_name',[
                     'label' => 'Name:',
                     'cols' => 12,
                 ],$trader ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('trader_address',[
-                    'label' => 'Address:',
+                    'label' => 'Business Address:',
                     'cols' => 12,
                 ],$trader ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('trader_tin',[
-                    'label' => 'Tin:',
+                    'label' => 'TIN:',
                     'cols' => 12,
+                    'type' => 'number',
                 ],$trader ?? null) !!}
 
 

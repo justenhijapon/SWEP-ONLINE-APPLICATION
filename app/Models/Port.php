@@ -38,7 +38,6 @@ class Port extends Model
     public function portoforigin(){
         return $this->hasMany(Port::class,'port_name','sp_port_of_origin');
     }
-
     public function portofdestination(){
         return $this->hasMany(Port::class,'port_name','sp_port_of_destination');
     }

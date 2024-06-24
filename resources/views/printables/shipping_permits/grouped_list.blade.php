@@ -3,28 +3,28 @@
 
 @section('body')
     <style type="text/css">
-        .school{
-            width: 15% !important
-        }
-        .course_applied{
-            width: 15% !important
-        }
+        /*.school{*/
+        /*    width: 15% !important*/
+        /*}*/
+        /*.course_applied{*/
+        /*    width: 15% !important*/
+        /*}*/
 
-        .hip_applied{
-            width: 50px !important;
-            text-align: center;
-        }
-        .resolution_no{
-            width: 105px ;
-            text-align: center
-        }
-        .mill_district{
-            width: 10%
-        }
+        /*.hip_applied{*/
+        /*    width: 50px !important;*/
+        /*    text-align: center;*/
+        /*}*/
+        /*.resolution_no{*/
+        /*    width: 105px ;*/
+        /*    text-align: center*/
+        /*}*/
+        /*.mill_district{*/
+        /*    width: 10%*/
+        /*}*/
 
-        .numbering{
-            width: 10px;
-        }
+        /*.numbering{*/
+        /*    width: 10px;*/
+        /*}*/
 
         @media print{
             .noPrint{

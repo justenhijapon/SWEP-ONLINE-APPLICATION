@@ -58,6 +58,7 @@
             <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
               <th class="th-20">Username</th>
               <th >Full Name</th>
+              <th >User Role</th>
               <th class="th-10">Status</th>
               <th class="th-10">Account</th>
               <th class="action">Action</th>
@@ -123,11 +124,19 @@
               </div>
               <div class="row">
                 {!! __form::textbox(
-                  '6 email', 'email', 'email', 'Email *', 'Email', '', 'email', '', ''
+                  '4 email', 'email', 'email', 'Email *', 'Email', '', 'email', '', ''
                 ) !!}
 
                 {!! __form::textbox(
-                  '6 position', 'position', 'text', 'Position *', 'Position', '', 'position', '', ''
+                  '4 position', 'position', 'text', 'Position *', 'Position', '', 'position', '', ''
+                ) !!}
+
+                {!! __form::select_static(
+                  '4 user_access', 'user_access', 'User Access *', '', [
+                    'USER' => 'user',
+                    'ADMIN' => 'admin',
+                    'SUPER USER' => 'super_user',
+                  ], '', '', '', ''
                 ) !!}
               </div>
 
@@ -218,6 +227,7 @@
       "columns": [
         { "data": "username" },
         { "data": "fullname" },
+        { "data": "user_access" },
         { "data": "online" },
         { "data": "active" },
         { "data": "action" }
@@ -232,12 +242,12 @@
           "class" : 'w-10p'
         },
         {
-          "targets" : [2,3],
+          "targets" : [2,3,4],
           "orderable" : false,
           "class" : 'w-6p'
         },
         {
-          "targets" : 4,
+          "targets" : 5,
           "orderable" : false,
           "class" : 'action-10p'
         },
@@ -508,7 +518,7 @@
       id = $(this).attr("data");
       uri = " {{ route('dashboard.user.reset_password_post', 'slug') }} ";
       uri = uri.replace("slug",id);
-      wait_button("#reset_password_form");
+      // wait_button("#reset_password_form");
       $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -542,6 +552,7 @@
         },
         error: function(response){
           console.log(response);
+          notify("Enter your Password",'danger');
           errored("#reset_password_form","save",response);
         }
       })

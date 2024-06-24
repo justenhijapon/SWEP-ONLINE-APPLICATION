@@ -21,23 +21,31 @@
         <div class="col-md-12">
             <div class="row">
 
-                {!! \App\Core\Helpers\__form2::select('category',[
-                    'label' => 'Origin:',
-                    'options' => ['Luzon/Mindanao' => 'Luzon/Mindanao','Visayas' =>'Visayas'],
+{{--                {!! \App\Core\Helpers\__form2::select('category',[--}}
+{{--                    'label' => 'Origin:',--}}
+{{--                    'options' => ['Luzon/Mindanao' => 'Luzon/Mindanao','Visayas' =>'Visayas'],--}}
+{{--                    'cols' => 12,--}}
+{{--                ],$port ?? null) !!}--}}
+                {!! \App\Core\Helpers\__form2::textbox('port_id',[
+                    'label' => 'Port ID:',
                     'cols' => 12,
                 ],$port ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('port_name',[
                     'label' => 'Port Name:',
                     'cols' => 12,
                 ],$port ?? null) !!}
-                {!! \App\Core\Helpers\__form2::textbox('ship',[
-                    'label' => 'Ship Name:',
+                {!! \App\Core\Helpers\__form2::textbox('port_location',[
+                    'label' => 'Port Location:',
                     'cols' => 12,
                 ],$port ?? null) !!}
-                {!! \App\Core\Helpers\__form2::textbox('vessel',[
-                    'label' => 'Vessel Name:',
-                    'cols' => 12,
-                ],$port ?? null) !!}
+{{--                {!! \App\Core\Helpers\__form2::textbox('ship',[--}}
+{{--                    'label' => 'Ship Name:',--}}
+{{--                    'cols' => 12,--}}
+{{--                ],$port ?? null) !!}--}}
+{{--                {!! \App\Core\Helpers\__form2::textbox('vessel',[--}}
+{{--                    'label' => 'Vessel Name:',--}}
+{{--                    'cols' => 12,--}}
+{{--                ],$port ?? null) !!}--}}
 
 
             </div>

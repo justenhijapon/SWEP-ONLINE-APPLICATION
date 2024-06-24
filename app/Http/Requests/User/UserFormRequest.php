@@ -30,7 +30,8 @@ class UserFormRequest extends FormRequest{
             'position'=>'required|string|max:90',
             'username'=>'sometimes|required|string|max:45|unique:users,username,'.$this->route('user').',slug',
             'password'=>'sometimes|required|string|min:6|max:45|confirmed|same:password_confirmation',
-            'password_confirmation'=>'sometimes|required|string|min:6|max:45'
+            'password_confirmation'=>'sometimes|required|string|min:6|max:45',
+            'user_access' => 'required|string',
         ];
 
         // if(!empty($this->request->get('menu'))){
