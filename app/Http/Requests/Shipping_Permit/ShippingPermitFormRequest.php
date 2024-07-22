@@ -26,7 +26,7 @@ class ShippingPermitFormRequest extends FormRequest{
             'sp_date' => 'required|date_format:"Y-m-d"',
             'sp_eda_eta' => 'required|date_format:"Y-m-d"',
             'sp_port_of_origin' => 'required|string|max:255',
-//            'sp_mill' => 'required|string|max:255',
+            'sp_mill' => 'required|string|max:255',
             'sp_port_of_destination' => 'required|string|max:255',
             'sp_sugar_class' => 'required|string|max:255',
             'sp_vessel' => 'required|string|max:255',

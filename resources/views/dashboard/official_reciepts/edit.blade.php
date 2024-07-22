@@ -92,6 +92,10 @@
                                     <tbody>
                                     @foreach($or->orUtilization as $key => $orShippingPermit)
                                         <tr>
+                                            <td style="display: none;">
+                                                {!! \App\Core\Helpers\__form2::textboxOnly('items['.$orShippingPermit->slug.'][slug]',[
+                                                ],$orShippingPermit->slug ?? null) !!}
+                                            </td>
                                             <td>
                                                 {!! \App\Core\Helpers\__form2::selectOnly('items['.$orShippingPermit->slug.'][oru_txn_type]',[
                                                   'options' => \App\Core\Helpers\Arrays::spStatus(),
@@ -302,5 +306,7 @@
     })
 
 </script>
+
+
 
 

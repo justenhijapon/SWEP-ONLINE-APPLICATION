@@ -158,11 +158,12 @@
                                                             <label>Sugar Class:</label>
                                                             <select name="sp_sugar_class" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
                                                                 <option value="">All</option>
-                                                                <option value="RAW">RAW</option>
-                                                                <option value="REFINED">REFINED</option>
-                                                                <option value="DIRECT CONSUMPTION">DIRECT CONSUMPTION</option>
+                                                                @foreach($sp->pluck('sp_sugar_class')->unique() as $sp_sugar_class)
+                                                                    <option value="{{ $sp_sugar_class }}">{{ $sp_sugar_class }}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
+
 
                                                         <div class="col-md-12">
                                                             <label>Port Of Origin:</label>

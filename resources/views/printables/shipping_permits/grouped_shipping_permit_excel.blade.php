@@ -94,6 +94,11 @@
                                             {{$item->spMIll_Origin->mill_name ?? null}}
                                         </td>
                                         @break
+                                    @case('sp_amount')
+                                        <td class="{{$column_chosen}}">
+                                            ₱ {{$item->$column_chosen ?? null}}
+                                        </td>
+                                        @break
                                     @case('sp_collecting_officer')
                                         @php
                                             $user = $item->spCollecting_Officer;

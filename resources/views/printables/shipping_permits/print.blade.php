@@ -17,11 +17,11 @@
             }
         }
 
-
-
-
-
-
+        table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
 
         table, td {
             /*border: 1px solid black;*/
@@ -31,7 +31,7 @@
 
         td{
             width: 100px;
-
+            word-wrap: break-word;
         }
 
 
@@ -39,7 +39,7 @@
 </head>
 <body>
 
-<table style="width: 100%;">
+<table style="width: 100%; table-layout: fixed;">
     <br><br><br><br><br>
     <tbody>
     <tr>
@@ -50,21 +50,19 @@
         <td>{{ $print->sp_eda_eta }}</td>
     </tr>
     <tr>
-        <td colspan="3">{{ $print->spMIll_Origin->mill_name }}</td>
-        <td style=" padding-left: 5px;"><?php if($print->sp_sugar_class == 'RAW') { echo '/'; } ?></td>
-        <td style=" font-weight: bold; padding-left: 5px;" ><?php if($print->sp_sugar_class == 'REFINED') { echo '/'; } ?></td>
+        <td colspan="3" rowspan="2">{{ $print->spMIll_Origin->mill_name ?? null}}</td>
+        <td style=" padding-left: 5px;"><?php if($print->sp_sugar_class == 'RAW') { echo '/'; } ?>&nbsp;</td>
+        <td style=" font-weight: bold; padding-left: 5px;" ><?php if($print->sp_sugar_class == 'REFINED') { echo '/'; } ?>&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">&nbsp;</td>
-        <td style=" padding-left: 5px;"><?php if($print->sp_sugar_class == 'DIRECT CONSUMPTION') { echo '/'; } ?></td>
-        <td style=" padding-left: 5px;"><?php if($print->sp_sugar_class == 'OTHERS') { echo '/'; } ?></td>
+        <td style=" padding-left: 5px;"><?php if($print->sp_sugar_class == 'DIRECT CONSUMPTION') { echo '/'; } ?>&nbsp;</td>
+        <td style=" padding-left: 5px;"><?php if($print->sp_sugar_class == 'OTHERS') { echo '/'; } ?>&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3" >{{ $print->sp_markings }}</td>
+        <td colspan="3" rowspan="2">{{ $print->sp_markings }}</td>
         <td colspan="2">{{$translated}}</td>
     </tr>
     <tr>
-        <td colspan="3">&nbsp;</td>
         <td colspan="2">AND 00/100 ({{ $print->sp_volume }}) LKg BAGS</td>
     </tr>
     <tr>
@@ -91,7 +89,8 @@
             $middleInitial = $spCollectingOfficer->middlename ? substr($spCollectingOfficer->middlename, 0, 1) . '.' : '';
             $fullName = $spCollectingOfficer->lastname . ', ' . $spCollectingOfficer->firstname . ' ' . $middleInitial;
         @endphp
-        <td colspan="3" style="text-align: center">{{ $fullName }}</td>
+        <td colspan="2
+        " style="text-align: center">{{ $fullName }}</td>
     </tr>
     </tbody>
 </table>

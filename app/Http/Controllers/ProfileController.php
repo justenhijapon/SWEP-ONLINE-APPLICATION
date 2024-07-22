@@ -50,16 +50,24 @@ class ProfileController extends Controller{
 //            })
             ->editColumn('event',function($data){
                 switch ($data->event) {
-                    case 'store':
+//                    case 'store':
+//                        return '<span class="label bg-blue col-md-12">ADD </span>';
+//                        break;
+//                    case 'update':
+//                        return '<span class="label bg-green col-md-12">EDIT </span>';
+//                        break;
+//                    case 'destroy':
+//                        return '<span class="label bg-red col-md-12">DELETE </span>';
+//                        break;
+                    case 'Add':
                         return '<span class="label bg-blue col-md-12">ADD </span>';
                         break;
-                    case 'update':
+                    case 'Remove':
                         return '<span class="label bg-green col-md-12">EDIT </span>';
                         break;
-                    case 'destroy':
+                    case 'Delete':
                         return '<span class="label bg-red col-md-12">DELETE </span>';
                         break;
-
                     default:
                         return '<span class="label bg-purple col-md-12">'.$data->event.' </span>';
                         break;

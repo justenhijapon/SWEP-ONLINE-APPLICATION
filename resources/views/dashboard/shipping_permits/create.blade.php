@@ -28,11 +28,11 @@
                                             <!-- First Column Form Elements -->
                                             <div class="row">
                                                 <!-- O.R. No. -->
-                                                {!! \App\Core\Helpers\__form2::textbox('sp_or_no',[
+                                                {!! \App\Core\Helpers\__form2::select('sp_or_no',[
                                                 'label' => 'O.R. No.:',
                                                 'cols' => 3,
 //                                                'id' => 'or_no',
-//                                                'options' => \App\Core\Helpers\Arrays::spOR(),
+                                                'options' => \App\Core\Helpers\Arrays::spOR(),
                                                 ]) !!}
                                                 <!-- Shipping Permit No. -->
                                                 {!! \App\Core\Helpers\__form2::textbox('sp_no',[

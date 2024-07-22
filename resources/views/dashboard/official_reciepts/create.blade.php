@@ -297,35 +297,109 @@
                 loading_btn(form);
                 formData = new FormData(this);
                 Pace.restart();
-                $.ajax({
-                    url: "{{ route('dashboard.official_reciepts.store') }}",
-                    data: formData,
-                    type: "POST",
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    headers: {
-                        {!! __html::token_header() !!}
-                    },
-                    success: function(response){
+                Swal.fire({
+                    title: "Do you want to save the changes?",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Save and Next",
+                    denyButtonText: `Print`
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('dashboard.official_reciepts.store') }}",
+                            data: formData,
+                            type: "POST",
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                            headers: {
+                                {!! __html::token_header() !!}
+                            },
+                            success: function(response){
 
-                        console.log(response);
-                        notify("Your data was successfully saved", "success");
+                                console.log(response);
+                                notify("Your data was successfully saved", "success");
 
-                        official_reciepts_table.draw(false);
-                        active = response.slug;
+                                official_reciepts_table.draw(false);
+                                active = response.slug;
 
-                        succeed(form,true,false);
-                        $("#form_add_official_reciepts input[name='official_reciepts_name']").focus();
-                        $("#table_body").html('');
-                    },
-                    error: function(response){
-                        errored(form,response);
+                                succeed(form,true,false);
+                                $("#form_add_official_reciepts input[name='official_reciepts_name']").focus();
+                                $("#table_body").html('');
+                            },
+                            error: function(response){
+                                errored(form,response);
+                            }
+                        })
+                    } else if (result.isDenied) {
+                        $.ajax({
+                            url: "{{ route('dashboard.official_reciepts.store') }}",
+                            data: formData,
+                            type: "POST",
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                            headers: {
+                                {!! __html::token_header() !!}
+                            },
+                            success: function(response){
+
+                                console.log(response);
+                                var slug = response.slug;
+                                printOfficialReceipt(slug);
+                                notify("Your data was successfully saved", "success");
+
+                                official_reciepts_table.draw(false);
+                                active = response.slug;
+
+                                succeed(form,true,false);
+                                $("#form_add_official_reciepts input[name='official_reciepts_name']").focus();
+                                $("#table_body").html('');
+                            },
+                            error: function(response){
+                                errored(form,response);
+                            }
+                        })
                     }
-                })
+                });
+
             })
 
+            function printOfficialReceipt(slug) {
+                var printUrl = '{{ route("official_reciepts.print", ":slug") }}'.replace(':slug', slug);
 
+                // Use AJAX to fetch the content from the URL
+                $.ajax({
+                    url: printUrl,
+                    success: function(data) {
+                        // Create an iframe to load the content
+                        var iframe = document.createElement('iframe');
+                        iframe.style.position = 'absolute';
+                        iframe.style.width = '0px';
+                        iframe.style.height = '0px';
+                        iframe.style.border = 'none';
+                        document.body.appendChild(iframe);
+
+                        // Write the fetched content to the iframe
+                        iframe.contentWindow.document.open();
+                        iframe.contentWindow.document.write(data);
+                        iframe.contentWindow.document.close();
+
+                        // Trigger the print dialog
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+
+                        // Remove the iframe after printing
+                        setTimeout(function() {
+                            document.body.removeChild(iframe);
+                        }, 1000);
+                    },
+                    error: function() {
+                        alert('Failed to load the content for printing.');
+                    }
+                });
+            }
 
 
         })

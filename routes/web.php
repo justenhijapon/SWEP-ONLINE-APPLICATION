@@ -25,6 +25,7 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	Route::post('/user/deactivate/{slug}', 'UserController@deactivate')->name('user.deactivate');
 	Route::get('/user/{slug}/reset_password', 'UserController@resetPassword')->name('user.reset_password');
 	Route::patch('/user/reset_password/{slug}', 'UserController@resetPasswordPost')->name('user.reset_password_post');
+    Route::get('/user/activity/{slug}', 'UserController@activity')->name('user.activity');
 	Route::resource('user', 'UserController');
 
 
@@ -50,8 +51,8 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
     /** Mill **/
     Route::resource('mill', 'MillController');
 
-    /** Origin **/
-    Route::resource('origin', 'OriginController');
+//    /** Origin **/
+//    Route::resource('origin', 'OriginController');
 
     /** Trader **/
     Route::resource('trader', 'TraderController');
@@ -97,6 +98,7 @@ Route::get('/dashboard/test', function(){
 
 Route::get('/printables/index/{slug}', 'printController@index')->name('printables.index');
 Route::get('/shipping_permit/print/{slug}', 'ShippingPermitController@print')->name('shipping_permit.print');
+Route::get('/official_reciepts/print/{slug}', 'OfficialRecieptsController@print')->name('official_reciepts.print');
 Route::get('users/export/', [\App\Http\Controllers\ShippingPermitController::class, 'export']);
 
 

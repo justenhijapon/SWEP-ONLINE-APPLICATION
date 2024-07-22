@@ -74,14 +74,9 @@
                                     'id' => 'mill_code',
                                     ],$sp ?? null) !!}
                                     <!-- Sugar Class -->
-                                    {!! \App\Core\Helpers\__form2::textbox('sp_sugar_class',[
+                                    {!! \App\Core\Helpers\__form2::select('sp_sugar_class',[
                                     'label' => 'Sugar Class:',
-//                                                'options' => [
-//                                                'RAW' => 'RAW',
-//                                                'DIRECT CONSUMPTION' => 'DIRECT CONSUMPTION',
-//                                                'REFINED' => 'REFINED',
-//                                                'OTHER'=> 'OTHER'
-//                                                ],
+                                    'options' => \App\Core\Helpers\Arrays::SugarClass(),
                                     'cols' => 3,
                                     ],$sp ?? null) !!}
                                 </div>

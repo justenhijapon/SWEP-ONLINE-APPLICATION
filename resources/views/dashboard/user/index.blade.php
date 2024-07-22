@@ -170,6 +170,8 @@
 
   {!! __html::blank_modal('view_user_modal','lg') !!}
 
+  {!! __html::blank_modal('view_activity_modal','lg') !!}
+
   {!! __html::blank_modal('edit_user_modal','lg') !!}
 
   {!! __html::blank_modal('reset_password_modal','sm') !!}
@@ -365,7 +367,28 @@
           console.log(response);
         }
       })
+    });
 
+    //Show user Activity Log button
+    $("body").on('click', '.view_activity_btn', function() {
+      id = $(this).attr('data');
+      $("#view_activity_modal .modal-content").html(modal_loader);
+      uri  =" {{ route('dashboard.user.activity','slug') }}";
+      uri = uri.replace('slug',id);
+      Pace.restart();
+      $.ajax({
+        url: uri,
+        type: 'GET',
+        success: function (response) {
+          console.log(response);
+          $("#view_activity_modal #modal_loader").fadeOut(function() {
+            $("#view_activity_modal .modal-content").html(response);
+          });
+        },
+        error: function (response) {
+          console.log(response);
+        }
+      })
     });
 
     //Edit user button

@@ -615,8 +615,8 @@
   </script>
 
   <script>
-    var spAmountP = @json($spAmountP);
-    var spAmountC = @json($spAmountC);
+    {{--var spAmountP = @json($spAmountP);--}}
+    {{--var spAmountC = @json($spAmountC);--}}
     var spAmount = @json($spAmount);
     var labels = @json($spDates);
 

@@ -8,12 +8,14 @@ use App\Exports\GroupedShippingPermitExport;
 use App\Exports\ShippingPermitExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shipping_Permit\ShippingPermitFormRequest;
+use App\Models\ActivityLogs;
 use App\Models\OfficialReciepts;
 use App\Models\Origin;
 use App\Models\Port;
 use App\Models\ShippingPermit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\PDF;
 use App\Exports\UsersExport;
@@ -30,7 +32,7 @@ class ShippingPermitController extends Controller
     public function index(Request $request){
         $spor = OfficialReciepts::all();
         $port = Port::all();
-        $mill = Origin::all();
+//        $mill = Origin::all();
 
         if($request->ajax())
         {
@@ -58,15 +60,15 @@ class ShippingPermitController extends Controller
                     }
                 })
 
-                ->editColumn('sp_port_of_origin', function($data){
-                    return $data->portOfOrigin->port_name ?? null;
-                })
-                ->editColumn('sp_port_of_destination', function($data){
-                    return $data->portOfDestination->port_name ?? null;
-                })
-//                ->editColumn('sp_mill', function($data){
-//                    return $data->spMIll_Origin->name;
+//                ->editColumn('sp_port_of_origin', function($data){
+//                    return $data->portOfOrigin->port_name ?? null;
 //                })
+//                ->editColumn('sp_port_of_destination', function($data){
+//                    return $data->portOfDestination->port_name ?? null;
+//                })
+                ->editColumn('sp_mill', function($data){
+                    return $data->spMIll_Origin->mill_name ?? null;
+                })
                 ->escapeColumns([])
                 ->rawColumns(['action'])
                 ->setRowId('slug')
@@ -76,16 +78,21 @@ class ShippingPermitController extends Controller
         return view('dashboard.shipping_permits.index')->with([
             'spor' => $spor,
             'port' => $port,
-            'mill' => $mill
+//            'mill' => $mill,
+            'sp' => ShippingPermit::query(),
         ]);
     }
 
-    public function store(ShippingPermitFormRequest $request){
-
+    public function store(ShippingPermitFormRequest $request) {
+        // Check if sp_no already exists
+        $existingSp = ShippingPermit::where('sp_no', $request->sp_no)->first();
+        if ($existingSp) {
+            // Return a response with a notification message
+            return response()->json(['message' => 'The Shipping Permit number already exists.'], 422);
+        }
 
         $sp = new ShippingPermit();
         $sp->slug = Str::random(16);
-
         $sp->sp_no = $request->sp_no;
         $sp->sp_edd_etd = Carbon::parse($request->sp_edd_etd)->format('Y-m-d');
         $sp->sp_date = Carbon::parse($request->sp_date)->format('Y-m-d');
@@ -119,11 +126,23 @@ class ShippingPermitController extends Controller
         $sp->ip_created = $request->ip();
         $sp->ip_updated = $request->ip();
 
-        if($sp->save()){
+        $activitylogArray = [];
+        array_push($activitylogArray,[
+            'module' => 'Shipping Permit',
+            'event' => 'Create',
+            'user_id' => Auth::user()->user_id,
+            'slug' => $sp->slug,
+            'remarks' => "No: " .  $sp->sp_no,
+            'created_at' => Carbon::now(),
+        ]);
 
-            return $sp->only('slug');
+
+        if ($sp->save()) {
+            ActivityLogs::insert($activitylogArray);
+            return response()->json(['slug' => $sp->slug]);
         }
     }
+
 
     public function destroy($slug){
 
@@ -131,7 +150,17 @@ class ShippingPermitController extends Controller
             ->where('slug', $slug)
             ->first();
             $sp ?? abort(404,'Shipping Permit not found.');
+        $activitylogArray = [];
+        array_push($activitylogArray,[
+            'module' => 'Shipping Permit',
+            'event' => 'Delete',
+            'user_id' => Auth::user()->user_id,
+            'slug' => $sp->slug,
+            'remarks' => "No: " . $sp->sp_no,
+            'created_at' => Carbon::now(),
+        ]);
         if($sp->delete()){
+            ActivityLogs::insert($activitylogArray);
             return 1;
         }
     }
@@ -154,6 +183,9 @@ class ShippingPermitController extends Controller
             ->where('slug', $slug)
             ->first();
             $sp ?? abort(404,'Shipping Permit not found.');
+
+        // Store original data
+        $originalData = $sp->toArray();
 
         $sp->sp_no = $request->sp_no;
         $sp->sp_edd_etd = Carbon::parse($request->sp_edd_etd)->format('Y-m-d');
@@ -185,21 +217,65 @@ class ShippingPermitController extends Controller
         $sp->updated_at = Carbon::now();
         $sp->ip_created = $request->ip();
         $sp->ip_updated = $request->ip();
+
+        // Prepare activity log array
+        $activitylogArray = [];
+        $remarks = "Changes: \n";
+        $excludedFields = ['created_at', 'updated_at'];
+
+        foreach ($originalData as $key => $value) {
+            if (!in_array($key, $excludedFields) && $sp[$key] != $value) {
+                $remarks .= ucfirst(str_replace('_', ' ', $key)) . ": $value -> " . $sp[$key] . "\n";
+            }
+        }
+        array_push($activitylogArray,[
+            'module' => 'Shipping Permit',
+            'event' => 'Update',
+            'user_id' => Auth::user()->user_id,
+            'slug' => $sp->slug,
+            'remarks' => $remarks,
+            'created_at' => Carbon::now(),
+        ]);
         if($sp->update()){
+            ActivityLogs::insert($activitylogArray);
             return $sp->only('slug');
         }
 
     }
 
-    public function changeStatus($slug,$type){
+    public function changeStatus($slug, $type)
+    {
         $sp = ShippingPermit::query()
             ->where('slug', $slug)
             ->first();
+            $sp ?? abort(404, 'Shipping Permit not found.');
+
+        // Store original status
+        $originalStatus = $sp->sp_status;
+
+        // Update the status
         $sp->sp_status = strtoupper($type);
-        if($sp->update()){
+
+        // Prepare activity log array
+        $activitylogArray = [];
+        $remarks = "Status: $originalStatus -> " . $sp->sp_status . "\n";
+
+        array_push($activitylogArray, [
+            'module' => 'Shipping Permit',
+            'event' => 'Change Status',
+            'user_id' => Auth::user()->user_id,
+            'slug' => $sp->slug,
+            'remarks' => $remarks,
+            'created_at' => Carbon::now(),
+        ]);
+
+        // Perform update and log activities
+        if ($sp->update()) {
+            ActivityLogs::insert($activitylogArray);
             return $sp->only('slug');
         }
     }
+
 
 //    public function print($slug){
 //        $sp = ShippingPermit::where('slug', $slug)->get();

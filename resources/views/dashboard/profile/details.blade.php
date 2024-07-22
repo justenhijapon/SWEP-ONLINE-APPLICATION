@@ -192,6 +192,11 @@
              <i class="fa fa-gears"></i> Account Settings
            </a>
           </li>
+          <li>
+            <a id="a_s" href="#activity_logs" data-toggle="tab" aria-expanded="false">
+              <i class="glyphicon glyphicon-pencil"></i> Activity
+            </a>
+          </li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="settings">
@@ -305,6 +310,30 @@
 
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="tab-pane " id="activity_logs">
+            <h4>Your activities</h4>
+            <div id="activity_logs_container" style="display: none">
+              <table class="table table-bordered table-striped" id="activity_logs_table" style="width: 100% !important; font-size: inherit;">
+                <thead>
+                <tr class="{{ __static::bg_color(Auth::user()->color) }}">
+                  <th>Module</th>
+                  <th>Event</th>
+                  <th>Action</th>
+                  <th>Timestamp</th>
+                  <th>TimestampDefault</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+            <div id="tbl_loader">
+              <center>
+                <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
+              </center>
             </div>
           </div>
         </div>
@@ -517,6 +546,69 @@
 
     <script>
 
+      activity_tbl = $("#activity_logs_table").DataTable({
+        'dom' : 'lBfrtip',
+        "processing": true,
+        "serverSide": true,
+        "ajax" : '{{ route("dashboard.profile.details") }}',
+        "columns": [
+          { "data": "module" },
+          { "data": "event" },
+          { "data": "remarks" },
+          { "data": "created_at" },
+          { "data": "created_at_raw" },
+        ],
+        'order': [[4, 'desc']],
+        buttons: [
+          {!! __js::dt_buttons() !!}
+        ],
+        "columnDefs":[
+          {
+            "targets" : 0,
+            "class" : 'th-90'
+          },
+          {
+            "targets" : 1,
+            "class" : 'sex-th'
+          },
+          {
+            "targets" : 3,
+            "class" : 'time-th'
+          },
+          {
+            "targets": 4,
+            "visible" :false
+          }
+        ],
+        "responsive": false,
+        "initComplete": function( settings, json ) {
+          $('#tbl_loader').fadeOut(function(){
+            $("#activity_logs_container").fadeIn();
+          });
+        },
+        "language":
+                {
+                  "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
+                },
+        "drawCallback": function(settings){
+          $('[data-toggle="tooltip"]').tooltip();
+          $('[data-toggle="modal"]').tooltip();
+
+        }
+      })
+
+      //Search Bar Styling
+      style_datatable('#activity_logs_table');
+
+      //Need to press enter to search
+      $('#activity_logs_table_filter input').unbind();
+      $('#activity_logs_table_filter input').bind('keyup', function (e) {
+        if (e.keyCode == 13) {
+          activity_tbl.search(this.value).draw();
+        }
+      });
+
+
       var avatar = document.getElementById('img-circ');
       var image = document.getElementById('image');
       var canvas = document.getElementById('canvas');
@@ -652,3 +744,4 @@
 
 
 @endsection
+

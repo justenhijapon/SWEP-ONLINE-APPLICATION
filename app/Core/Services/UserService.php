@@ -99,11 +99,6 @@ class UserService extends BaseService{
 
     }
 
-
-
-
-
-
     public function edit($slug){
     
     	$user = $this->user_repo->findBySlug($slug);  

@@ -44,94 +44,121 @@
                                 <label>Filter by O.R. No.:</label>
                                 <select id="or_filter" class="form-control">
                                     <option value="">All</option>
-                                    @foreach($spor as $or)
-                                    <option value="{{$or->or_no}}">{{$or->or_no}}</option>
+                                    @php
+                                        $uniqueOr = $sp->pluck('sp_or_no')->unique();
+                                    @endphp
+                                    @foreach($uniqueOr as $uniqueOr)
+                                        <option value="{{ $uniqueOr }}">{{ $uniqueOr }}</option>
                                     @endforeach
                                 </select>
                             </div>
-{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
-{{--                                <label>Filter by Mill:</label>--}}
-{{--                                <select id="mill_filter" class="form-control">--}}
-{{--                                    <option value="">All</option>--}}
-{{--                                    @foreach($mill as $mills)--}}
-{{--                                        <option value="{{$mills->slug}}">{{$mills->name}}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
-{{--                                <label>Filter by Sugar Class:</label>--}}
-{{--                                <select id="sugar_class_filter" class="form-control">--}}
-{{--                                    <option value="">All</option>--}}
-{{--                                    <option value="RAW">RAW</option>--}}
-{{--                                    <option value="REFINED">REFINED</option>--}}
-{{--                                    <option value="DIRECT CONSUMPTION">DIRECT CONSUMPTION</option>--}}
-{{--                                    <option value="OTHER">OTHER</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
-{{--                                <label>Filter by Status:</label>--}}
-{{--                                <select id="status_filter" class="form-control">--}}
-{{--                                    <option value="">All</option>--}}
-{{--                                    <option value="SHIPPED">Shipped</option>--}}
-{{--                                    <option value="PENDING">Pending</option>--}}
-{{--                                    <option value="CANCELLED">Cancelled</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Sugar Class:</label>
+                                <select id="sugar_class_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniquesc = $sp->pluck('sp_sugar_class')->unique();
+                                    @endphp
+                                    @foreach($uniquesc as $uniquesc)
+                                        <option value="{{ $uniquesc }}">{{ $uniquesc }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Status:</label>
+                                <select id="status_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniquestatus = $sp->pluck('sp_status')->unique();
+                                    @endphp
+                                    @foreach($uniquestatus as $uniquestatus)
+                                        <option value="{{ $uniquestatus }}">{{ $uniquestatus }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Collecting Officer:</label>
+                                <select id="officer_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniqueSpOfficer = $sp->pluck('sp_collecting_officer')->unique();
+                                        $officer = App\Models\User::whereIn('user_id', $uniqueSpOfficer)->get();
+                                    @endphp
+                                    @foreach($officer as $officer)
+                                        <option value="{{ $officer->slug }}">{{ $officer->lastname }}, {{ $officer->middlename }} {{substr($officer->middlename, 0, 1)}}.</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-{{--                        <div class="row">--}}
-{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
-{{--                                <label>Filter by Port of Origin:</label>--}}
-{{--                                <select id="port_origin_filter" class="form-control">--}}
-{{--                                    <option value="">All</option>--}}
-{{--                                    @foreach($port as $ports)--}}
-{{--                                        <option value="{{$ports->slug}}">{{$ports->port_name}}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-1 col-sm-1 col-lg-2">--}}
-{{--                                <label>Filter by Port of Destination:</label>--}}
-{{--                                <select id="port_destination_filter" class="form-control">--}}
-{{--                                    <option value="">All</option>--}}
-{{--                                    @foreach($port as $ports)--}}
-{{--                                        <option value="{{$ports->slug}}">{{$ports->port_name}}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-2 col-sm-1 col-lg-2"> <!-- Adjusted column size for date range -->--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <input type="checkbox" id="date_range_check_1">--}}
-{{--                                    <label>Filter by EDD/ETD:</label>--}}
+                        <div class="row">
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Port of Origin:</label>
+                                <select id="port_origin_filter" class="form-control">
+                                    <option value="">All</option>
 
-{{--                                    <div class="input-group">--}}
-{{--                                        <div class="input-group-addon">--}}
-{{--                                            <i class="fa fa-calendar"></i>--}}
-{{--                                        </div>--}}
-{{--                                        <input name="date_range_1" type="text" class="form-control pull-right filters" id="date_range_1" autocomplete="off" disabled>--}}
-{{--                                    </div>--}}
+                                    @php
+                                        $uniqueport1 = $sp->pluck('sp_port_of_origin')->unique();
+                                    @endphp
+                                    @foreach($uniqueport1 as $ports)
+                                        <option value="{{$ports}}">{{$ports}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Port of Destination:</label>
+                                <select id="port_destination_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniqueport2 = $sp->pluck('sp_port_of_destination')->unique();
+                                    @endphp
+                                    @foreach($uniqueport2 as $ports)
+                                        <option value="{{$ports}}">{{$ports}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 col-sm-1 col-lg-2"> <!-- Adjusted column size for date range -->
+                                <div class="form-group">
+                                    <input type="checkbox" id="date_range_check_1">
+                                    <label>Filter by EDD/ETD:</label>
 
-{{--                                </div>--}}
-{{--                            </div>--}}
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input name="date_range_1" type="text" class="form-control pull-right filters" id="date_range_1" autocomplete="off" disabled>
+                                    </div>
 
-{{--                            <div class="col-md-2 col-sm-1 col-lg-2"> <!-- Adjusted column size for date range -->--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <input type="checkbox" id="date_range_check_2">--}}
-{{--                                    <label>Filter by EDA/ETA:</label>--}}
+                                </div>
+                            </div>
 
-{{--                                    <div class="input-group">--}}
-{{--                                        <div class="input-group-addon">--}}
-{{--                                            <i class="fa fa-calendar"></i>--}}
-{{--                                        </div>--}}
-{{--                                        <input name="date_range_2" type="text" class="form-control pull-right filters" id="date_range_2" autocomplete="off" disabled>--}}
-{{--                                    </div>--}}
+                            <div class="col-md-2 col-sm-1 col-lg-2"> <!-- Adjusted column size for date range -->
+                                <div class="form-group">
+                                    <input type="checkbox" id="date_range_check_2">
+                                    <label>Filter by EDA/ETA:</label>
 
-{{--                                </div>--}}
-{{--                            </div>--}}
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input name="date_range_2" type="text" class="form-control pull-right filters" id="date_range_2" autocomplete="off" disabled>
+                                    </div>
 
-
-
-
-
-{{--                        </div>--}}
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-lg-2">
+                                <label>Filter by Mill:</label>
+                                <select id="mill_filter" class="form-control">
+                                    <option value="">All</option>
+                                    @php
+                                        $uniqueSpMill = $sp->pluck('sp_mill')->unique();
+                                        $mills = App\Models\Mill::whereIn('slug', $uniqueSpMill)->get();
+                                    @endphp
+                                    @foreach($mills as $mill)
+                                        <option value="{{ $mill->slug }}">{{ $mill->mill_code }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -145,15 +172,16 @@
                             <th>Official Reciept No.</th>
                             <th>Shipping Permit No.</th>
                             <th>Permit Date</th>
-{{--                            <th>EDD/ETD</th>--}}
-{{--                            <th>EDA/ETA</th>--}}
-{{--                            <th>Port Of Origin</th>--}}
-{{--                            <th>Port Of Destination</th>--}}
-{{--                            <th>Mill</th>--}}
                             <th>Sugar Class</th>
                             <th>Volume</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <th>EDD/ETD</th>
+                            <th>EDA/ETA</th>
+                            <th>Port Of Origin</th>
+                            <th>Port Of Destination</th>
+                            <th>Mill</th>
+                            <th>Collecting Officer</th>
                             <th class="action">Action</th>
                         </tr>
                         </thead>
@@ -417,25 +445,29 @@
         });
         $('#status_filter').on('change', function () {
             var sp_status = $(this).val();
-            shipping_permits_table.columns(8).search(sp_status).draw();
+            shipping_permits_table.columns(7).search(sp_status).draw();
         });
-        // $('#port_origin_filter').on('change', function () {
-        //     var sp_port_of_origin = $(this).val();
-        //     shipping_permits_table.columns(6).search(sp_port_of_origin).draw();
-        // });
-        // $('#port_destination_filter').on('change', function () {
-        //     var sp_port_of_destination = $(this).val();
-        //     shipping_permits_table.columns(7).search(sp_port_of_destination).draw();
-        // });
+        $('#port_origin_filter').on('change', function () {
+            var sp_port_of_origin = $(this).val();
+            shipping_permits_table.columns(10).search(sp_port_of_origin).draw();
+        });
+        $('#port_destination_filter').on('change', function () {
+            var sp_port_of_destination = $(this).val();
+            shipping_permits_table.columns(11).search(sp_port_of_destination).draw();
+        });
 
         $('#mill_filter').on('change', function () {
             var sp_mill = $(this).val();
-            shipping_permits_table.columns(4).search(sp_mill).draw();
+            shipping_permits_table.columns(12).search(sp_mill).draw();
+        });
+        $('#mill_filter').on('change', function () {
+            var sp_collecting_officer = $(this).val();
+            shipping_permits_table.columns(13).search(sp_collecting_officer).draw();
         });
 
         $('#sugar_class_filter').on('change', function () {
             var sp_sugar_class = $(this).val();
-            shipping_permits_table.columns(5).search(sp_sugar_class).draw();
+            shipping_permits_table.columns(4).search(sp_sugar_class).draw();
         });
 
 
@@ -485,8 +517,8 @@
 
         // Initialize date range picker for each range
         initializeDateRangePicker('#date_range_check', '#date_range', 3);
-        // initializeDateRangePicker('#date_range_check_1', '#date_range_1', 4);
-        // initializeDateRangePicker('#date_range_check_2', '#date_range_2', 5);
+        initializeDateRangePicker('#date_range_check_1', '#date_range_1', 9);
+        initializeDateRangePicker('#date_range_check_2', '#date_range_2', 8);
 
 
     </script>
@@ -518,11 +550,6 @@
                     {"data": "sp_or_no"},
                     {"data": "sp_no"},
                     {"data": "sp_date"},
-                    // {"data": "sp_edd_etd"},
-                    // {"data": "sp_eda_eta"},
-                    // {"data": "sp_port_of_origin"},
-                    // {"data": "sp_port_of_destination"},
-                    // {"data": "sp_mill"},
                     {"data": "sp_sugar_class"},
                     {"data": "sp_volume"},
                     {
@@ -535,6 +562,12 @@
                         }
                     },
                     {"data": "sp_status"},
+                    {"data": "sp_edd_etd"},
+                    {"data": "sp_eda_eta"},
+                    {"data": "sp_port_of_origin"},
+                    {"data": "sp_port_of_destination"},
+                    {"data": "sp_mill"},
+                    {"data": "sp_collecting_officer"},
                     {"data": "action"},
 
                 ],
@@ -544,11 +577,11 @@
                 ],
                 "columnDefs":[
                     {
-                        "targets" :  0 ,
+                        "targets" :  [0,8,9,10,11,12,13] ,
                         "visible" : false
                     },
                     {
-                        "targets" : [7,6],
+                        "targets" : [11,10],
                         "orderable": true,
                         "class" : 'w-5p'
                     },
@@ -558,7 +591,7 @@
                         "class" : 'w-6p'
                     },
                     {
-                        "targets" : 8,
+                        "targets" : 14,
                         "orderable": false,
                         "class" : 'action-10p'
                     },
@@ -660,7 +693,7 @@
                 })
             })
 
-            //Shipping,Pending,Cancelled
+            //Status
             $("body").on('click', '.psc', function() {
                 let btn = $(this);
                 let slug = btn.attr('data');

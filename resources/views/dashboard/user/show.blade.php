@@ -110,7 +110,7 @@
     <div class="col-md-9">
           <div class="panel panel-default">
               <div class="panel-heading">
-                  User routes
+                  User Access
               </div>
               <div class="panel-body">
                   @if(empty($filteredSubmenus))

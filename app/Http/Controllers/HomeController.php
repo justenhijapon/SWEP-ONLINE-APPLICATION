@@ -31,10 +31,13 @@ class HomeController extends Controller{
         $users = User::all();
         $sp = ShippingPermit::all();
 
+        $spt = ShippingPermit::query();
         $spAmount = array_slice(ShippingPermit::pluck('sp_amount')->toArray(), -20);
-        $spAmountP = array_slice(ShippingPermit::where('sp_status', 'PENDING')->pluck('sp_amount')->toArray(), -20);
-        $spAmountC = array_slice(ShippingPermit::where('sp_status', 'CANCELLED')->pluck('sp_amount')->toArray(), -20);
-        $spDates = array_slice(ShippingPermit::where('sp_status', 'SHIPPED')->pluck('sp_date')->toArray(), -20);
+        $spDates = array_slice(ShippingPermit::pluck('sp_date')->toArray(), -20);
+
+//        $spAmountP = array_slice(ShippingPermit::where('sp_status', 'PENDING')->pluck('sp_amount')->toArray(), -20);
+//        $spAmountC = array_slice(ShippingPermit::where('sp_status', 'CANCELLED')->pluck('sp_amount')->toArray(), -20);
+
 
         $totalspcancelled = $sp->where('sp_status', 'CANCELLED')->all();
         $pendingsp = $sp->where('sp_status', 'PENDING')->all();
@@ -46,10 +49,11 @@ class HomeController extends Controller{
         return view('dashboard.home.index')->with([
             'users' => $users,
             'sp' => $sp,
+            'spt' => $spt,
             'spDates' => $spDates,
             'spAmount' => $spAmount,
-            'spAmountP' => $spAmountP,
-            'spAmountC' => $spAmountC,
+//            'spAmountP' => $spAmountP,
+//            'spAmountC' => $spAmountC,
             'pendingsp' => $pendingsp,
             'totalspcancelled' => $totalspcancelled,
             'totalor' => $totalor,

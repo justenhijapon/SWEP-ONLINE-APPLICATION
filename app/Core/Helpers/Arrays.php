@@ -9,7 +9,7 @@ use App\Models\MillDistrict;
 use App\Models\MillUtilization;
 use App\Models\OfficialReciepts;
 use App\Models\OfficialRecieptUtilization;
-use App\Models\Origin;
+//use App\Models\Origin;
 use App\Models\Pap;
 use App\Models\PapItems;
 use App\Models\Port;
@@ -76,17 +76,17 @@ class Arrays
         return $array;
     }
 
-    public static function originmill(){
-        $om = Origin::query()
-            ->with('originMill')
-            ->get();
-
-        $array = [];
-        foreach ($om as $mill){
-            $array[$mill->origin][$mill->slug] = $mill->name;
-        }
-        return $array;
-    }
+//    public static function originmill(){
+//        $om = Origin::query()
+//            ->with('originMill')
+//            ->get();
+//
+//        $array = [];
+//        foreach ($om as $mill){
+//            $array[$mill->origin][$mill->slug] = $mill->name;
+//        }
+//        return $array;
+//    }
 
     public static function spvessel(){
         $spv = Vessel::query()->get();
@@ -170,10 +170,10 @@ class Arrays
 
     public static function TXNType(){
         return [
-                'CANCELLATION' => 'PENDING',
-                'SHUTOUT' => 'SHIPPED',
-                'TRANSHIPMENT' => 'CANCELLED',
-                 'SHIPPING PERMIT' => 'CANCELLED',
+                'CANCELLATION' => 'CANCELLATION',
+                'SHUTOUT' => 'SHUTOUT',
+                'TRANSHIPMENT' => 'TRANSHIPMENT',
+                'SHIPPING PERMIT' => 'SHIPPING PERMIT',
         ];
     }
 

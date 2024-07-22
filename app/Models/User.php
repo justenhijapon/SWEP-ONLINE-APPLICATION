@@ -71,8 +71,10 @@ class User extends Authenticatable{
     public function userSubmenu() {
         return $this->hasMany('App\Models\UserSubmenu','user_id','user_id');
     }
-   
 
+    public function userActivity() {
+        return $this->hasMany('App\Models\ActivityLogs','user_id','user_id');
+    }
 
 
     /** GETTERS **/

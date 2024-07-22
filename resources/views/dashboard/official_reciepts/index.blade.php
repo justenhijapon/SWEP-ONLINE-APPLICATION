@@ -91,12 +91,14 @@
                                     <option value="">All</option>
                                     @php
                                         $uniqueOrMill = $or->pluck('or_mill')->unique();
+                                        $mills = App\Models\Mill::whereIn('slug', $uniqueOrMill)->get();
                                     @endphp
-                                    @foreach($uniqueOrMill as $mill)
-                                        <option value="{{ $mill }}">{{ $mill }}</option>
+                                    @foreach($mills as $mill)
+                                        <option value="{{ $mill->slug }}">{{ $mill->mill_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
 
                             <div class="col-md-1 col-sm-1 col-lg-2">
                                 <label>Filter by Crop Year:</label>
@@ -393,6 +395,20 @@
     </div>
 </div>
 
+<!-- Print modal -->
+<div class="modal fade" id="print_official_reciepts_btn">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div id="print_official_reciepts_modal_loader">
+                <center>
+                    <img style="width: 70px; margin: 40px 0;" src="<?php echo __static::loader(Auth::user()->color); ?>">
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('scripts')
@@ -639,6 +655,41 @@
 
 
         })
+
+        function printOfficialReceipt(slug) {
+            var printUrl = '{{ route("official_reciepts.print", ":slug") }}'.replace(':slug', slug);
+
+            // Use AJAX to fetch the content from the URL
+            $.ajax({
+                url: printUrl,
+                success: function(data) {
+                    // Create an iframe to load the content
+                    var iframe = document.createElement('iframe');
+                    iframe.style.position = 'absolute';
+                    iframe.style.width = '0px';
+                    iframe.style.height = '0px';
+                    iframe.style.border = 'none';
+                    document.body.appendChild(iframe);
+
+                    // Write the fetched content to the iframe
+                    iframe.contentWindow.document.open();
+                    iframe.contentWindow.document.write(data);
+                    iframe.contentWindow.document.close();
+
+                    // Trigger the print dialog
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+
+                    // Remove the iframe after printing
+                    setTimeout(function() {
+                        document.body.removeChild(iframe);
+                    }, 1000);
+                },
+                error: function() {
+                    alert('Failed to load the content for printing.');
+                }
+            });
+        }
 
 
 

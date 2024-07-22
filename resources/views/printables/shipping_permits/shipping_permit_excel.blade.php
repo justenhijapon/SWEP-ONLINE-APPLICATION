@@ -72,7 +72,7 @@
                                     @break
                                 @case('sp_amount')
                                     <td class="{{$column_chosen}}">
-                                        {{$sp->$column_chosen}}
+                                        ₱ {{$sp->$column_chosen}}
                                     </td>
                                     @break
                                 @case('sp_collecting_officer')

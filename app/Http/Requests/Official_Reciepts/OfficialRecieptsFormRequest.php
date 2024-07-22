@@ -23,10 +23,6 @@ class OfficialRecieptsFormRequest extends FormRequest{
         $rules = [
             'or_no' => 'required|integer|max:9999999',
             'or_date' => 'required|date_format:"Y-m-d"',
-
-
-
-
         ];
 
 

@@ -8,10 +8,12 @@ use App\Exports\OfficialRecieptsExport;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Official_reciepts\OfficialRecieptsFormRequest;
+use App\Models\ActivityLogs;
 use App\Models\OfficialReciepts;
 use App\Models\OfficialRecieptUtilization;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -22,7 +24,8 @@ class OfficialRecieptsController extends Controller
         {
             $or = OfficialReciepts::query()->with([
                 "orUtilization",
-                "orShippingPermit"
+                "orShippingPermit",
+                "orMIll_Origin"
             ]);
 
 
@@ -46,8 +49,12 @@ class OfficialRecieptsController extends Controller
                 ->setRowId('slug')
                 ->make();
         }
+        $or = OfficialReciepts::query()->with([
+            "orMIll_Origin"
+        ]);
+
         return view('dashboard.official_reciepts.index')->with([
-            'or' => OfficialReciepts::all()
+            'or' => $or
         ]);
     }
 
@@ -57,6 +64,12 @@ class OfficialRecieptsController extends Controller
 
     public function store(OfficialRecieptsFormRequest $request){
 
+        // Check if or_no already exists
+        $existingOr = OfficialReciepts::where('or_no', $request->or_no)->first();
+        if ($existingOr) {
+            // Return a response with a notification message
+            return response()->json(['message' => 'The Official Receipt number already exists.'], 422);
+        }
 
         $or = new OfficialReciepts();
         $or->slug = Str::random(16);
@@ -79,7 +92,8 @@ class OfficialRecieptsController extends Controller
         $utilizationArray = [];
         foreach ((array) $request->items as $item){
             array_push($utilizationArray,[
-                'slug' => $or->slug,
+                'slug' => Str::random(16),
+                'or_slug' => $or->slug,
                 'oru_txn_type' => $item['oru_txn_type'],
                 'oru_sp_no' => $item['oru_sp_no'],
                 'oru_volume' => $item['oru_volume'],
@@ -87,7 +101,15 @@ class OfficialRecieptsController extends Controller
             ]);
         }
 
-
+         $activitylogArray = [];
+                array_push($activitylogArray,[
+                    'module' => 'Official Receipts',
+                    'event' => 'Create ',
+                    'user_id' => Auth::user()->user_id,
+                    'slug' => $or->slug,
+                    'remarks' => "O.R. No: " .  $or->or_no,
+                    'created_at' => Carbon::now(),
+                ]);
         $or->created_at = Carbon::now();
         $or->updated_at = Carbon::now();
         $or->ip_created = $request->ip();
@@ -95,6 +117,7 @@ class OfficialRecieptsController extends Controller
 
         if($or->save()){
             OfficialRecieptUtilization::insert($utilizationArray);
+            ActivityLogs::insert($activitylogArray);
             return $or->only('slug');
         }
     }
@@ -105,7 +128,17 @@ class OfficialRecieptsController extends Controller
             ->where('slug', $slug)
             ->first();
             $or ?? abort(404,'Shipping Permit not found.');
+        $activitylogArray = [];
+            array_push($activitylogArray,[
+                'module' => 'Official Receipts',
+                'event' => 'Delete ',
+                'user_id' => Auth::user()->user_id,
+                'slug' => $or->slug,
+                'remarks' => "O.R. No: " .  $or->or_no,
+                'created_at' => Carbon::now(),
+            ]);
         if($or->delete()){
+            ActivityLogs::insert($activitylogArray);
             $or->orUtilization()->delete();
             return 1;
         }
@@ -125,12 +158,15 @@ class OfficialRecieptsController extends Controller
     }
 
     public function update(OfficialRecieptsFormRequest $request, $slug){
-
-
         $or = OfficialReciepts::query()
             ->where('slug', $slug)
             ->first();
-            $or ?? abort(404,'Seminar not found.');
+            $or ?? abort(404, 'Seminar not found.');
+
+        // Store original data
+        $originalData = $or->toArray();
+
+        // Update with new data
         $or->or_no = $request->or_no;
         $or->or_date = Carbon::parse($request->or_date)->format('Y-m-d');
         $or->or_mill = $request->or_mill;
@@ -144,31 +180,208 @@ class OfficialRecieptsController extends Controller
         $or->or_cash_amount = Helpers::sanitizeAutonum($request->or_cash_amount);
         $or->or_check_amount = Helpers::sanitizeAutonum($request->or_check_amount);
         $or->or_money_order = Helpers::sanitizeAutonum($request->or_money_order);
-        $or->or_money_order = Helpers::sanitizeAutonum($request->or_money_order);
         $or->or_total_paid = Helpers::sanitizeAutonum($request->or_total_paid);
 
+        // Create utilization array
         $utilizationArray = [];
-        foreach ((array) $request->items as $item){
-            array_push($utilizationArray,[
-                'slug' => $or->slug,
-                'oru_txn_type' => $item['oru_txn_type'],
-                'oru_sp_no' => $item['oru_sp_no'],
-                'oru_volume' => $item['oru_volume'],
-                'oru_amount' => Helpers::sanitizeAutonum($item['oru_amount']),
+        foreach ((array) $request->items as $item) {
+            // Check if 'slug' key exists in $item, otherwise set to null or handle accordingly
+            $slug = isset($item['slug']) ? $item['slug'] : Str::random(16);
+
+            // You can also use null coalescing operator if you're using PHP 7 or higher
+            // $slug = $item['slug'] ?? null;
+
+
+            array_push($utilizationArray, [
+                'slug' => $slug,
+                'or_slug' => $or->slug,
+                'oru_txn_type' => $item['oru_txn_type'] ?? null,
+                'oru_sp_no' => $item['oru_sp_no'] ?? null,
+                'oru_volume' => $item['oru_volume'] ?? null,
+                'oru_amount' => Helpers::sanitizeAutonum($item['oru_amount'] ?? null),
             ]);
         }
 
 
+
+        //Activity log arrays
+        $activitylogArray = [];
+        $excludedFields = ['created_at', 'updated_at'];
+
+        foreach ($originalData as $key => $value) {
+            if (!in_array($key, $excludedFields) && $or[$key] != $value) {
+                $oldValue = $value;
+                $newValue = $or[$key];
+
+                // Log the change for this field
+                $remarks = ucfirst(str_replace('_', ' ', $key)) . ": $oldValue -> $newValue";
+
+                array_push($activitylogArray, [
+                    'module' => 'Official Receipts',
+                    'event' => 'Update',
+                    'user_id' => Auth::user()->user_id,
+                    'slug' => $or->slug,
+                    'remarks' => $remarks,
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+        }
+
+
+        // Activity log for utilization array changes
+        $utilizationActivityLog = [];
+//        $originalUtilization = [];
+//        if (isset($or->orUtilization)) { // Check if utilization data exists
+//            $originalUtilization = $or->orUtilization->toArray();
+//        }
+//
+//        // Handle removed items
+//        $removedItems = [];
+//        foreach ($originalUtilization as $key => $oldData) {
+//            if (!isset($utilizationArray[$key])) {
+//                $removedItems[] = $oldData;
+//            }
+//        }
+//
+//        foreach ($removedItems as $key => $data) {
+//            $remarks = "Item ". ($key + 1). ": Removed SP No." .$oldData['oru_sp_no'];
+//            array_push($utilizationActivityLog, [
+//                'module' => 'Official Receipts - Utilization',
+//                'event' => 'Remove',
+//                'user_id' => Auth::user()->user_id,
+//                'slug' => $or->slug,
+//                'remarks' => $remarks,
+//                'created_at' => Carbon::now(),
+//            ]);
+//        }
+//
+//        foreach ($utilizationArray as $key => $newData) {
+//            $oldValue = null;  // Initialize to null
+//            $newValue = $newData;
+//
+//            // Check if original utilization data exists for this key
+//            if (isset($originalUtilization[$key])) {
+//                $oldValue = $originalUtilization[$key];
+//            }
+//
+//            // Compare each field within the utilization data
+//            $hasChanges = false;
+//            foreach ($newData as $field => $value) {
+//                // Only compare if both $oldValue and $newData have the field
+//                if (is_array($oldValue) && isset($oldValue[$field]) && $oldValue[$field]!= $value) {
+//                    $hasChanges = true;
+//                    break; // Exit inner loop if a change is found
+//                }
+//            }
+//
+//            if ($hasChanges) {
+//                $remarks = "Item " . ($key + 1). " " . $field . ": " . $oldValue[$field] . " -> " . $value;
+//                array_push($utilizationActivityLog, [
+//                    'module' => 'Official Receipts - Utilization',
+//                    'event' => 'Update',
+//                    'user_id' => Auth::user()->user_id,
+//                    'slug' => $or->slug,
+//                    'remarks' => $remarks,
+//                    'created_at' => Carbon::now(),
+//                ]);
+//            }
+//            if (!isset($originalUtilization[$key])) {
+//                // Log activity for new item added
+//                $remarks = "Item " . ($key + 1) . ": Added SP No. " . $newValue['oru_sp_no'];
+//                array_push($utilizationActivityLog, [
+//                    'module' => 'Official Receipts - Utilization',
+//                    'event' => 'Add',
+//                    'user_id' => Auth::user()->user_id,
+//                    'slug' => $or->slug,
+//                    'remarks' => $remarks,
+//                    'created_at' => Carbon::now(),
+//                ]);
+//            }
+//        }
+        $originalUtilization = $or->orUtilization ? $or->orUtilization->toArray() : [];
+
+        // Log removed items
+        foreach ($originalUtilization as $key => $oldData) {
+            if (!isset($utilizationArray[$key])) {
+                $remarks = "Item " . ($key + 1) . ": Removed SP No. " . $oldData['oru_sp_no'];
+                array_push($utilizationActivityLog, [
+                    'module' => 'Official Receipts - Utilization',
+                    'event' => 'Remove',
+                    'user_id' => Auth::user()->user_id,
+                    'slug' => $or->slug,
+                    'remarks' => $remarks,
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+        }
+
+        // Log added and updated items
+        foreach ($utilizationArray as $key => $newData) {
+            if (!isset($originalUtilization[$key])) {
+                // New item added
+                $remarks = "Item " . ($key + 1) . ": Added SP No. " . $newData['oru_sp_no'];
+                array_push($utilizationActivityLog, [
+                    'module' => 'Official Receipts - Utilization',
+                    'event' => 'Add',
+                    'user_id' => Auth::user()->user_id,
+                    'slug' => $or->slug,
+                    'remarks' => $remarks,
+                    'created_at' => Carbon::now(),
+                ]);
+            } else {
+                // Check for updates
+                foreach ($newData as $field => $value) {
+                    if (isset($originalUtilization[$key][$field]) && $originalUtilization[$key][$field] != $value) {
+                        $remarks = "Item " . ($key + 1) . " " . ucfirst(str_replace('_', ' ', $field)) . ": " . $originalUtilization[$key][$field] . " -> " . $value;
+                        array_push($utilizationActivityLog, [
+                            'module' => 'Official Receipts - Utilization',
+                            'event' => 'Update',
+                            'user_id' => Auth::user()->user_id,
+                            'slug' => $or->slug,
+                            'remarks' => $remarks,
+                            'created_at' => Carbon::now(),
+                        ]);
+                    }
+                }
+            }
+        }
+
+
+
+        // Update timestamps and IP addresses
         $or->created_at = Carbon::now();
         $or->updated_at = Carbon::now();
         $or->ip_created = $request->ip();
         $or->ip_updated = $request->ip();
-        if($or->update()){
+
+        // Perform update and log activities
+        if ($or->update()) {
+            // Insert activity logs if there are changes
+            if (!empty($activitylogArray)) {
+                ActivityLogs::insert($activitylogArray);
+            }
+
+            // Insert utilization activity logs
+            if (!empty($utilizationActivityLog)) {
+                ActivityLogs::insert($utilizationActivityLog);
+            }
+
             $or->orUtilization()->delete();
             OfficialRecieptUtilization::insert($utilizationArray);
             return $or->only('slug');
         }
+    }
 
+
+    public function print($slug)
+    {
+        $print = OfficialReciepts::query()
+            ->where('slug', $slug)
+            ->first();
+
+        return view('printables.official_reciepts.print')->with([
+            "print" => $print,
+        ]);
     }
 
     private function columns(){

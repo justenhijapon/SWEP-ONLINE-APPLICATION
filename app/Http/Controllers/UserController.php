@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Core\Helpers\Arrays;
 use App\Core\Helpers\Helpers;
+use App\Models\ActivityLogs;
 use App\Models\Menu;
 use App\Models\Submenu;
 use App\Models\User;
@@ -97,6 +98,94 @@ class UserController extends Controller{
     }
 
 
+    public function submenuIdsByAccess($accessLevel) {
+        $submenuIdsByAccess = [
+            'super_user' => [
+                /**User**/
+                'SM10000002','SM10000003', 'SM10000004', 'SM10000005', 'SM10000006', 'SM10000007', 'SM10000008', 'SM10000009', 'SM10000010', 'SM10000011', 'SM10000012', 'SM10000102','K04E9hEHWz',
+
+                /**Menu**/
+                'SM10000152', 'SM10000153', 'SM10000154', 'SM10000155', 'SM10000156', 'SM10000184', 'SM10000185', 'SM10000186', 'SM10000187', 'SM10000188', 'SM10000190', 'SM10000193',
+
+                /**Submenu**/
+                'SM10000186', 'SM10000187', 'SM10000188', 'SM10000190', 'SM10000193',
+
+                /**Port**/
+                '8hnH1fC2krs', 'X8w0sPHBoRP', 'Ns67fqYteWf', '4sIKUOHKoN9', 'a1DApPdiaFt', 'OyPAeSODnw', 'vPMCMZzzCI', 'ftHrFiYAVA', 'U0pcz0VpLs',
+
+                /**Mills**/
+                'OtfNQHIKVj', 'xDSqa8usVB', 'aLbdr29RoC', 'WADw1e6sNX', 'l2dDCxPiSo',
+
+                /**Trader**/
+                'gbWmfSnzLKR', 'tjfiFO1M7Yw', '0E0QTLm23Cs', '5fwCoeI1wkZ', 'GKlEZyoSriM',
+
+                /**Consignee**/
+                'gbWmfSnzLKb', 'tjfiFO1M7Yd', '0E0QTLm23Cf', '5fwCoeI1wkh', 'GKlEZyoSrij',
+
+                /**Vessel**/
+                'gPCrnd3HxM', 'fHgIyxMDkq', 'jjIOBiqpO4', 'whQCgI3FX0', 'GqGHRm5qlr',
+
+                /**Sugar Liens**/
+                'DmlxY7LOnX', '9AEhq8vJmT', '1vTts47iBh', 'QD9f2t91Cp', 'Ayy8O0jNrA',
+
+                /**Profile**/
+                'SM10000101','SM10000102','SM10000103','SM10000104','SM10000206',
+
+                /**Shipping Permit**/
+                'gbWmfSnzLcb', 'tjfiFO1M7ed', '0E0QTLm23gf', '5fwCoeI1wih',
+                'GKlEZyoSrkj', 'c4mhfJNF8u', 'OyPAeSODnw', 'wEzWgB7wwN', 'U0pcz0VpLs',
+
+                /**official receipts**/
+                'aE9MYeK0iD', '6UJjGRkhD9', 'BaLBlpqjKW', 'osIF8P1IYv', 'yBbuPbRi8X',
+                'dA0fili6Gy', 'vPMCMZzzCI', 'ftHrFiYAVA',
+            ],
+            'admin' => [
+                /**Port**/
+                '8hnH1fC2krs', 'X8w0sPHBoRP', 'Ns67fqYteWf', '4sIKUOHKoN9', 'a1DApPdiaFt', 'OyPAeSODnw', 'vPMCMZzzCI', 'ftHrFiYAVA', 'U0pcz0VpLs',
+
+                /**Mills**/
+                'OtfNQHIKVj', 'xDSqa8usVB', 'aLbdr29RoC', 'WADw1e6sNX', 'l2dDCxPiSo',
+
+                /**Trader**/
+                'gbWmfSnzLKR', 'tjfiFO1M7Yw', '0E0QTLm23Cs', '5fwCoeI1wkZ', 'GKlEZyoSriM',
+
+                /**Consignee**/
+                'gbWmfSnzLKb', 'tjfiFO1M7Yd', '0E0QTLm23Cf', '5fwCoeI1wkh', 'GKlEZyoSrij',
+
+                /**Vessel**/
+                'gPCrnd3HxM', 'fHgIyxMDkq', 'jjIOBiqpO4', 'whQCgI3FX0', 'GqGHRm5qlr',
+
+                /**Sugar Liens**/
+                'DmlxY7LOnX', '9AEhq8vJmT', '1vTts47iBh', 'QD9f2t91Cp', 'Ayy8O0jNrA',
+
+                /**Profile**/
+                'SM10000101','SM10000102','SM10000103','SM10000104','SM10000206',
+
+                /**Shipping Permit**/
+                'gbWmfSnzLcb', 'tjfiFO1M7ed', '0E0QTLm23gf', '5fwCoeI1wih',
+                'GKlEZyoSrkj', 'c4mhfJNF8u', 'OyPAeSODnw', 'wEzWgB7wwN', 'U0pcz0VpLs',
+
+                /**official receipts**/
+                'aE9MYeK0iD', '6UJjGRkhD9', 'BaLBlpqjKW', 'osIF8P1IYv', 'yBbuPbRi8X',
+                'dA0fili6Gy', 'vPMCMZzzCI', 'ftHrFiYAVA',
+            ],
+            'user' => [
+                /**Profile**/
+                'SM10000101','SM10000102','SM10000103','SM10000104','SM10000206',
+
+                /**Shipping Permit**/
+                'gbWmfSnzLcb', 'tjfiFO1M7ed', '0E0QTLm23gf', '5fwCoeI1wih',
+                'GKlEZyoSrkj', 'c4mhfJNF8u', 'OyPAeSODnw', 'wEzWgB7wwN', 'U0pcz0VpLs',
+
+                /**official receipts**/
+                'aE9MYeK0iD', '6UJjGRkhD9', 'BaLBlpqjKW', 'osIF8P1IYv', 'yBbuPbRi8X',
+                'dA0fili6Gy', 'vPMCMZzzCI', 'ftHrFiYAVA',
+            ],
+        ];
+
+        return $submenuIdsByAccess[$accessLevel] ?? [];
+    }
+
     public function store(UserFormRequest $request) {
         // Create a new User instance and populate it with data from the request
         $user = new User();
@@ -122,101 +211,8 @@ class UserController extends Controller{
             // Initialize an empty array to hold UserSubmenu records
             $usersubmenuArray = [];
 
-            // Define the submenu IDs based on user access level
-            $submenuIdsByAccess = [
-                'super_user' => [
-                    /**User**/
-                    'SM10000002','SM10000003', 'SM10000004', 'SM10000005', 'SM10000006', 'SM10000007', 'SM10000008', 'SM10000009', 'SM10000010', 'SM10000011', 'SM10000012', 'SM10000102',
-
-                    /**Menu**/
-                    'SM10000152', 'SM10000153', 'SM10000154', 'SM10000155', 'SM10000156', 'SM10000184', 'SM10000185', 'SM10000186', 'SM10000187', 'SM10000188', 'SM10000190', 'SM10000193',
-
-                    /**Submenu**/
-                    'SM10000186', 'SM10000187', 'SM10000188', 'SM10000190', 'SM10000193',
-
-                    /**Port**/
-                    '8hnH1fC2krs', 'X8w0sPHBoRP', 'Ns67fqYteWf', '4sIKUOHKoN9', 'a1DApPdiaFt', 'OyPAeSODnw', 'vPMCMZzzCI', 'ftHrFiYAVA', 'U0pcz0VpLs',
-
-//                    /**Mills/Origin**/
-//                    'qZA6lFCuYjI', 'KTnNw0CvtHC', 'tbarmdqG3nL', 'bjBHU5oxiLh', 'G1rx8arfRjt',
-
-                    /**Mills**/
-                    'OtfNQHIKVj', 'xDSqa8usVB', 'aLbdr29RoC', 'WADw1e6sNX', 'l2dDCxPiSo',
-
-                    /**Trader**/
-                    'gbWmfSnzLKR', 'tjfiFO1M7Yw', '0E0QTLm23Cs', '5fwCoeI1wkZ', 'GKlEZyoSriM',
-
-                    /**Consignee**/
-                    'gbWmfSnzLKb', 'tjfiFO1M7Yd', '0E0QTLm23Cf', '5fwCoeI1wkh', 'GKlEZyoSrij',
-
-                    /**Vessel**/
-                    'gPCrnd3HxM', 'fHgIyxMDkq', 'jjIOBiqpO4', 'whQCgI3FX0', 'GqGHRm5qlr',
-
-                    /**Sugar Liens**/
-                    'DmlxY7LOnX', '9AEhq8vJmT', '1vTts47iBh', 'QD9f2t91Cp', 'Ayy8O0jNrA',
-
-                    /**Profile**/
-                    'SM10000101','SM10000102','SM10000103','SM10000104','SM10000206',
-
-                    /**Shipping Permit**/
-                    'gbWmfSnzLcb', 'tjfiFO1M7ed', '0E0QTLm23gf', '5fwCoeI1wih',
-                    'GKlEZyoSrkj', 'c4mhfJNF8u', 'OyPAeSODnw', 'wEzWgB7wwN', 'U0pcz0VpLs',
-
-                     /**official receipts**/
-                    'aE9MYeK0iD', '6UJjGRkhD9', 'BaLBlpqjKW', 'osIF8P1IYv', 'yBbuPbRi8X',
-                    'dA0fili6Gy', 'vPMCMZzzCI', 'ftHrFiYAVA',
-
-
-                ],
-                'admin' => [
-                    /**Port**/
-                    '8hnH1fC2krs', 'X8w0sPHBoRP', 'Ns67fqYteWf', '4sIKUOHKoN9', 'a1DApPdiaFt', 'OyPAeSODnw', 'vPMCMZzzCI', 'ftHrFiYAVA', 'U0pcz0VpLs',
-
-//                    /**Mills/Origin**/
-//                    'qZA6lFCuYjI', 'KTnNw0CvtHC', 'tbarmdqG3nL', 'bjBHU5oxiLh', 'G1rx8arfRjt',
-
-                    /**Mills**/
-                    'OtfNQHIKVj', 'xDSqa8usVB', 'aLbdr29RoC', 'WADw1e6sNX', 'l2dDCxPiSo',
-
-                    /**Trader**/
-                    'gbWmfSnzLKR', 'tjfiFO1M7Yw', '0E0QTLm23Cs', '5fwCoeI1wkZ', 'GKlEZyoSriM',
-
-                    /**Consignee**/
-                    'gbWmfSnzLKb', 'tjfiFO1M7Yd', '0E0QTLm23Cf', '5fwCoeI1wkh', 'GKlEZyoSrij',
-
-                    /**Vessel**/
-                    'gPCrnd3HxM', 'fHgIyxMDkq', 'jjIOBiqpO4', 'whQCgI3FX0', 'GqGHRm5qlr',
-
-                    /**Sugar Liens**/
-                    'DmlxY7LOnX', '9AEhq8vJmT', '1vTts47iBh', 'QD9f2t91Cp', 'Ayy8O0jNrA',
-
-                    /**Profile**/
-                    'SM10000101','SM10000102','SM10000103','SM10000104','SM10000206',
-
-                    /**Shipping Permit**/
-                    'gbWmfSnzLcb', 'tjfiFO1M7ed', '0E0QTLm23gf', '5fwCoeI1wih',
-                    'GKlEZyoSrkj', 'c4mhfJNF8u', 'OyPAeSODnw', 'wEzWgB7wwN', 'U0pcz0VpLs',
-
-                    /**official receipts**/
-                    'aE9MYeK0iD', '6UJjGRkhD9', 'BaLBlpqjKW', 'osIF8P1IYv', 'yBbuPbRi8X',
-                    'dA0fili6Gy', 'vPMCMZzzCI', 'ftHrFiYAVA',
-                ],
-                'user' => [
-                    /**Profile**/
-                    'SM10000101','SM10000102','SM10000103','SM10000104','SM10000206',
-
-                    /**Shipping Permit**/
-                    'gbWmfSnzLcb', 'tjfiFO1M7ed', '0E0QTLm23gf', '5fwCoeI1wih',
-                    'GKlEZyoSrkj', 'c4mhfJNF8u', 'OyPAeSODnw', 'wEzWgB7wwN', 'U0pcz0VpLs',
-
-                    /**official receipts**/
-                    'aE9MYeK0iD', '6UJjGRkhD9', 'BaLBlpqjKW', 'osIF8P1IYv', 'yBbuPbRi8X',
-                    'dA0fili6Gy', 'vPMCMZzzCI', 'ftHrFiYAVA',
-                ],
-            ];
-
             // Get the submenu IDs for the user's access level
-            $submenuIds = $submenuIdsByAccess[$request->user_access] ?? [];
+            $submenuIds = $this->submenuIdsByAccess($request->user_access);
 
             // Populate the $usersubmenuArray with individual submenu entries
             foreach ($submenuIds as $submenuId) {
@@ -259,10 +255,22 @@ class UserController extends Controller{
         ]);
     }
 
+    public function activity($slug){
+        // Fetch the user with the given slug
+        $user = User::where('slug', $slug)->firstOrFail();
 
+        // Get the user_id from the fetched user
+        $user_id = $user->user_id;
 
-    
+        // Fetch userSubmenus associated with the user_id
+        $userActivity = ActivityLogs::where('user_id', $user_id)->get();
 
+        // Pass the fetched data to the user_service's show method
+        return view('dashboard.user.activity')->with([
+            'userActivity' => $userActivity,
+            'user' => $user
+        ]);
+    }
 
     public function edit($slug){
 

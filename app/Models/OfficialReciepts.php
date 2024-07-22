@@ -35,7 +35,7 @@ class OfficialReciepts extends Model
 
     /** RELATIONSHIPS **/
     public function orUtilization() {
-        return $this->hasMany('App\Models\OfficialRecieptUtilization','slug','slug');
+        return $this->hasMany('App\Models\OfficialRecieptUtilization','or_slug','slug');
     }
 
     public function orShippingPermit() {

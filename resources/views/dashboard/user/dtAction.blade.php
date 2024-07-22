@@ -2,7 +2,9 @@
     <button type="button" class="btn btn-default btn-sm view_user_btn" data="{{$data->slug}}" data-toggle="modal" data-target ="#view_user_modal" title="View more" data-placement="left">
         <i class="fa fa-file-text"></i>
     </button>
-
+    <button type="button" class="btn btn-default btn-sm view_activity_btn" data="{{$data->slug}}" data-toggle="modal" data-target ="#view_activity_modal" title="Activity Log" data-placement="left">
+        <i class="glyphicon glyphicon-list"></i>
+    </button>
     <button type="button" data="{{$data->slug}}" class="btn btn-default btn-sm edit_user_btn" data-toggle="modal" data-target="#edit_user_modal" title="Edit" data-placement="top">
         <i class="fa fa-edit"></i>
     </button>
