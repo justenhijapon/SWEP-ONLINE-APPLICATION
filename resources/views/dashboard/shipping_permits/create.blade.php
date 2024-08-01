@@ -28,11 +28,11 @@
                                             <!-- First Column Form Elements -->
                                             <div class="row">
                                                 <!-- O.R. No. -->
-                                                {!! \App\Core\Helpers\__form2::select('sp_or_no',[
+                                                {!! \App\Core\Helpers\__form2::textbox('sp_or_no',[
                                                 'label' => 'O.R. No.:',
                                                 'cols' => 3,
 //                                                'id' => 'or_no',
-                                                'options' => \App\Core\Helpers\Arrays::spOR(),
+//                                                'options' => \App\Core\Helpers\Arrays::spOR(),
                                                 ]) !!}
                                                 <!-- Shipping Permit No. -->
                                                 {!! \App\Core\Helpers\__form2::textbox('sp_no',[
@@ -407,24 +407,24 @@
             });
         });
 
-            $("body").on("change","#user_id",function (){
-                let url = '{{route('dashboard.ajax','for')}}';
-                let user_id = $(this).val();
-                url = url.replace('for','getOfficerPosition');
-                $.ajax({
-                    url : url,
-                    data: {
-                        user_id : user_id,
-                    },
-                    type: 'GET',
-                    success:function (response){
-                        $("#form_add_shipping_permits input[name='sp_collecting_officer_position']").val(response.position);
-                    },
-                    error: function (response){
-                        $or ?? abort(503,'User not found');
-                    }
-                });
-            })
+        $("body").on("change","#user_id",function (){
+            let url = '{{route('dashboard.ajax','for')}}';
+            let user_id = $(this).val();
+            url = url.replace('for','getOfficerPosition');
+            $.ajax({
+                url : url,
+                data: {
+                    user_id : user_id,
+                },
+                type: 'GET',
+                success:function (response){
+                    $("#form_add_shipping_permits input[name='sp_collecting_officer_position']").val(response.position);
+                },
+                error: function (response){
+                    $or ?? abort(503,'User not found');
+                }
+            });
+        })
 
 
         $("body").on("change","#vessel_description",function (){

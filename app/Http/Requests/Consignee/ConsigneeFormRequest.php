@@ -22,9 +22,9 @@ class ConsigneeFormRequest extends FormRequest{
 
         $rules = [
             'consignee_id'=>'required',
-            'consignee_name'=>'required|string|max:45',
-            'consignee_address'=>'required|string|max:45',
-            'consignee_tin'=>'required|integer',
+            'consignee_name'=>'required|string|',
+            'consignee_address'=>'required|string|',
+            'consignee_tin'=>'required|',
 
 
         ];

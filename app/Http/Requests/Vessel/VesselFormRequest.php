@@ -21,6 +21,7 @@ class VesselFormRequest extends FormRequest{
     public function rules(){
 
         $rules = [
+            'vessel_id' => 'required|int',
             'vessel_description' => 'required|string',
             'vessel_ship_operator' => 'required|string'
 

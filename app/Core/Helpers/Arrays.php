@@ -196,12 +196,10 @@ class Arrays
 
         return $orp->mapWithKeys(function ($data){
             return [
-                $data->consignee_name => $data->consignee_name,
+                $data->consignee_name =>  "{$data->consignee_name}/TIN {$data->consignee_tin}",
             ];
         })->toArray();
     }
-
-
 
     public static function cropYear($end = 2000){
 

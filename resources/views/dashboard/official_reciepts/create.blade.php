@@ -19,12 +19,15 @@
             <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_volume]',[
                         'label' => 'Volume:',
                         'type' => 'number',
+                        'id' => 'oru_volume',
                      ]) !!}
             </td>
-            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_amount]',[
-                        'label' => 'Amount:',
-                        'class' => 'autonum_rand',
-                     ]) !!}
+            <td>
+                {!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_amount]',[
+                    'label' => 'Amount:',
+                    'type' => 'number',
+                    'id' => 'oru_amount',
+                ]) !!}
             </td>
             <td><button type="button" class="btn btn-sm bg-red delete_row_item"><i class="fa fa-times"></i></button></td>
         </tr>
@@ -145,7 +148,8 @@
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_cash_amount',[
                                                         'label' => 'Cash Amount:',
-                                                        'class' => 'autonum',
+//                                                        'class' => 'autonum',
+                                                        'id' => 'or_cash_amount',
                                                         'cols' => 6,
                                                     ]) !!}
                                                 </div>
@@ -153,12 +157,13 @@
 
                                                     {!! \App\Core\Helpers\__form2::textbox('or_chk_acct_no',[
                                                         'label' => 'Chk. Acct No.:',
-                                                        'type' => 'number',
+//                                                        'type' => 'number',
                                                         'cols' => 6,
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_check_amount',[
                                                         'label' => 'Check Amount:',
-                                                        'class' => 'autonum',
+//                                                        'class' => 'autonum',
+                                                        'id' => 'or_check_amount',
                                                         'cols' => 6,
                                                     ]) !!}
 
@@ -172,7 +177,8 @@
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_money_order',[
                                                         'label' => 'Money Order:',
-                                                        'class' => 'autonum',
+//                                                        'class' => 'autonum',
+                                                        'id' => 'or_money_order',
                                                         'cols' => 6,
                                                     ]) !!}
 
@@ -185,8 +191,9 @@
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_total_paid',[
                                                         'label' => 'Total Paid:',
-                                                         'class' => 'autonum',
+//                                                         'class' => 'autonum',
                                                         'readonly' => 'readonly',
+                                                        'id' => 'or_total_paid',
                                                         'cols' => 6,
                                                     ]) !!}
 
@@ -208,33 +215,41 @@
                                                     {!! \App\Core\Helpers\__form2::textbox('or_cancellation',[
                                                         'label' => 'Cancellation:',
                                                         'cols' => 6,
+                                                        'id'=> 'or_cancellation'
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_shut_out',[
                                                         'label' => 'Shut-out:',
                                                         'cols' => 6,
+                                                        'id'=> 'or_shut_out'
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_transhipment',[
                                                         'label' => 'Transhipment:',
                                                         'cols' => 6,
+                                                        'id'=> 'or_transhipment'
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_shipping_permit',[
                                                         'label' => 'Shipping Permit:',
                                                         'cols' => 6,
+                                                        'id' => 'or_shipping_permit',
+                                                        'readonly' => 'readonly',
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_other_fees',[
                                                         'label' => 'Other Fees:',
                                                         'cols' => 6,
+                                                        'id'=> 'or_other_fees'
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_other_fees_2',[
                                                         'label' => 'Other Fees:',
                                                         'cols' => 6,
+                                                        'id'=> 'or_other_fees_2'
                                                     ]) !!}
                                                 </div>
                                                 <div class="row">
                                                     {!! \App\Core\Helpers\__form2::textbox('or_total_amount',[
                                                         'label' => 'Total Amount:',
                                                         'cols' => 12,
-                                                        'readonly' => 'readonly'
+                                                        'readonly' => 'readonly',
+                                                        'id'=> 'or_total_amount',
                                                     ]) !!}
                                                     {!! \App\Core\Helpers\__form2::textbox('or_report_no',[
                                                         'label' => 'Report No.:',
@@ -266,28 +281,124 @@
 @section('scripts')
     <script type="text/javascript">
 
+
         $(document).ready(function(){
             active = '';
 
+            // Function to calculate the sum of Total paid payment details and or_money_order
+            function calculateTotalAdditionalAmount() {
+                let cashAmount = parseFloat($("#or_cash_amount").val()) || 0;
+                let checkAmount = parseFloat($("#or_check_amount").val()) || 0;
+                let moneyOrderAmount = parseFloat($("#or_money_order").val()) || 0;
 
-            //-----Pap Code and Item-----//
-            //Add Pap Code and Item
+                let totalAdditionalAmount = cashAmount + checkAmount + moneyOrderAmount;
+                // console.log('Total Additional Amount:', totalAdditionalAmount);
+
+                // Update the 'or_total_paid' field with the total additional amount
+                $("#or_total_paid").val(totalAdditionalAmount.toFixed(2));
+            }
+
+            // Attach change event listener to or_check_amount and or_money_order
+            $("#or_cash_amount, #or_check_amount, #or_money_order").on("input", function() {
+                calculateTotalAdditionalAmount();
+            });
+
+            // Function to calculate the sum of specific fields and set it to 'or_total_amount'
+            function calculateTotalAmount() {
+                let cancellation = parseFloat($("#or_cancellation").val()) || 0;
+                let shutOut = parseFloat($("#or_shut_out").val()) || 0;
+                let transhipment = parseFloat($("#or_transhipment").val()) || 0;
+                let shippingPermit = parseFloat($("#or_shipping_permit").val()) || 0;
+                let otherFees = parseFloat($("#or_other_fees").val()) || 0;
+                let otherFees2 = parseFloat($("#or_other_fees_2").val()) || 0;
+
+                let totalAmount = cancellation + shutOut + transhipment + shippingPermit + otherFees + otherFees2;
+                // console.log('Total Amount including All Fields:', totalAmount);
+
+                // Update the 'or_total_amount' field with the total amount
+                $("#or_total_amount").val(totalAmount.toFixed(2));
+            }
+
+            // Attach change event listener to all relevant fields
+            $("#or_cancellation, #or_shut_out, #or_transhipment, #or_shipping_permit, #or_other_fees, #or_other_fees_2").on("input", function() {
+                calculateTotalAmount();
+            });
+
+
+
+            // Function to extract data from the utilization table and calculate total amount
+            function UtilizationTableAmountTotal() {
+                $("#utilization_table tbody tr").each(function() {
+                    let row = $(this);
+                    let volumeInput = row.find("input[name*='oru_volume']");
+                    let volume = parseFloat(volumeInput.val()) || 0;
+                    let oruAmountInput = row.find("input[name*='oru_amount']");
+
+                    let totalAmount = volume * 3;
+                    oruAmountInput.val(totalAmount.toFixed(2));
+                });
+            }
+
+            // Trigger utiltableAmounttoShippingPermit when oru_amount changes
+            $("#utilization_table tbody").on("input", "input[name*='oru_volume']", function () {
+                UtilizationTableAmountTotal();
+                utiltableAmounttoShippingPermit();
+            });
+
+            // Function to extract data from the utilization table and calculate total amount
+            function utiltableAmounttoShippingPermit() {
+                let tableData = [];
+                let totalAmount = 0;
+
+                $("#utilization_table tbody tr").each(function() {
+                    // let txnType = $(this).find("select").val();
+                    let amount = parseFloat($(this).find("input[name*='oru_amount']").val()) || 0;
+
+                    let rowData = {
+                        // txnType: txnType,
+                        amount: amount
+                    };
+
+                    tableData.push(rowData);
+
+                    // Add the current amount to the total amount
+                    totalAmount += amount;
+                });
+
+                // Update the 'or_shipping_permit' field with the total amount from the table
+                $("#or_shipping_permit").val(totalAmount.toFixed(2));
+
+                // Recalculate the total amount
+                calculateTotalAmount();
+            }
+
+            // Trigger utiltableAmounttoShippingPermit when oru_amount changes
+            $("#utilization_table tbody").on("input", "input[name*='oru_amount']", function () {
+                utiltableAmounttoShippingPermit();
+            });
+
+            // Add Pap Code and Item
             $("#add_row_item").click(function(){
                 let rowTemplate = $("#item_template").html();
                 let random = makeId(10);
-                rowTemplate = rowTemplate.replaceAll('rand',random);
+                rowTemplate = rowTemplate.replaceAll('rand', random);
 
                 $("#utilization_table tbody").append(rowTemplate);
-                $(".autonum_"+ random).each(function(){
-                    $(this).attr('autocomplete','off');
+                $(".autonum_" + random).each(function(){
+                    $(this).attr('autocomplete', 'off');
                     new AutoNumeric(this, autonum_settings);
                 });
 
+                utiltableAmounttoShippingPermit();
+                UtilizationTableAmountTotal();
             });
 
-            //Delete item button
-            $("body").on("click",'.delete_row_item',function (){
-                $(this).parent('td').parent('tr').remove();
+            // Delete item button
+            $("body").on("click", '.delete_row_item', function (){
+                $(this).closest('tr').remove();
+
+                utiltableAmounttoShippingPermit();
+                UtilizationTableAmountTotal();
             });
 
             //Submit Add Reciept Form
@@ -402,7 +513,14 @@
             }
 
 
-        })
+
+
+
+
+
+
+
+        });
 
 
 

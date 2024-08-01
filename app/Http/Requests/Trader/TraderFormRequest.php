@@ -22,9 +22,9 @@ class TraderFormRequest extends FormRequest{
 
         $rules = [
             'trader_id'=>'required',
-            'trader_name'=>'required|string|max:45',
-            'trader_address'=>'required|string|max:45',
-            'trader_tin'=>'required|integer',
+            'trader_name'=>'required|string|',
+            'trader_address'=>'required|string|',
+            'trader_tin'=>'required|string',
 
 
         ];

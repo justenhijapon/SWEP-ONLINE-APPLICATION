@@ -34,6 +34,7 @@ class VesselController extends Controller
 
         $vessel = new Vessel();
         $vessel->slug = Str::random(16);
+        $vessel->vessel_id = $request->vessel_id;
         $vessel->vessel_description = $request->vessel_description;
         $vessel->vessel_ship_operator = $request->vessel_ship_operator;
 
@@ -72,6 +73,7 @@ class VesselController extends Controller
             ->where('slug', $slug)
             ->first();
             $vessel ?? abort(404,'Seminar not found.');
+        $vessel->vessel_id = $request->vessel_id;
         $vessel->vessel_description = $request->vessel_description;
         $vessel->vessel_ship_operator = $request->vessel_ship_operator;
 

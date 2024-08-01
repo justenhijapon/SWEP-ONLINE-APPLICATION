@@ -21,7 +21,7 @@ class ShippingPermitFormRequest extends FormRequest{
     public function rules(){
 
         $rules = [
-            'sp_no' => 'required|integer|max:9999999',
+            'sp_no' => 'required|integer|',
             'sp_edd_etd' => 'required|date_format:"Y-m-d"',
             'sp_date' => 'required|date_format:"Y-m-d"',
             'sp_eda_eta' => 'required|date_format:"Y-m-d"',
@@ -40,15 +40,15 @@ class ShippingPermitFormRequest extends FormRequest{
 //            'sp_amount' => 'required|decimal',
 //            'sp_ref_sp_no' => 'required|integer',
             'sp_status' => 'required|string|max:255',
-//            'sp_markings' => 'required|string|max:255',
+            'sp_markings' => 'required|string|max:255',
             'sp_collecting_officer'=> 'required|string|max:255',
             'sp_collecting_officer_position' => 'required|string|max:255',
             'sp_shipper' => 'required|string|max:255',
             'sp_shipper_add' => 'required|string|max:255',
-            'sp_shipper_tin' => 'required|integer',
+            'sp_shipper_tin' => 'required|',
             'sp_consignee' => 'required|string|max:255',
             'sp_consignee_add' => 'required|string|max:255',
-            'sp_consignee_tin' => 'required|integer',
+            'sp_consignee_tin' => 'required|',
 
 
 
@@ -67,3 +67,4 @@ class ShippingPermitFormRequest extends FormRequest{
 
 
 }
+

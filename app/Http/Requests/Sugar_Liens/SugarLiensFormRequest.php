@@ -22,7 +22,7 @@ class SugarLiensFormRequest extends FormRequest{
 
         $rules = [
             'sl_description' => 'required|string',
-            'sl_factor' => 'required|int'
+//            'sl_factor' => 'required|decimal'
 
 
 

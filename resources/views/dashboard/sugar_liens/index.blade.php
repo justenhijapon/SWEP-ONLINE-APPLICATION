@@ -21,6 +21,7 @@
                     <table class="table table-bordered table-striped table-hover" id="sugar_liens_table" style="width: 100% !important">
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
+                            <th>id</th>
                             <th>SLUG</th>
                             <th>Description</th>
                             <th>Factor</th>
@@ -71,7 +72,7 @@
                                 {!! \App\Core\Helpers\__form2::textbox('sl_factor',[
                                     'label' => 'Factor:',
                                     'cols' => 12,
-                                    'type' => 'number'
+                                    'type' => 'float'
                                 ]) !!}
                             </div>
 
@@ -123,8 +124,6 @@
                 } )
 
 
-            //-----DATATABLES-----//
-            //Initialize DataTable
             sugar_liens_table = $("#sugar_liens_table").DataTable({
                 'dom' : 'lBfrtip',
                 "processing": true,
@@ -134,37 +133,36 @@
                     type: 'GET',
                 },
                 "columns": [
+                    {"data": "id"},
                     {"data": "slug"},
                     {"data": "sl_description"},
                     {"data": "sl_factor"},
                     {"data": "action"}
-
                 ],
-
+                "order": [[0, 'asc']], // Sort by 'id' column in ascending order
                 buttons: [
                     {!! __js::dt_buttons() !!}
                 ],
                 "columnDefs":[
                     {
-                        "targets" : [ 0 ],
+                        "targets" : [ 0,1 ],
                         "visible" : false
                     },
                     {
-                        "targets" : 3,
+                        "targets" : 4,
                         "orderable" : false,
                         "class" : 'action-10p'
                     },
                 ],
                 "responsive": false,
-                "initComplete": function( settings, json ) {
+                "initComplete": function(settings, json) {
                     $('#tbl_loader').fadeOut(function(){
                         $("#sugar_liens_table_container").fadeIn();
                     });
                 },
-                "language":
-                    {
-                        "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
-                    },
+                "language": {
+                    "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
+                },
                 "drawCallback": function(settings){
                     $('[data-toggle="tooltip"]').tooltip();
                     $('[data-toggle="modal"]').tooltip();
@@ -172,7 +170,8 @@
                         $("#sugar_liens_table #"+active).addClass('success');
                     }
                 }
-            })
+            });
+
 
             //Search Bar Styling
             style_datatable('#sugar_liens_table');

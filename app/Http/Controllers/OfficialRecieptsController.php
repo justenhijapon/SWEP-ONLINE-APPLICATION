@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Core\Helpers\Arrays;
 use App\Core\Helpers\Helpers;
+use App\Core\Helpers\TranslateTextHelper;
 use App\Exports\OfficialRecieptsExport;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Rmunate\Utilities\SpellNumber;
 
 class OfficialRecieptsController extends Controller
 {
@@ -86,8 +88,15 @@ class OfficialRecieptsController extends Controller
         $or->or_cash_amount = Helpers::sanitizeAutonum($request->or_cash_amount);
         $or->or_check_amount = Helpers::sanitizeAutonum($request->or_check_amount);
         $or->or_money_order = Helpers::sanitizeAutonum($request->or_money_order);
-        $or->or_money_order = Helpers::sanitizeAutonum($request->or_money_order);
         $or->or_total_paid = Helpers::sanitizeAutonum($request->or_total_paid);
+        $or->or_cancellation = Helpers::sanitizeAutonum($request->or_cancellation);
+        $or->or_shut_out = Helpers::sanitizeAutonum($request->or_shut_out);
+        $or->or_transhipment = Helpers::sanitizeAutonum($request->or_transhipment);
+        $or->or_shipping_permit = Helpers::sanitizeAutonum($request->or_shipping_permit);
+        $or->or_other_fees = Helpers::sanitizeAutonum($request->or_other_fees);
+        $or->or_other_fees_2 = Helpers::sanitizeAutonum($request->or_other_fees_2);
+        $or->or_total_amount = Helpers::sanitizeAutonum($request->or_total_amount);
+        $or->or_report_no = Helpers::sanitizeAutonum($request->or_report_no);
 
         $utilizationArray = [];
         foreach ((array) $request->items as $item){
@@ -150,10 +159,10 @@ class OfficialRecieptsController extends Controller
             ->where('slug', $slug)
             ->first();
             $or ?? abort(404,'Seminar not found.');
-        $total = $or->orShippingPermit->sum('sp_amount');
+//        $total = $or->orShippingPermit->sum('sp_amount');
         return view('dashboard.official_reciepts.edit')->with([
             'or'=>$or,
-            'total'=>$total,
+//            'total'=>$total,
         ]);
     }
 
@@ -181,6 +190,14 @@ class OfficialRecieptsController extends Controller
         $or->or_check_amount = Helpers::sanitizeAutonum($request->or_check_amount);
         $or->or_money_order = Helpers::sanitizeAutonum($request->or_money_order);
         $or->or_total_paid = Helpers::sanitizeAutonum($request->or_total_paid);
+        $or->or_cancellation = Helpers::sanitizeAutonum($request->or_cancellation);
+        $or->or_shut_out = Helpers::sanitizeAutonum($request->or_shut_out);
+        $or->or_transhipment = Helpers::sanitizeAutonum($request->or_transhipment);
+        $or->or_shipping_permit = Helpers::sanitizeAutonum($request->or_shipping_permit);
+        $or->or_other_fees = Helpers::sanitizeAutonum($request->or_other_fees);
+        $or->or_other_fees_2 = Helpers::sanitizeAutonum($request->or_other_fees_2);
+        $or->or_total_amount = Helpers::sanitizeAutonum($request->or_total_amount);
+        $or->or_report_no = Helpers::sanitizeAutonum($request->or_report_no);
 
         // Create utilization array
         $utilizationArray = [];
@@ -376,11 +393,35 @@ class OfficialRecieptsController extends Controller
     public function print($slug)
     {
         $print = OfficialReciepts::query()
+            ->with([
+                "orMIll_Origin",
+                "orUtilization",
+            ])
             ->where('slug', $slug)
             ->first();
 
+        // Handle null value for or_total_amount
+        $orAmount = optional($print)->or_total_amount ?? 0;
+
+        // Ensure $orAmount is a float for consistent processing
+        $orAmount = (float)$orAmount;
+
+        // Convert the amount to a string representation in words
+        if (strpos($orAmount, '.') !== false) {
+            // If the amount has a decimal point, handle as float
+            $word = SpellNumber::float($orAmount)->toLetters();
+        } else {
+            // Otherwise, handle as integer
+            $word = SpellNumber::integer((int)$orAmount)->toLetters();
+        }
+
+        // Translate the word representation if needed
+        $translated = TranslateTextHelper::translate($word);
+
+
         return view('printables.official_reciepts.print')->with([
             "print" => $print,
+            'translated' => $translated,
         ]);
     }
 

@@ -81,8 +81,8 @@
                                 ]) !!}
                                 {!! \App\Core\Helpers\__form2::textbox('consignee_tin',[
                                     'label' => 'TIN:',
-                                    'cols' => 12,
-                                    'type' => 'number'
+                                    'cols' => 6,
+//                                    'type' => 'number'
                                 ]) !!}
 
 

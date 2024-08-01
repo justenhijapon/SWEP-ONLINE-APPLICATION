@@ -35,7 +35,7 @@
                 ],$trader ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('trader_tin',[
                     'label' => 'TIN:',
-                    'cols' => 12,
+                    'cols' => 6,
                     'type' => 'number',
                 ],$trader ?? null) !!}
 

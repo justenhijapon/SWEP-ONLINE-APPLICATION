@@ -35,7 +35,7 @@
                 ],$consignee ?? null) !!}
                 {!! \App\Core\Helpers\__form2::textbox('consignee_tin',[
                     'label' => 'TIN:',
-                    'cols' => 12,
+                    'cols' => 6,
                     'type' => 'number'
                 ],$consignee ?? null) !!}
 

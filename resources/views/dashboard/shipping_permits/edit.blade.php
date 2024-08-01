@@ -294,14 +294,18 @@
         });
     })
 
-    // Disable the select initially
-    $("#edit_shipping_permits_form_{{$rand}} select[name='sp_markings']").prop('disabled', true);
+    {{--// Disable the select initially--}}
+    {{--$("#edit_shipping_permits_form_{{$rand}} select[name='sp_markings']").prop('disabled', true);--}}
 
     // Listen for changes in #mill_code
     $("body").on("change", "#mill_code", function () {
         let url = '{{route('dashboard.ajax','for')}}';
         let mill_code = $(this).val();
         url = url.replace('for', 'getMillUtilization');
+
+        let selectElement = $("#edit_shipping_permits_form_{{$rand}} select[name='sp_markings']");
+        selectElement.html('<option disabled selected>Loading...</option>');
+
         $.ajax({
             url: url,
             data: {
@@ -309,25 +313,28 @@
             },
             type: 'GET',
             success: function (response) {
-                let selectElement = $("#edit_shipping_permits_form_{{$rand}} select[name='sp_markings']");
                 selectElement.empty(); // Clear any existing options
 
-                // Iterate over the response data and append options to the select element
-                response.millData.forEach(function (mill) {
-                    let option = $("<option></option>")
-                        // .attr("value", mill.mu_marking_code) // Assuming 'id' is a property of the mill
-                        .text(mill.mu_description); // Assuming 'name' is a property of the mill
-                    selectElement.append(option);
-                });
-
-                // Enable the select after successful response
-                selectElement.prop('disabled', false);
+                if (response.millData.length > 0) {
+                    // Iterate over the response data and append options to the select element
+                    response.millData.forEach(function (mill) {
+                        let option = $("<option></option>")
+                            // .attr("value", mill.mu_marking_code) // Assuming 'id' is a property of the mill
+                            .text(mill.mu_description); // Assuming 'name' is a property of the mill
+                        selectElement.append(option);
+                    });
+                } else {
+                    selectElement.html('<option disabled>No mill found</option>');
+                }
             },
             error: function (response) {
-                alert('Mill not found');
+                // Assuming response.responseJSON contains the error message
+                let errorMessage = response.responseJSON ? response.responseJSON.message : 'An error occurred';
+                selectElement.html('<option disabled>' + errorMessage + '</option>');
             }
         });
     });
+
 
 
 
