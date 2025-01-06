@@ -97,11 +97,11 @@
 
 {{--                                    'cols' => 12,--}}
 {{--                                ]) !!}--}}
-                                {!! \App\Core\Helpers\__form2::textbox('port_id',[
-                                    'label' => 'Port ID:',
-                                    'cols' => 6,
-                                    'type' => 'number',
-                                ]) !!}
+{{--                                {!! \App\Core\Helpers\__form2::textbox('port_id',[--}}
+{{--                                    'label' => 'Port ID:',--}}
+{{--                                    'cols' => 6,--}}
+{{--                                    'type' => 'number',--}}
+{{--                                ]) !!}--}}
                                 {!! \App\Core\Helpers\__form2::textbox('port_name',[
                                     'label' => 'Port Name:',
                                     'cols' => 12,

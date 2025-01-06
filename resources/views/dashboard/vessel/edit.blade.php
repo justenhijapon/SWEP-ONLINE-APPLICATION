@@ -20,11 +20,11 @@
 
         <div class="col-md-12">
             <div class="row">
-                {!! \App\Core\Helpers\__form2::textbox('vessel_id',[
-                    'label' => 'Vessel:',
-                    'cols' => 6,
-                    'type' => 'number'
-                ],$vessel ?? null) !!}
+{{--                {!! \App\Core\Helpers\__form2::textbox('vessel_id',[--}}
+{{--                    'label' => 'Vessel:',--}}
+{{--                    'cols' => 6,--}}
+{{--                    'type' => 'number'--}}
+{{--                ],$vessel ?? null) !!}--}}
                 {!! \App\Core\Helpers\__form2::textbox('vessel_description',[
                     'label' => 'Vessel:',
                     'cols' => 12,

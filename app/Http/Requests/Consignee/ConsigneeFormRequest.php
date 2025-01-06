@@ -21,7 +21,7 @@ class ConsigneeFormRequest extends FormRequest{
     public function rules(){
 
         $rules = [
-            'consignee_id'=>'required',
+//            'consignee_id'=>'required',
             'consignee_name'=>'required|string|',
             'consignee_address'=>'required|string|',
             'consignee_tin'=>'required|',

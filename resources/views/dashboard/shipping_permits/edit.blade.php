@@ -86,12 +86,14 @@
                                     'label' => 'Volume:',
                                     'type' => 'number',
                                     'cols' => 3,
+                                    'id' => 'sp_volume'
                                     ],$sp ?? null) !!}
                                     <!-- Amount -->
                                     {!! \App\Core\Helpers\__form2::textbox('sp_amount',[
                                     'label' => 'Amount:',
                                     'cols' => 3,
                                     'class' => 'autonum',
+                                    'id' => 'sp_amount'
                                     ],$sp ?? null) !!}
                                     <!-- Ref SP No. -->
                                     {!! \App\Core\Helpers\__form2::textbox('sp_ref_sp_no',[
@@ -154,6 +156,68 @@
                                     'cols' => 4,
                                     ],$sp ?? null) !!}
                                 </div>
+
+                                <div class="row">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p class="no-margin">
+                                                        <b>Add Item</b>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button id="add_row_item_edit_{{$rand}}" type="button" class="btn btn-xs btn-success pull-right">Add Item &nbsp;<i class="fa fw fa-plus"></i></button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered" id="edit_volume_table_{{$rand}}">
+
+                                                <thead>
+                                                <tr>
+                                                    <th>Crop Year</th>
+                                                    <th>SP NO.</th>
+                                                    <th>VOLUME</th>
+                                                    <th>AMOUNT</th>
+                                                    <th style="width: 40px"></th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                @foreach($sp->spUtilization as $key => $spShippingPermit)
+                                                    <tr>
+                                                        <td style="display: none;">
+                                                            {!! \App\Core\Helpers\__form2::textboxOnly('items['.$spShippingPermit->slug.'][slug]',[
+                                                            ],$spShippingPermit->slug ?? null) !!}
+                                                        </td>
+                                                        <td>
+                                                            {!! \App\Core\Helpers\__form2::selectOnly('items['.$spShippingPermit->slug.'][crop_year]',[
+                                                              'options' => \App\Core\Helpers\Arrays::cropYear(),
+                                                            ],$spShippingPermit->crop_year ?? null) !!}
+                                                        </td>
+                                                        <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$spShippingPermit->slug.'][sro_number]',[
+                                                                'label' => 'SRO No.:',
+                                                             ],$spShippingPermit->sro_number ?? null) !!}
+                                                        </td>
+                                                        <td>{!! \App\Core\Helpers\__form2::textboxOnly('items['.$spShippingPermit->slug.'][amount]',[
+                                                                'label' => 'Amount:',
+                                                             ],$spShippingPermit->amount ?? null) !!}
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-sm bg-red delete_row_item">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="row">
                                     <div class="box-header with-border">
                                         <h3 class="box-title">Shipper</h3>
@@ -417,6 +481,58 @@
             }
         });
     })
+
+    // Function to extract data from the utilization table and calculate total amount
+    function utiltableAmounttoShippingPermit() {
+        let tableData = [];
+        let totalAmount = 0;
+        let totalAmountSuper = 0;
+
+        $("#edit_volume_table_{{$rand}} tbody tr").each(function() {
+            // let txnType = $(this).find("select").val();
+            let amount = parseFloat($(this).find("input[name*='amount']").val()) || 0;
+
+            let rowData = {
+                // txnType: txnType,
+                amount: amount
+            };
+
+            tableData.push(rowData);
+
+            // Add the current amount to the total amount
+            totalAmount += amount;
+            totalAmountSuper = totalAmount * 3;
+        });
+
+        // Update the 'or_shipping_permit' field with the total amount from the table
+        $("#sp_volume").val(totalAmount.toFixed(2));
+        $("#sp_amount").val(totalAmountSuper.toFixed(2));
+
+        // Recalculate the total amount
+        calculateTotalAmount();
+    }
+
+    // Trigger utiltableAmounttoShippingPermit when oru_amount changes
+    $("#edit_volume_table_{{$rand}} tbody").on("input", "input[name*='amount']", function () {
+        utiltableAmounttoShippingPermit();
+    });
+
+    $("#add_row_item_edit_{{$rand}}").click(function() {
+        let rowTemplate = $("#item_template").html();
+        let random = makeId(10);
+        rowTemplate = rowTemplate.replaceAll('rand', random);
+
+        $("#edit_volume_table_{{$rand}} tbody").append(rowTemplate);
+        utiltableAmounttoShippingPermit();
+
+    });
+
+    $("body").on("click", '.delete_row_item', function() {
+        $(this).closest('tr').remove();
+        utiltableAmounttoShippingPermit();
+
+    });
+
 
 </script>
 

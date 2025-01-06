@@ -101,4 +101,5 @@ Route::get('/shipping_permit/print/{slug}', 'ShippingPermitController@print')->n
 Route::get('/official_reciepts/print/{slug}', 'OfficialRecieptsController@print')->name('official_reciepts.print');
 Route::get('users/export/', [\App\Http\Controllers\ShippingPermitController::class, 'export']);
 
+Route::post('/store-data', [VolumeController::class, 'store'])->name('storeData');
 

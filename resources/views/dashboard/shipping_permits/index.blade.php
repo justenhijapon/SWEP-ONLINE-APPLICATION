@@ -2,6 +2,36 @@
 
 @section('content')
 
+    <table hidden="">
+        <tbody id="item_template">
+        <tr>
+            <td>
+                {!! \App\Core\Helpers\__form2::selectOnly('items[rand][crop_year]',[
+                    'options' => \App\Core\Helpers\Arrays::cropYear(),
+                ]) !!}
+            </td>
+            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][sro_number]',[
+                        'label' => 'SRO No.:',
+                        'type' => 'number',
+                     ]) !!}
+            </td>
+            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][amount]',[
+                        'label' => 'Amount:',
+                        'type' => 'number',
+                        'id' => 'amount',
+                     ]) !!}
+            </td>
+            {{--            <td>--}}
+            {{--                {!! \App\Core\Helpers\__form2::textboxOnly('items[rand][oru_amount]',[--}}
+            {{--                    'label' => 'Amount:',--}}
+            {{--                    'type' => 'number',--}}
+            {{--                    'id' => 'oru_amount',--}}
+            {{--                ]) !!}--}}
+            {{--            </td>--}}
+            <td><button type="button" class="btn btn-sm bg-red delete_row_item"><i class="fa fa-times"></i></button></td>
+        </tr>
+        </tbody>
+    </table>
     <section class="content-header">
         <h1>Manage Shipping Permits</h1>
     </section>
@@ -169,19 +199,13 @@
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                             <th>SLUG</th>
-                            <th>Official Reciept No.</th>
-                            <th>Shipping Permit No.</th>
+                            <th>SP No.</th>
                             <th>Permit Date</th>
-                            <th>Sugar Class</th>
-                            <th>Volume</th>
+                            <th>Mill & Marking</th>
+                            <th>Origin / Destination</th>
+                            <th>Other Details</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th>EDD/ETD</th>
-                            <th>EDA/ETA</th>
-                            <th>Port Of Origin</th>
-                            <th>Port Of Destination</th>
-                            <th>Mill</th>
-                            <th>Collecting Officer</th>
                             <th class="action">Action</th>
                         </tr>
                         </thead>
@@ -545,13 +569,40 @@
                     url : '{{ route("dashboard.shipping_permits.index") }}',
                     type: 'GET',
                 },
+                // "columns": [
+                //     {"data": "slug"},
+                //     {"data": "sp_or_no"},
+                //     {"data": "sp_no"},
+                //     {"data": "sp_date"},
+                //     {"data": "sp_sugar_class"},
+                //     {"data": "sp_volume"},
+                //     {
+                //         "data": "sp_amount",
+                //         "render": function(data, type, row) {
+                //             // Check if the data is null and set it to 0 if it is
+                //             var amount = data ? data : 0;
+                //             // Add peso sign to the amount
+                //             return "₱" + amount;
+                //         }
+                //     },
+                //     {"data": "sp_status"},
+                //     {"data": "sp_edd_etd"},
+                //     {"data": "sp_eda_eta"},
+                //     {"data": "sp_port_of_origin"},
+                //     {"data": "sp_port_of_destination"},
+                //     {"data": "sp_mill"},
+                //     {"data": "sp_collecting_officer"},
+                //     {"data": "action"},
+                //
+                // ],
+
                 "columns": [
                     {"data": "slug"},
-                    {"data": "sp_or_no"},
                     {"data": "sp_no"},
                     {"data": "sp_date"},
-                    {"data": "sp_sugar_class"},
-                    {"data": "sp_volume"},
+                    {"data": "sp_mill"},
+                    {"data": "sp_origin_destination"},
+                    {"data": "sp_other_details"},
                     {
                         "data": "sp_amount",
                         "render": function(data, type, row) {
@@ -562,12 +613,6 @@
                         }
                     },
                     {"data": "sp_status"},
-                    {"data": "sp_edd_etd"},
-                    {"data": "sp_eda_eta"},
-                    {"data": "sp_port_of_origin"},
-                    {"data": "sp_port_of_destination"},
-                    {"data": "sp_mill"},
-                    {"data": "sp_collecting_officer"},
                     {"data": "action"},
 
                 ],
@@ -575,36 +620,57 @@
                 buttons: [
                     {!! __js::dt_buttons() !!}
                 ],
+                // "columnDefs":[
+                //     {
+                //         "targets" :  [0,1,8,9,10,11,12,13] ,
+                //         "visible" : false
+                //     },
+                //     {
+                //         "targets" : [11,10],
+                //         "orderable": true,
+                //         "class" : 'w-5p'
+                //     },
+                //     {
+                //         "targets" : 7,
+                //         "orderable": true,
+                //         "class" : 'w-6p'
+                //     },
+                //     {
+                //         "targets" : 14,
+                //         "orderable": false,
+                //         "class" : 'action-10p'
+                //     },
+                //     {
+                //         "targets": [3], // sp_date column index
+                //         "render": function (data, type, full, meta) {
+                //             // Format the date using moment.js or any other library
+                //             return moment(data).format("MMMM D, YYYY"); // Adjust format as needed
+                //         }
+                //     }
+                //
+                // ],
+
                 "columnDefs":[
                     {
-                        "targets" :  [0,8,9,10,11,12,13] ,
+                        "targets" :  [0] ,
                         "visible" : false
                     },
                     {
-                        "targets" : [11,10],
-                        "orderable": true,
-                        "class" : 'w-5p'
-                    },
-                    {
-                        "targets" : 7,
-                        "orderable": true,
-                        "class" : 'w-6p'
-                    },
-                    {
-                        "targets" : 14,
+                        "targets" : 8,
                         "orderable": false,
                         "class" : 'action-10p'
                     },
                     {
-                        "targets": [3], // sp_date column index
-                        "render": function (data, type, full, meta) {
-                            // Format the date using moment.js or any other library
-                            return moment(data).format("MMMM D, YYYY"); // Adjust format as needed
-                        }
-                    }
-
+                        "targets" : 7,
+                        "class" : 'action-8p'
+                    },
+                    {
+                        "targets" : 6,
+                        "class" : 'action-8p text-right'
+                    },
                 ],
-                "order": [[3, "desc"]], // Sort by sp_date column in ascending order
+
+                "order": [[2, "desc"]], // Sort by sp_date column in ascending order
                 "responsive": false,
                 "initComplete": function( settings, json ) {
                     $('#tbl_loader').fadeOut(function(){

@@ -32,7 +32,7 @@ class AjaxController extends Controller
     private function getMillUtilization(Request $request) {
         // Retrieve all mill objects based on the mill_code from the request
         $mills = MillUtilization::query()
-            ->where('slug', '=', $request->mill_code)
+            ->where('mu_mill_code', '=', $request->mill_code)
             ->get();
 
         // Check if any mill objects are found; if not, abort with a 503 status

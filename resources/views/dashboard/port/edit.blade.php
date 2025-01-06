@@ -26,10 +26,10 @@
 {{--                    'options' => ['Luzon/Mindanao' => 'Luzon/Mindanao','Visayas' =>'Visayas'],--}}
 {{--                    'cols' => 12,--}}
 {{--                ],$port ?? null) !!}--}}
-                {!! \App\Core\Helpers\__form2::textbox('port_id',[
-                    'label' => 'Port ID:',
-                    'cols' => 12,
-                ],$port ?? null) !!}
+{{--                {!! \App\Core\Helpers\__form2::textbox('port_id',[--}}
+{{--                    'label' => 'Port ID:',--}}
+{{--                    'cols' => 12,--}}
+{{--                ],$port ?? null) !!}--}}
                 {!! \App\Core\Helpers\__form2::textbox('port_name',[
                     'label' => 'Port Name:',
                     'cols' => 12,

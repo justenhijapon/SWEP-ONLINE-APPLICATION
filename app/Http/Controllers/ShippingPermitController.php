@@ -13,6 +13,7 @@ use App\Models\OfficialReciepts;
 use App\Models\Origin;
 use App\Models\Port;
 use App\Models\ShippingPermit;
+use App\Models\VolumeModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,7 @@ class ShippingPermitController extends Controller
 
         if($request->ajax())
         {
-            $sp = ShippingPermit::query();
+            $sp = ShippingPermit::query()->with(["spMIll_Origin"]);
             return datatables()->of($sp)
                 ->addColumn('action', function($data){
                     return view('dashboard.shipping_permits.dtAction')->with([
@@ -60,6 +61,14 @@ class ShippingPermitController extends Controller
                     }
                 })
 
+                ->addColumn('sp_origin_destination', function($data){
+                    return view("dashboard.shipping_permits.DTOriginDest")->with(["data"=>$data]);
+                })
+
+                ->addColumn('sp_other_details', function($data){
+                    return view("dashboard.shipping_permits.DTOtherDetails")->with(["data"=>$data]);
+                })
+
 //                ->editColumn('sp_port_of_origin', function($data){
 //                    return $data->portOfOrigin->port_name ?? null;
 //                })
@@ -67,8 +76,12 @@ class ShippingPermitController extends Controller
 //                    return $data->portOfDestination->port_name ?? null;
 //                })
                 ->editColumn('sp_mill', function($data){
-                    return $data->spMIll_Origin->mill_name ?? null;
+                    return view("dashboard.shipping_permits.DTMillMark")->with(["data"=>$data]);
                 })
+                ->editColumn('sp_date', function($data){
+                    return Carbon::parse($data->sp_date)->format("M. d, Y");
+                })
+
                 ->escapeColumns([])
                 ->rawColumns(['action'])
                 ->setRowId('slug')
@@ -136,9 +149,30 @@ class ShippingPermitController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
+//        $spvolume = [];
+//        array_push($spvolume,[
+//            'slug' => Str::random(12),
+//            'sp_slug' => $sp->slug,
+//            'crop_year' => $request->crop_year,
+//            'sro_number' => $request->sro_number,
+//            'amount' => $request->amount,
+//        ]);
+
+        $spvolume = [];
+        foreach ((array) $request->items as $item){
+            array_push($spvolume,[
+                'slug' => Str::random(12),
+                'sp_slug' => $sp->slug,
+                'crop_year' => $item['crop_year'],
+                'sro_number' => $item['sro_number'],
+                'amount' => Helpers::sanitizeAutonum($item['amount']),
+            ]);
+        }
+
 
         if ($sp->save()) {
             ActivityLogs::insert($activitylogArray);
+            VolumeModel::insert($spvolume);
             return response()->json(['slug' => $sp->slug]);
         }
     }
@@ -238,7 +272,30 @@ class ShippingPermitController extends Controller
             'remarks' => $remarks,
             'created_at' => Carbon::now(),
         ]);
+
+        // Create utilization array
+        $sp_utilizationArray = [];
+        foreach ((array) $request->items as $item) {
+            // Check if 'slug' key exists in $item, otherwise set to null or handle accordingly
+            $slug = isset($item['slug']) ? $item['slug'] : Str::random(16);
+
+            // You can also use null coalescing operator if you're using PHP 7 or higher
+            // $slug = $item['slug'] ?? null;
+
+
+            array_push($sp_utilizationArray, [
+                'slug' => Str::random(12),
+                'sp_slug' => $sp->slug,
+                'crop_year' => $item['crop_year'],
+                'sro_number' => $item['sro_number'],
+                'amount' => Helpers::sanitizeAutonum($item['amount']),
+            ]);
+        }
+
         if($sp->update()){
+            $sp->spUtilization()->delete();
+            VolumeModel::insert($sp_utilizationArray);
+
             ActivityLogs::insert($activitylogArray);
             return $sp->only('slug');
         }

@@ -61,7 +61,7 @@ class Arrays
 
         $array = [];
         foreach ($mill as $mills){
-            $array[$mills->slug] = $mills->mill_code;
+            $array[$mills->mill_code] = $mills->mill_code;
         }
         return $array;
     }
@@ -176,6 +176,8 @@ class Arrays
                 'SHIPPING PERMIT' => 'SHIPPING PERMIT',
         ];
     }
+
+//    MAHIMO KO D BAGO
 
     public static function SugarClass(){
         return [

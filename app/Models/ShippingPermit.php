@@ -43,13 +43,18 @@ class ShippingPermit extends Model
 //    }
 
     public function spMIll_Origin(){
-        return $this->belongsTo(Mill::class,'sp_mill' ,'slug');
+        return $this->belongsTo(Mill::class,'sp_mill' ,'mill_code');
 
     }
 
     public function spCollecting_Officer(){
         return $this->belongsTo(User::class,'sp_collecting_officer' ,'user_id');
 
+    }
+
+    /** RELATIONSHIPS **/
+    public function spUtilization() {
+        return $this->hasMany('App\Models\VolumeModel','sp_slug','slug');
     }
 
 }

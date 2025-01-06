@@ -783,3 +783,12 @@ li.has-error>a{
     padding-left: 10px;
     padding-bottom: 10px;
 }
+
+.dt-table>tbody>tr>td:nth-child(1){
+    font-weight: bold;
+    width: 50%;
+}
+
+.dt-table{
+    font-size:smaller;
+}

@@ -21,7 +21,7 @@ class TraderFormRequest extends FormRequest{
     public function rules(){
 
         $rules = [
-            'trader_id'=>'required',
+//            'trader_id'=>'required',
             'trader_name'=>'required|string|',
             'trader_address'=>'required|string|',
             'trader_tin'=>'required|string',
