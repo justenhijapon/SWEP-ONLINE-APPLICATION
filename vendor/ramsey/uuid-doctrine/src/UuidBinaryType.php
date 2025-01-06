@@ -14,17 +14,20 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Doctrine;
 
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Throwable;
 
+use function class_exists;
 use function is_object;
+use function is_resource;
 use function is_string;
 use function method_exists;
+use function stream_get_contents;
 
 /**
  * Field type mapping for the Doctrine Database Abstraction Layer (DBAL).
@@ -34,6 +37,8 @@ use function method_exists;
  */
 class UuidBinaryType extends Type
 {
+    use GetBindingTypeImplementation;
+
     public const NAME = 'uuid_binary';
 
     /**
@@ -43,7 +48,7 @@ class UuidBinaryType extends Type
     {
         return $platform->getBinaryTypeDeclarationSQL(
             [
-                'length' => '16',
+                'length' => 16,
                 'fixed' => true,
             ],
         );
@@ -60,6 +65,10 @@ class UuidBinaryType extends Type
             return $value;
         }
 
+        if (is_resource($value)) {
+            $value = stream_get_contents($value);
+        }
+
         if (!is_string($value) || $value === '') {
             return null;
         }
@@ -67,7 +76,9 @@ class UuidBinaryType extends Type
         try {
             $uuid = Uuid::fromBytes($value);
         } catch (Throwable $e) {
-            throw ConversionException::conversionFailed($value, self::NAME);
+            throw class_exists(ValueNotConvertible::class)
+                ? ValueNotConvertible::new($value, self::NAME)
+                : ConversionException::conversionFailed($value, self::NAME);
         }
 
         return $uuid;
@@ -96,21 +107,28 @@ class UuidBinaryType extends Type
             // Ignore the exception and pass through.
         }
 
-        throw ConversionException::conversionFailed($value, self::NAME);
+        throw class_exists(ValueNotConvertible::class)
+            ? ValueNotConvertible::new($value, self::NAME)
+            : ConversionException::conversionFailed($value, self::NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated this method is deprecated and will be removed in Uuid-Doctrine 3.0
+     */
     public function getName(): string
     {
         return self::NAME;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated this method is deprecated and will be removed in Uuid-Doctrine 3.0
+     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
-    }
-
-    public function getBindingType(): int
-    {
-        return ParameterType::BINARY;
     }
 }

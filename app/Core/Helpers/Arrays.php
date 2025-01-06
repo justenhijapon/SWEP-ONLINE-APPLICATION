@@ -129,7 +129,7 @@ class Arrays
     }
 
     public static function spCollectingOfficer() {
-        $users = User::query()->get();
+        $users = User::query()->where("is_collecting_officer", 1)->get();
 
         return $users->mapWithKeys(function ($user) {
             // Extract the first character of the middlename

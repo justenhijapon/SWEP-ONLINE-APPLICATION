@@ -35,7 +35,7 @@ class ShippingPermitFormRequest extends FormRequest{
 //            'sp_uom' => 'required|string|max:255',
 //            'sp_freight' => 'required|string|max:255',
 //            'sp_plate_no' => 'required|string|max:255',
-            'sp_or_no' => 'required|integer',
+//            'sp_or_no' => 'required|integer',
 //            'sp_remarks' => 'required|string|max:255',
 //            'sp_amount' => 'required|decimal',
 //            'sp_ref_sp_no' => 'required|integer',
