@@ -125,7 +125,7 @@ class ShippingPermitController extends Controller
         $sp->sp_amount = $request->sp_amount !== null ? Helpers::sanitizeAutonum($request->sp_amount) : 0;
         $sp->sp_ref_sp_no = $request->sp_ref_sp_no;
         $sp->sp_status = $request->sp_status;
-        $sp->sp_markings = $request->sp_markings;
+        $sp->sp_markings = $request->markings_list;
         $sp->sp_collecting_officer = $request->sp_collecting_officer;
         $sp->sp_collecting_officer_position = $request->sp_collecting_officer_position;
         $sp->sp_shipper = $request->sp_shipper;

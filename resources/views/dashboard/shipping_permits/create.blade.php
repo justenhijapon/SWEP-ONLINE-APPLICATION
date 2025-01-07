@@ -39,6 +39,7 @@
 
     <section class="content">
         {{-- Table Grid --}}
+
         <div class="row justify-content-center align-items-center">
             <div class="col-md-12">
                 <div class="box">
@@ -52,6 +53,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <form autocomplete="off" id="form_add_shipping_permits" enctype="multipart/form-data">
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -170,6 +172,7 @@
 
                                             </div>
 
+
 {{--                                            <div class="box-header with-border"  style="background-color: #4477a3;color: white;">--}}
 {{--                                                <p class="no-margin">--}}
 {{--                                                    Volume--}}
@@ -257,6 +260,7 @@
                                                     </div>
                                                 </div>
 
+
                                                 <!-- Volume and Amount textboxes -->
                                                 <div class="col-md-2">
                                                     <!-- Volume -->
@@ -291,11 +295,22 @@
                                             </div>
                                             <div class="row">
                                                 <!-- Markings -->
-                                                {!! \App\Core\Helpers\__form2::select('sp_markings',[
-                                                'label' => 'Markings:',
-                                                'cols' => 6,
-                                                 'options' => [],
-                                                ]) !!}
+{{--                                                {!! \App\Core\Helpers\__form2::select('sp_markings',[--}}
+{{--                                                'label' => 'Markings:',--}}
+{{--                                                'cols' => 6,--}}
+{{--                                                 'options' => [],--}}
+{{--                                                ]) !!}--}}
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="sp_markings">Markings:</label>
+                                                    <input list="markings_list" id="sp_markings" name="markings_list" class="form-control">
+                                                    <datalist id="markings_list">
+
+                                                    </datalist>
+
+
+                                                </div>
+
                                                 {!! \App\Core\Helpers\__form2::select('sp_collecting_officer',[
                                                'label' => 'Collecting Officer:',
                                                'cols' => 4,
@@ -514,33 +529,63 @@
         {{--    });--}}
         {{--})--}}
 
-        $("body").on("change", "#mill_code", function () {
-            let url = '{{route('dashboard.ajax','for')}}';
-            let mill_code = $(this).val();
-            url = url.replace('for', 'getMillUtilization');
-            $.ajax({
-                url: url,
-                data: {
-                    mill_code: mill_code,
-                },
-                type: 'GET',
-                success: function (response) {
-                    let selectElement = $("#form_add_shipping_permits select[name='sp_markings']");
-                    selectElement.empty(); // Clear any existing options
+            // OLD MARKING LOUIS
+        {{--$("body").on("change", "#mill_code", function () {--}}
+        {{--    let url = '{{route('dashboard.ajax','for')}}';--}}
+        {{--    let mill_code = $(this).val();--}}
+        {{--    url = url.replace('for', 'getMillUtilization');--}}
+        {{--    $.ajax({--}}
+        {{--        url: url,--}}
+        {{--        data: {--}}
+        {{--            mill_code: mill_code,--}}
+        {{--        },--}}
+        {{--        type: 'GET',--}}
+        {{--        success: function (response) {--}}
+        {{--            let selectElement = $("#form_add_shipping_permits select[name='sp_markings']");--}}
+        {{--            selectElement.empty(); // Clear any existing options--}}
 
-                    // Iterate over the response data and append options to the select element
-                    response.millData.forEach(function (mill) {
-                        let option = $("<option></option>")
-                            // .attr("value", mill.mu_marking_code) // Assuming 'id' is a property of the mill
-                            .text(mill.mu_description); // Assuming 'name' is a property of the mill
-                        selectElement.append(option);
-                    });
-                },
-                error: function (response) {
-                    alert('Mill not found');
-                }
+        {{--            // Iterate over the response data and append options to the select element--}}
+        {{--            response.millData.forEach(function (mill) {--}}
+        {{--                let option = $("<option></option>")--}}
+        {{--                    // .attr("value", mill.mu_marking_code) // Assuming 'id' is a property of the mill--}}
+        {{--                    .text(mill.mu_description); // Assuming 'name' is a property of the mill--}}
+        {{--                selectElement.append(option);--}}
+        {{--            });--}}
+        {{--        },--}}
+        {{--        error: function (response) {--}}
+        {{--            alert('Mill not found');--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--});--}}
+
+            // DATALIST MARKING LOUIS
+            $("body").on("change", "#mill_code", function () {
+                let url = '{{route('dashboard.ajax','for')}}';
+                let mill_code = $(this).val();
+                url = url.replace('for', 'getMillUtilization');
+                $.ajax({
+                    url: url,
+                    data: {
+                        mill_code: mill_code,
+                    },
+                    type: 'GET',
+                    success: function (response) {
+                        let datalistElement = $("#markings_list");
+                        datalistElement.html(""); // Clear any existing options
+
+                        let html;
+                        // Iterate over the response data and append options to the datalist
+                        response.millData.forEach(function (mill) {
+                            html = html + '<option value="'+mill.mu_description+'"></option>';
+                        });
+                        console.log(html);
+                        datalistElement.html(html);
+                    },
+                    error: function (response) {
+                        alert('Mill not found');
+                    }
+                });
             });
-        });
 
         $("body").on("change","#user_id",function (){
             let url = '{{route('dashboard.ajax','for')}}';

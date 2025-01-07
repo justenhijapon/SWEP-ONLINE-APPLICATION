@@ -27,7 +27,7 @@
         }
 
         table, td {
-            /*border: 1px solid black;*/
+            border: 1px solid black;
             border-collapse: collapse;
             /*border: 1px solid black;*/
             color:black;
@@ -60,12 +60,12 @@
         <tr>
             <td></td>
             <td></td>
-            <td style="font-size: small" colspan="3"><br> </td>
+            <td style="font-size: 10px; height: 15.5px; text-align: right; padding-right: 20px">{{ $print->sp_vessel }}/</td>
         </tr>
         <tr>
-            <td style="text-align: right; font-size: small; vertical-align: top">{{ $print->sp_port_of_origin }}</td>
+            <td style="text-align: left; font-size: small; vertical-align: top">{{ $print->sp_port_of_origin }}</td>
             <td style="text-align: center; font-size: small;  vertical-align: top">{{ $print->sp_port_of_destination }}</td>
-            <td style="text-align: center; font-size: 12px; height: 30px; max-height: 30px; vertical-align: top">{{ $print->sp_vessel }}/{{ $print->sp_freight }}<br>/{{ $print->sp_plate_no }}/{{ $print->sp_ship_operator }}</br></td>
+            <td style="text-align: center; font-size: 10px; height: 30px; max-height: 30px; vertical-align: top">{{ $print->sp_freight }}/{{ $print->sp_plate_no }}/{{ $print->sp_ship_operator }}</br></td>
             <td style="font-size: 13px; vertical-align: top">{{ \Carbon\Carbon::parse($print->sp_edd_etd)->format('m/d/Y') }}</td>
             <td style="font-size: 13px; vertical-align: top">{{ \Carbon\Carbon::parse($print->sp_eda_eta)->format('m/d/Y') }}</td>
         </tr>
@@ -99,8 +99,18 @@
 {{--        <tr>--}}
 {{--            <td colspan="5" style="height: 4px"></td>--}}
 {{--        </tr>--}}
+
+        @php
+            $words = explode(' ', $print->sp_markings); // Split the string into an array of words
+            $halfIndex = ceil(count($words) / 2); // Calculate the halfway point
+            $firstHalf = implode(' ', array_slice($words, 0, $halfIndex)); // First half of the words
+            $secondHalf = implode(' ', array_slice($words, $halfIndex)); // Second half of the words
+        @endphp
+
         <tr>
-            <td colspan="3" rowspan="2" style="font-size: 13px; padding-left: 50px; height: 38px">{{ $print->sp_markings }}</td>
+            <td colspan="3" rowspan="2" style="font-size: 13px; padding-left: 50px; height: 38px">
+                {{ $firstHalf }}<br>{{ $secondHalf }}
+            </td>
             <td colspan="2" rowspan="4" style="font-size: 13px; padding-top: 5px; vertical-align: top">
                 {{$translated}}
                 <br>
