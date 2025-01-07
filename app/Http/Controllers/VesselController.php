@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\vessel\VesselFormRequest;
+use App\Http\Requests\Vessel\VesselFormRequest;
 use App\Models\Vessel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
