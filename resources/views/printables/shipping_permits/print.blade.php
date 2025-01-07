@@ -65,7 +65,7 @@
         <tr>
             <td style="text-align: right; font-size: small; vertical-align: top">{{ $print->sp_port_of_origin }}</td>
             <td style="text-align: center; font-size: small;  vertical-align: top">{{ $print->sp_port_of_destination }}</td>
-            <td style="text-align: center; font-size: 12px; height: 30px; vertical-align: top">{{ $print->sp_vessel }}/{{ $print->sp_freight }}/{{ $print->sp_plate_no }}</td>
+            <td style="text-align: center; font-size: 12px; height: 30px; max-height: 30px; vertical-align: top">{{ $print->sp_vessel }}/{{ $print->sp_freight }}<br>/{{ $print->sp_plate_no }}/{{ $print->sp_ship_operator }}</br></td>
             <td style="font-size: 13px; vertical-align: top">{{ \Carbon\Carbon::parse($print->sp_edd_etd)->format('m/d/Y') }}</td>
             <td style="font-size: 13px; vertical-align: top">{{ \Carbon\Carbon::parse($print->sp_eda_eta)->format('m/d/Y') }}</td>
         </tr>
@@ -147,7 +147,7 @@
         </tr>
         <tr>
             <td colspan="3" style="font-weight: bold; color: red;"></td>
-            <td colspan="2" style="text-align: left; padding-left: 15px; font-size: 13px">{{$print->spCollecting_Officer->position }}</td>
+            <td colspan="2" style="text-align: center; padding-right: 30px; font-size: 13px">{{$print->spCollecting_Officer->position }}</td>
         </tr>
     </tbody>
 </table>
