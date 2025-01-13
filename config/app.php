@@ -165,7 +165,7 @@ return [
         /** CUSTOM PROVIDERS **/
         App\Providers\ViewComposerServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
 
     ],

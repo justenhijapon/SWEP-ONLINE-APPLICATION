@@ -266,7 +266,7 @@
                                                     <!-- Volume -->
                                                     {!! \App\Core\Helpers\__form2::textbox('sp_volume',[
                                                         'label' => 'Volume:',
-                                                        'type' => 'number',
+//                                                        'type' => 'number',
                                                         'cols' => 12,
                                                         'id' => 'sp_volume',
                                                     ]) !!}

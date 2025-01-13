@@ -12,13 +12,13 @@
   ),
   'barryvdh/laravel-dompdf' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Barryvdh\\DomPDF\\ServiceProvider',
-    ),
     'aliases' => 
     array (
       'PDF' => 'Barryvdh\\DomPDF\\Facade\\Pdf',
+    ),
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\DomPDF\\ServiceProvider',
     ),
   ),
   'codedge/laravel-fpdf' => 
@@ -106,13 +106,13 @@
   ),
   'simplesoftwareio/simple-qrcode' => 
   array (
-    'providers' => 
-    array (
-      0 => 'SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider',
-    ),
     'aliases' => 
     array (
       'QrCode' => 'SimpleSoftwareIO\\QrCode\\Facades\\QrCode',
+    ),
+    'providers' => 
+    array (
+      0 => 'SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider',
     ),
   ),
   'spatie/laravel-activitylog' => 
@@ -124,13 +124,13 @@
   ),
   'spatie/laravel-html' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\Html\\HtmlServiceProvider',
-    ),
     'aliases' => 
     array (
       'Html' => 'Spatie\\Html\\Facades\\Html',
+    ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\Html\\HtmlServiceProvider',
     ),
   ),
   'spatie/laravel-ignition' => 
@@ -174,13 +174,13 @@
   ),
   'yajra/laravel-datatables-oracle' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Yajra\\DataTables\\DataTablesServiceProvider',
-    ),
     'aliases' => 
     array (
       'DataTables' => 'Yajra\\DataTables\\Facades\\DataTables',
+    ),
+    'providers' => 
+    array (
+      0 => 'Yajra\\DataTables\\DataTablesServiceProvider',
     ),
   ),
 );

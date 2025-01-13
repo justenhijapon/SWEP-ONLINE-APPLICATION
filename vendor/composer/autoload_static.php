@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
+class ComposerStaticInit2587bbb968f861e48601678d939422b4
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -244,11 +244,11 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         ),
         'Yajra\\DataTables\\' => 
         array (
-            0 => __DIR__ . '/..' . '/yajra/laravel-datatables-buttons/src',
-            1 => __DIR__ . '/..' . '/yajra/laravel-datatables-editor/src',
+            0 => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src',
+            1 => __DIR__ . '/..' . '/yajra/laravel-datatables-html/src',
             2 => __DIR__ . '/..' . '/yajra/laravel-datatables-fractal/src',
-            3 => __DIR__ . '/..' . '/yajra/laravel-datatables-html/src',
-            4 => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src',
+            3 => __DIR__ . '/..' . '/yajra/laravel-datatables-editor/src',
+            4 => __DIR__ . '/..' . '/yajra/laravel-datatables-buttons/src',
         ),
         'Whoops\\' => 
         array (
@@ -837,6 +837,7 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         'App\\Http\\Requests\\User\\UserFormRequest' => __DIR__ . '/../..' . '/app/Http/Requests/User/UserFormRequest.php',
         'App\\Http\\Requests\\User\\UserResetPasswordRequest' => __DIR__ . '/../..' . '/app/Http/Requests/User/UserResetPasswordRequest.php',
         'App\\Http\\Requests\\User\\UserSyncEmployeeRequest' => __DIR__ . '/../..' . '/app/Http/Requests/User/UserSyncEmployeeRequest.php',
+        'App\\Http\\Requests\\Vessel\\VesselFormRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Vessel/VesselFormRequest.php',
         'App\\Models\\ActivityLogs' => __DIR__ . '/../..' . '/app/Models/ActivityLogs.php',
         'App\\Models\\Consignee' => __DIR__ . '/../..' . '/app/Models/Consignee.php',
         'App\\Models\\Menu' => __DIR__ . '/../..' . '/app/Models/Menu.php',
@@ -1844,6 +1845,8 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         'FontLib\\Table\\DirectoryEntry' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/DirectoryEntry.php',
         'FontLib\\Table\\Table' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Table.php',
         'FontLib\\Table\\Type\\cmap' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/cmap.php',
+        'FontLib\\Table\\Type\\cvt' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/cvt.php',
+        'FontLib\\Table\\Type\\fpgm' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/fpgm.php',
         'FontLib\\Table\\Type\\glyf' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/glyf.php',
         'FontLib\\Table\\Type\\head' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/head.php',
         'FontLib\\Table\\Type\\hhea' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/hhea.php',
@@ -1855,6 +1858,7 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         'FontLib\\Table\\Type\\nameRecord' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/nameRecord.php',
         'FontLib\\Table\\Type\\os2' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/os2.php',
         'FontLib\\Table\\Type\\post' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/post.php',
+        'FontLib\\Table\\Type\\prep' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Table/Type/prep.php',
         'FontLib\\TrueType\\Collection' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/TrueType/Collection.php',
         'FontLib\\TrueType\\File' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/TrueType/File.php',
         'FontLib\\TrueType\\Header' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/TrueType/Header.php',
@@ -4732,6 +4736,7 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
         'PharIo\\Manifest\\ManifestLoader' => __DIR__ . '/..' . '/phar-io/manifest/src/ManifestLoader.php',
         'PharIo\\Manifest\\ManifestLoaderException' => __DIR__ . '/..' . '/phar-io/manifest/src/exceptions/ManifestLoaderException.php',
         'PharIo\\Manifest\\ManifestSerializer' => __DIR__ . '/..' . '/phar-io/manifest/src/ManifestSerializer.php',
+        'PharIo\\Manifest\\NoEmailAddressException' => __DIR__ . '/..' . '/phar-io/manifest/src/exceptions/NoEmailAddressException.php',
         'PharIo\\Manifest\\PhpElement' => __DIR__ . '/..' . '/phar-io/manifest/src/xml/PhpElement.php',
         'PharIo\\Manifest\\PhpExtensionRequirement' => __DIR__ . '/..' . '/phar-io/manifest/src/values/PhpExtensionRequirement.php',
         'PharIo\\Manifest\\PhpVersionRequirement' => __DIR__ . '/..' . '/phar-io/manifest/src/values/PhpVersionRequirement.php',
@@ -8008,10 +8013,10 @@ class ComposerStaticInit050acb06d5954a807d7add70116fd2eb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit050acb06d5954a807d7add70116fd2eb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit050acb06d5954a807d7add70116fd2eb::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit050acb06d5954a807d7add70116fd2eb::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit050acb06d5954a807d7add70116fd2eb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2587bbb968f861e48601678d939422b4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2587bbb968f861e48601678d939422b4::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit2587bbb968f861e48601678d939422b4::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit2587bbb968f861e48601678d939422b4::$classMap;
 
         }, null, ClassLoader::class);
     }
