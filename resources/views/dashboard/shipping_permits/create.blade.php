@@ -301,25 +301,23 @@
 {{--                                                 'options' => [],--}}
 {{--                                                ]) !!}--}}
 
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-5">
                                                     <label for="sp_markings">Markings:</label>
                                                     <input list="markings_list" id="sp_markings" name="markings_list" class="form-control">
                                                     <datalist id="markings_list">
 
                                                     </datalist>
-
-
                                                 </div>
 
                                                 {!! \App\Core\Helpers\__form2::select('sp_collecting_officer',[
                                                'label' => 'Collecting Officer:',
-                                               'cols' => 4,
+                                               'cols' => 5,
                                                'options' => \App\Core\Helpers\Arrays::spCollectingOfficer(),
                                                'id' => 'user_id',
                                                ]) !!}
                                                 {!! \App\Core\Helpers\__form2::textbox('sp_collecting_officer_position',[
                                                'label' => 'Position:',
-                                               'cols' => 2,
+                                               'cols' => '2',
                                                ]) !!}
                                             </div>
                                             <div class="row">
@@ -328,12 +326,20 @@
                                                 'options' => \App\Core\Helpers\Arrays::sptrader(),
                                                 'label' => 'Shipper:',
                                                 'id' => 'trader_name',
-                                                'cols' => 2,
+                                                'cols' => 5,
                                                 ]) !!}
-                                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper_add',[
-                                                'label' => 'Shipper Address:',
-                                                'cols' => 2,
-                                                ]) !!}
+
+{{--                                                {!! \App\Core\Helpers\__form2::textbox('sp_shipper_add',[--}}
+{{--                                                'label' => 'Shipper Address:',--}}
+{{--                                                'cols' => 2,--}}
+{{--                                                ]) !!}--}}
+
+                                                <div class="form-group col-md-5">
+                                                    <label for="tc_markings">Shipper Address:</label>
+                                                    <input list="cluster_list" id="tc_markings" name="sp_shipper_add" class="form-control">
+                                                    <datalist id="cluster_list"></datalist>
+                                                </div>
+
                                                 {!! \App\Core\Helpers\__form2::textbox('sp_shipper_tin',[
                                                 'label' => 'Shipper Tin:',
                                                 'cols' => 2,
@@ -343,12 +349,19 @@
                                                 'options' => \App\Core\Helpers\Arrays::spconsignee(),
                                                 'label' => 'Consignee:',
                                                 'id' => 'consignee_name',
-                                                'cols' => 2,
+                                                'cols' => 5,
                                                 ]) !!}
-                                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee_add',[
-                                                'label' => 'Consignee Address:',
-                                                'cols' => 2,
-                                                ]) !!}
+
+                                                <div class="form-group col-md-5">
+                                                    <label for="c_markings">Consignee Address:</label>
+                                                    <input list="clusterC_list" id="c_markings" name="sp_consignee_add" class="form-control">
+                                                    <datalist id="clusterC_list"></datalist>
+                                                </div>
+
+{{--                                                {!! \App\Core\Helpers\__form2::textbox('sp_consignee_add',[--}}
+{{--                                                'label' => 'Consignee Address:',--}}
+{{--                                                'cols' => 5,--}}
+{{--                                                ]) !!}--}}
                                                 {!! \App\Core\Helpers\__form2::textbox('sp_consignee_tin',[
                                                 'label' => 'Consignee Tin:',
                                                 'cols' => 2,
@@ -413,6 +426,12 @@
                                 {!! __html::token_header() !!}
                             },
                             success: function(response){
+                                $('form').trigger("reset");
+                                form.find("input, select, textarea").each(function() {
+                                    // $(this).removeClass(); // Remove all custom classes
+                                    $(this).removeAttr("disabled"); // Remove inline styles
+                                    $(this).prop("disabled", false); // Re-enable any disabled inputs
+                                });
 
                                 console.log(response);
                                 notify("Your data was successfully saved", "success");
@@ -454,8 +473,6 @@
                                 $("#form_add_shipping_permits input[name='shipping_permits_name']").focus();
                                 $("#table_body").html('');
 
-
-
                             },
                             error: function(response){
                                 errored(form,response);
@@ -465,10 +482,9 @@
                     }
                 });
 
-
             })
 
-            $('#mill_code, #vessel_description, #sp_port_of_origin, #sp_port_of_destination, #consignee_name, #trader_name').select2();
+            $('#mill_code, #vessel_description, #sp_port_of_origin, #sp_port_of_destination, #consignee_name, #trader_name, #trader').select2();
 
             function printShippingPermit(slug) {
                 var printUrl = '{{ route("shipping_permit.print", ":slug") }}'.replace(':slug', slug);
@@ -587,6 +603,142 @@
                 });
             });
 
+        {{--$("body").on("change", "#mill_code", function () {--}}
+            {{--    let url = '{{route('dashboard.ajax','for')}}';--}}
+            {{--    let mill_code = $(this).val();--}}
+            {{--    url = url.replace('for', 'getMillUtilization');--}}
+            {{--    $.ajax({--}}
+            {{--        url: url,--}}
+            {{--        data: {--}}
+            {{--            mill_code: mill_code,--}}
+            {{--        },--}}
+            {{--        type: 'GET',--}}
+            {{--        success: function (response) {--}}
+            {{--            let datalistElement = $("#markings_list");--}}
+            {{--            datalistElement.html(""); // Clear any existing options--}}
+
+            {{--            let html;--}}
+            {{--            // Iterate over the response data and append options to the datalist--}}
+            {{--            response.millData.forEach(function (mill) {--}}
+            {{--                html = html + '<option value="'+mill.mu_description+'"></option>';--}}
+            {{--            });--}}
+            {{--            console.log(html);--}}
+            {{--            datalistElement.html(html);--}}
+            {{--        },--}}
+            {{--        error: function (response) {--}}
+            {{--            alert('Mill not found');--}}
+            {{--        }--}}
+            {{--    });--}}
+            {{--});--}}
+
+
+
+        /** Trader_Cluster_address_List_Aten **/
+        $("body").on("change", "#trader_name", function () {
+            let url = '{{ route('dashboard.ajax', 'for') }}';
+            let traderName = $(this).val(); // Use trader name as the value for request
+            url = url.replace('for', 'getTraderCluster');
+
+            $.ajax({
+                url: url,
+                data: {
+                    trader_name: traderName, // Pass trader_name to the server
+                },
+                type: 'GET',
+                success: function (response) {
+                    let datalistElement = $("#cluster_list");
+                    datalistElement.html(""); // Clear existing options
+
+                    let html = '';
+                    if (response.traderData && response.traderData.length > 0) {
+                        response.traderData.forEach(function (trader) {
+                            html += '<option value="' + trader.sp_shipper_add + '"></option>';
+                        });
+                    } else {
+                        html = '<option value="No addresses available"></option>';
+                    }
+                    datalistElement.html(html);
+                },
+                error: function () {
+                    $("#cluster_list").html('<option value="Error fetching data"></option>');
+                }
+            });
+        });
+
+
+            $("body").on("change", "#consignee_name", function () {
+                let url = '{{ route('dashboard.ajax', 'for') }}';
+                let consigneeName = $(this).val(); // Use trader name as the value for request
+                url = url.replace('for', 'getConsigneeCluster');
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        consignee_name: consigneeName, // Pass trader_name to the server
+                    },
+                    type: 'GET',
+                    success: function (response) {
+                        let datalistElement = $("#clusterC_list");
+                        datalistElement.html(""); // Clear existing options
+
+                        let html = '';
+                        if (response.consigneeData && response.consigneeData.length > 0) {
+                            response.consigneeData.forEach(function (consignee) {
+                                html += '<option value="' + consignee.sp_consignee_add + '"></option>';
+                            });
+                        } else {
+                            html = '<option value="No addresses available"></option>';
+                        }
+                        datalistElement.html(html);
+                    },
+                    error: function () {
+                        $("#clusterC_list").html('<option value="Error fetching data"></option>');
+                    }
+                });
+            });
+
+
+
+
+
+            {{--$("body").on("change", "#trader_name", function () {--}}
+            {{--    let url = '{{ route('dashboard.ajax', 'for') }}';--}}
+            {{--    let slug = $(this).val();--}}
+            {{--    url = url.replace('for', 'getTraderCluster');--}}
+
+            {{--    $.ajax({--}}
+            {{--        url: url,--}}
+            {{--        data: {--}}
+            {{--            slug: slug,--}}
+            {{--        },--}}
+            {{--        type: 'GET',--}}
+            {{--        success: function (response) {--}}
+            {{--            let datalistElement = $("#cluster_list");--}}
+            {{--            datalistElement.html("");--}}
+
+            {{--            let html = '';--}}
+            {{--            if (response.traderData && response.traderData.length > 0) {--}}
+            {{--                response.traderData.forEach(function (trader_cluster) {--}}
+            {{--                    html += '<option value="' + trader_cluster.tc_address+ '"></option>';--}}
+            {{--                });--}}
+            {{--            } else {--}}
+            {{--                html = '<option value="No cluster addresses available"></option>';--}}
+            {{--            }--}}
+            {{--            datalistElement.html(html);--}}
+            {{--        },--}}
+            {{--        error: function () {--}}
+            {{--            $("#cluster_list").html('<option value="Error fetching data"></option>');--}}
+            {{--        }--}}
+            {{--    });--}}
+
+            {{--});--}}
+
+
+
+
+
+
+
         $("body").on("change","#user_id",function (){
             let url = '{{route('dashboard.ajax','for')}}';
             let user_id = $(this).val();
@@ -667,6 +819,14 @@
             });
         })
 
+
+
+
+
+
+
+
+
         });
 
         // document.getElementById('add_volume_btn').addEventListener('click', function() {
@@ -688,6 +848,10 @@
         //         e.target.closest('tr').remove();
         //     }
         // });
+
+
+
+
 
         $("#add_row_item").click(function(){
             let rowTemplate = $("#item_template").html();

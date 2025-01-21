@@ -16,6 +16,7 @@ use App\Models\Port;
 use App\Models\PPU\Options;
 use App\Models\Projects;
 use App\Models\Trader;
+use App\Models\TraderCluster;
 use App\Models\User;
 use App\Models\Vessel;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project;
@@ -72,6 +73,16 @@ class Arrays
         $array = [];
         foreach ($mill as $mills){
             $array[$mills->mu_mill_code][$mills->mu_description] = $mills->mu_description;
+        }
+        return $array;
+    }
+
+    public static function traderClusterArray(){
+        $traderCluster = TraderCluster::query()->get();
+
+        $array = [];
+        foreach ($traderCluster as $tc){
+            $array[$tc->tc_marking] = $tc->tc_address;
         }
         return $array;
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Trader\TraderFormRequest;
 use App\Models\Trader;
+use App\Models\TraderCluster;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -43,8 +44,19 @@ class TraderController extends Controller
         $trader->ip_created = $request->ip();
         $trader->ip_updated = $request->ip();
 
-        if($trader->save()){
+        $traderCluster = [];
+        foreach ((array) $request->items as $item){
+            array_push($traderCluster,[
+                'slug' => Str::random(16),
+                'trader_slug' => $trader->slug,
+                'tc_name' => $trader->trader_name,
+                'tc_marking' => $item['tc_marking'],
+                'tc_address' => $item['tc_address'],
+            ]);
+        }
 
+        if($trader->save()){
+            TraderCluster::insert($traderCluster);
             return $trader->only('slug');
         }
     }
@@ -82,11 +94,24 @@ class TraderController extends Controller
         $trader->trader_name = $request->trader_name;
         $trader->trader_address = $request->trader_address;
         $trader->trader_tin = $request->trader_tin;
-        $trader->created_at = Carbon::now();
-        $trader->updated_at = Carbon::now();
-        $trader->ip_created = $request->ip();
-        $trader->ip_updated = $request->ip();
+//        $trader->created_at = Carbon::now();
+//        $trader->updated_at = Carbon::now();
+//        $trader->ip_created = $request->ip();
+//        $trader->ip_updated = $request->ip();
+
+        $traderCluster = [];
+        foreach ((array) $request->items as $item){
+            array_push($traderCluster,[
+                'slug' => Str::random(16),
+                'trader_slug' => $trader->slug,
+                'tc_name' => $trader->trader_name,
+                'tc_marking' => $item['tc_marking'],
+                'tc_address' => $item['tc_address'],
+            ]);
+        }
         if($trader->update()){
+            $trader->traderCluster()->delete();
+            TraderCluster::insert($traderCluster);
             return $trader->only('slug');
         }
 

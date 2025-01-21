@@ -10,7 +10,6 @@
 
     <div class="modal-body">
         @method('PUT')
-
         <div class="box-body">
             <div class="row">
                 <div class="col-md-6">

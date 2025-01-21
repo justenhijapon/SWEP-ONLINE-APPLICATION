@@ -5,7 +5,23 @@
     <section class="content-header">
         <h1>Manage traders</h1>
     </section>
-
+    {{-- Item Modal --}}
+    <table hidden="">
+        <tbody id="item_template">
+        <tr>
+            <td>
+                {!! \App\Core\Helpers\__form2::textboxOnly('items[rand][tc_marking]',[
+                    'label' => 'Marking Code:',
+                ]) !!}
+            </td>
+            <td>{!! \App\Core\Helpers\__form2::textboxOnly('items[rand][tc_address]',[
+                    'label' => 'Address:',
+                 ]) !!}
+            </td>
+            <td><button type="button" class="btn btn-sm bg-red delete_row_item"><i class="fa fa-times"></i></button></td>
+        </tr>
+        </tbody>
+    </table>
     <section class="content">
         {{-- Table Grid --}}
         <div class="box">
@@ -55,7 +71,7 @@
     {!! __html::modal_delete('trader_delete') !!}
     <!-- Add trader Modal -->
     <div class="modal fade" id="add_trader_modal">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -64,8 +80,9 @@
                 </div>
                 <form autocomplete="off" id="form_add_trader" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <div class="col-md-12">
                             <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
 {{--                                {!! \App\Core\Helpers\__form2::textbox('trader_id',[--}}
 {{--                                    'label' => 'Trader ID:',--}}
 {{--                                    'cols' => 6,--}}
@@ -81,15 +98,48 @@
                                 ]) !!}
                                 {!! \App\Core\Helpers\__form2::textbox('trader_tin',[
                                     'label' => 'TIN:',
-                                    'cols' => 6,
+                                    'cols' => 12,
 //                                    'type' => 'number',
                                 ]) !!}
 
-
                             </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="no-margin">
+                                                            <b>Add Cluster trader</b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <button id="add_row_item" type="button" class="btn btn-xs btn-success pull-right">Add Item &nbsp;<i class="fa fw fa-plus"></i></button>
+                                                    </div>
+                                                </div>
 
+                                            </div>
+                                            <div class="panel-body">
+                                                <table class="table table-bordered" id="utilization_table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="width: 30%">Markings Code</th>
+                                                        <th style="width: 60%">Cluster Address</th>
+                                                        <th style="width: 10%"></th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!}"><i class="fa fa-save"></i> Save</button>
@@ -104,7 +154,7 @@
 
     <!-- Edit modal -->
     <div class="modal fade" id="edit_trader_modal">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
                 <div id="edit_trader_modal_loader">
@@ -134,6 +184,25 @@
                 .on('preXhr.dt', function ( e, settings, data ) {
                     Pace.restart();
                 } )
+
+            //Add Pap Code and Item
+            $("#add_row_item").click(function(){
+                let rowTemplate = $("#item_template").html();
+                let random = makeId(10);
+                rowTemplate = rowTemplate.replaceAll('rand',random);
+
+                $("#utilization_table tbody").append(rowTemplate);
+                $(".autonum_"+ random).each(function(){
+                    $(this).attr('autocomplete','off');
+                    new AutoNumeric(this, autonum_settings);
+                });
+
+            });
+
+            //Delete item button
+            $("body").on("click",'.delete_row_item',function (){
+                $(this).parent('td').parent('tr').remove();
+            });
 
 
             //-----DATATABLES-----//
@@ -199,6 +268,8 @@
                     trader_table.search(this.value).draw();
                 }
             });
+
+
 
 
 

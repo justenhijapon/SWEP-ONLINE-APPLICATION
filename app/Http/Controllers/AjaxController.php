@@ -6,7 +6,9 @@ use App\Models\Consignee;
 use App\Models\Mill;
 use App\Models\MillUtilization;
 use App\Models\OfficialReciepts;
+use App\Models\ShippingPermit;
 use App\Models\Trader;
+use App\Models\TraderCluster;
 use App\Models\User;
 use App\Models\Vessel;
 use Illuminate\Http\Request;
@@ -29,6 +31,7 @@ class AjaxController extends Controller
 //            'sample' => $or->or_crop_year - $or->or_crop_year-1,
 //        ];
 //    }
+
     private function getMillUtilization(Request $request) {
         // Retrieve all mill objects based on the mill_code from the request
         $mills = MillUtilization::query()
@@ -51,6 +54,74 @@ class AjaxController extends Controller
         // Return the mill data as JSON response
         return response()->json(['millData' => $millData]);
     }
+
+
+
+
+
+    public function getTraderCluster(Request $request) {
+        $traderName = $request->input('trader_name');
+
+        // Query the shipping permits for the given trader name
+        $shippingPermits = ShippingPermit::query()
+            ->where('sp_shipper', '=', $traderName)
+            ->distinct()
+            ->get(['sp_shipper_add']); // Only select the sp_shipper_add column
+
+        if ($shippingPermits->isEmpty()) {
+            return response()->json(['traderData' => []]);
+        }
+
+        // Return the addresses as JSON response
+        return response()->json(['traderData' => $shippingPermits]);
+    }
+
+//    private function getTraderCluster(Request $request) {
+//        $tc = Trader::query()
+//            ->where('tc_name', '=', $request->slug)
+//            ->get();
+//
+//        if ($tc->isEmpty()) {
+//            abort(503, 'Cluster not found');
+//        }
+//
+//        $traderData = [];
+//
+//        foreach ($tc as $trader) {
+//            $traderData[] = $trader->toArray();
+//        }
+//
+//        // Return the mill data as JSON response
+//        return response()->json(['traderData' => $traderData]);
+//    }
+
+
+
+    public function getConsigneeCluster(Request $request) {
+        $consigneeName = $request->input('consignee_name');
+
+        // Query the shipping permits for the given trader name
+        $shippingPermits = ShippingPermit::query()
+            ->where('sp_consignee', '=', $consigneeName)
+            ->distinct()
+            ->get(['sp_consignee_add']); // Only select the sp_shipper_add column
+
+        if ($shippingPermits->isEmpty()) {
+            return response()->json(['consigneeData' => []]);
+        }
+
+        // Return the addresses as JSON response
+        return response()->json(['consigneeData' => $shippingPermits]);
+    }
+
+
+
+
+
+
+
+
+
 
 
     private function getOfficerPosition(Request $request){
