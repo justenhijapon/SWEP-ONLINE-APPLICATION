@@ -21,10 +21,10 @@
             table-layout: fixed;
             /*width: 100%;*/
             border-collapse: collapse;
-            margin-top: 130px;
+            margin-top: 150px;
             /*margin-bottom: 100px;*/
             margin-right: 100px;
-            margin-left: 140px;
+            margin-left: 20px;
         }
 
         table, td {
@@ -43,10 +43,9 @@
 
         /*temporary for Debugging only (@ATEN) */
         tr{
-            /*border: solid black 1px;*/
+            border: solid black 1px;
             td{
-                /*border: solid black 1px;*/
-                color: blue;
+                border: solid black 1px;
             }
         }
 
@@ -68,19 +67,19 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="padding-bottom: 40px;">{{ date('M d, Y', strtotime($print->or_date)) }}</td>
+        <td style="padding-bottom: 40px">{{ date('M d, Y', strtotime($print->or_date)) }}</td>
         <td></td>
     </tr>
     <tr>
-        <td colspan="4" style="padding-left: 55px; padding-top: 10px;">{{ $print->or_payor }}</td>
+        <td colspan="4" style="padding-left: 30px">{{ $print->or_payor }}</td>
         <td></td>
     </tr>
-{{--    <tr>--}}
-{{--        <td colspan="5" style=" padding-bottom: 5px;"></td>--}}
-{{--    </tr>--}}
+    <tr>
+        <td colspan="5" style=" padding-bottom: 5px;"></td>
+    </tr>
     <tr>
         <td></td>
-        <td colspan="4" style="padding-bottom: 50px; font-size: 14px;">{{ $print->orMIll_Origin->mill_code }}</td>
+        <td colspan="4" style="padding-bottom: 40px">{{ $print->orMIll_Origin->or_mill }}</td>
     </tr>
     <tr>
         <td></td>
@@ -90,7 +89,7 @@
         <td style="font-size: 12px;">AMOUNT</td>
 
     </tr>
-    <tr style="height: 180px;">
+    <tr style="height: 190px;">
         <td style="vertical-align: top; text-align: center;"></td>
         <td style="vertical-align: top; text-align: center;"></td>
         <td style="vertical-align: top; text-align: center;">
@@ -116,7 +115,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align: left;">SHP PRMT.</td>
+        <td style="text-align: right;">SHP PRMT.</td>
         <td style="text-align: center;">{{ $print->or_total_amount ?? 0 }}</td>
     </tr>
     <tr>
@@ -134,11 +133,8 @@
         <td colspan="5" style=" padding-bottom: 10px;"></td>
     </tr>
     <tr>
-        <td style="padding-left: 10px">X</td>
-        <td colspan="2">{{$print->or_drawee_bank}}&nbsp;&nbsp; </td>
-        <td>{{$print->or_chk_no}}</td>
-        <td>{{ \Carbon\Carbon::parse($print->or_chk_date)->format('m/d/Y') }}</td>
-{{--        <td colspan="4">{{$print->or_drawee_bank}}/CHECK#: {{$print->or_chk_no}}/CHECK DATE: {{ \Carbon\Carbon::parse($print->or_chk_date)->format('m/d/Y') }}</td>--}}
+        <td>X</td>
+        <td colspan="4">{{$print->or_drawee_bank}}/CHECK#: {{$print->or_chk_no}}/CHECK DATE: {{ \Carbon\Carbon::parse($print->or_chk_date)->format('m/d/Y') }}</td>
     </tr>
     </tbody>
 </table>

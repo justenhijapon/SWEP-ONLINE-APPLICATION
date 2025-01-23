@@ -148,7 +148,10 @@
             </div>
             <!-- /.box-body -->
         </div>
-
+{{--@php--}}
+{{--    $data = \App\Models\OfficialReciepts::query()->first()->get();--}}
+{{--    dd($data);--}}
+{{-- @endphp--}}
 
     </section>
 

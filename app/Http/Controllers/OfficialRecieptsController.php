@@ -44,6 +44,7 @@ class OfficialRecieptsController extends Controller
                     ]);
                 })
                 ->editColumn('or_mill', function($data){
+//                    dd($data->orMIll_Origin->mill_name);
                     return $data->orMIll_Origin->mill_name ?? null;
                 })
 

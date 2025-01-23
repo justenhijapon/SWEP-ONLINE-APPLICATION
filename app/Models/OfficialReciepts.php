@@ -43,7 +43,7 @@ class OfficialReciepts extends Model
     }
 
     public function orMIll_Origin(){
-        return $this->belongsTo(Mill::class,'or_mill' ,'slug');
+        return $this->belongsTo(Mill::class,'or_mill' ,'mill_code');
 
     }
 }
