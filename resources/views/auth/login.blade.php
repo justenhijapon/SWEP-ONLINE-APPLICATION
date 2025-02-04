@@ -1,6 +1,6 @@
 @extends('layouts.guest-master')
 @section('content')
-
+{{--@include('layouts.css-plugins')--}}
 <section class="content">
 	<div class="login-box">
 		<div class="login-logo">
@@ -35,7 +35,7 @@
 		<div class="login-box-body" style="display: flex;">
 			<!-- Form Container -->
 			<div style="flex: 1;">
-				<p class="login-box-msg"><b>SHIPPING PERMIT | LOGIN</b></p>
+				<p class="login-box-msg"><b>ONLINE APPLICATION | LOGIN</b></p>
 
 				<form method="POST" action="{{ route('auth.login') }}">
 					@csrf

@@ -1,7 +1,7 @@
 <header class="main-header">
   <a href="#" class="logo">
-    <span class="logo-mini">SP</span>
-    <span class="logo-lg"><b>Shipping Permit</b></span>
+    <span class="logo-mini">OA</span>
+    <span class="logo-lg"><b>Online Application</b></span>
   </a>
   <nav class="navbar navbar-static-top">
     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">

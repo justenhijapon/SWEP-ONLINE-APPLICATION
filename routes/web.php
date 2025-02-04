@@ -3,14 +3,17 @@
 
 /** Auth **/
 Route::group(['as' => 'auth.'], function () {
-	
-	Route::get('/', 'Auth\LoginController@showLoginForm')->name('showLogin');
+//    Route::get('/login', 'Auth\LoginController@showLoginForm')->name('showLogin');
+	Route::get('/', 'Guest\HomeController@index')->name('showLogin');
 	Route::post('/', 'Auth\LoginController@login')->name('login');
 	Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 	Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 });
 
+Route::get('/login', function (){
+    return view('auth.login');
+});
 
 Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['check.user_status']], function () {
     Route::get('ajax/{for}',\App\Http\Controllers\AjaxController::class.'@get')->name('ajax');
@@ -103,3 +106,7 @@ Route::get('users/export/', [\App\Http\Controllers\ShippingPermitController::cla
 
 Route::post('/store-data', [VolumeController::class, 'store'])->name('storeData');
 
+Route::get('/phpinfo', function(){
+    phpinfo();
+//    laravel_cloud();
+});
