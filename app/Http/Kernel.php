@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Core\Helpers\__form2;
+use App\Core\ViewHelpers\__html;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel

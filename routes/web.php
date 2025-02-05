@@ -110,3 +110,6 @@ Route::get('/phpinfo', function(){
     phpinfo();
 //    laravel_cloud();
 });
+
+/** Guest **/
+Route::get('imported-commodities', 'Guest\GuestController@importedCommodities')->name('imported-commodities.index');

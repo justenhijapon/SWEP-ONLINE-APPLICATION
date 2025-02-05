@@ -23,14 +23,27 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 @include('layouts.constra-css-plugins')
+
     <body>
+        <div class="body-inner">
+            @include('layouts.guest-header')
+        </div>
+        <img loading="lazy" class="image-clean"  style="width: 100%; height: 8%;" src="{{asset('/images/Guest/Banners/ONLINE_APPLICATION_BANNER.png')}}" alt="">
         <section>
-            <div class="container">
-                <h2>Hello Aten (Home Page)</h2>
+            <div class="container"style="">
+                <ul style="margin-top: 20px">
+                    <li>
+                        <a href="/imported-commodities">
+                            <h4 class="underline-hover">Application for Clearance for the Release of Imported Commodities</h4>
+                        </a>
+                    </li>
+                </ul>
+
             </div>
         </section>
 
 @include('layouts.constra-js-plugins')
+@include('layouts.guest-footer')
 
 
 @yield('scripts')
